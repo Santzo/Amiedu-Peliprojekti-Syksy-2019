@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private int exitSize = 6;
-    private int maxRooms = 5;
+    private int maxRooms = 20;
     private int numOfRooms = 1;
     private float pixelsPerUnit = 128f;
 
