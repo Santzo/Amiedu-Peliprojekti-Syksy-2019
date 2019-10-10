@@ -10,7 +10,7 @@ public abstract class InventoryItems : ScriptableObject
     public int itemLevel;
     public float weight;
     public ItemType itemType;
-
+    public Sprite icon;
     [TextArea]
     public string description;
 }

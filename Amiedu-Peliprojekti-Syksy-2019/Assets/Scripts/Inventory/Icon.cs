@@ -32,8 +32,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("jee");
-        background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.58f);
+        background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.2f);
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -23,13 +23,12 @@ public class ShowItems : MonoBehaviour, IResetUI
     private GameObject[] itemsEntry;
 
 
-    //private string[] items = new string[] { "All items", "Weapons", "Head Gear" };
-    private string[] items = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Consumables" };
+
 
 
     private void Awake()
     {
-        itemsEntry = new GameObject[items.Length];
+        itemsEntry = new GameObject[InventoryManager.itemsToShow.Length];
 
         border = transform.Find("Border").GetComponent<RectTransform>();
         borderHeight = border.sizeDelta.y;
@@ -39,29 +38,33 @@ public class ShowItems : MonoBehaviour, IResetUI
     }
     private void Start()
     {
-        CreateItemEntry(0, items[5], new Vector2(0f, 0f));
-        oldText = items[5];
+        CreateItemEntry(0, InventoryManager.itemsToShow[0], new Vector2(0f, 0f));
+        oldText = InventoryManager.itemsToShow[0];
+        InventoryManager.im.FilterItems(oldText);
     }
+
+   
 
     public void onClick(string text = "")
     {
         expanded = text != "" ? !expanded : false;
+        if (!expanded && text != "") InventoryManager.im.FilterItems(text);
         text = text != "" ? text : oldText;
         Array.ForEach(itemsEntry, item => { if (item != null) ObjectPooler.op.DeSpawn(item); });
-       
+
         if (expanded)
         {
             CreateItemEntry(0, text, new Vector2(0f, 0f));
             int x = 0;
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < InventoryManager.itemsToShow.Length; i++)
             {
-                if (text != items[i])
+                if (text != InventoryManager.itemsToShow[i])
                 {
                     x++;
-                    CreateItemEntry(x, items[i], new Vector2(0f, -x * itemHeight));
+                    CreateItemEntry(x, InventoryManager.itemsToShow[i], new Vector2(0f, -x * itemHeight));
                 }
             }
-            border.sizeDelta = new Vector2(border.sizeDelta.x, borderHeight + itemHeight * (items.Length - 1));
+            border.sizeDelta = new Vector2(border.sizeDelta.x, borderHeight + itemHeight * (InventoryManager.itemsToShow.Length - 1));
         }
         else
         {
@@ -71,6 +74,8 @@ public class ShowItems : MonoBehaviour, IResetUI
         oldText = text;
 
     }
+
+
 
     private void CreateItemEntry(int index, string text, Vector2 position)
     {
@@ -85,4 +90,6 @@ public class ShowItems : MonoBehaviour, IResetUI
         if (result == "ShowItemsText") return;
         onClick();
     }
+
+ 
 }

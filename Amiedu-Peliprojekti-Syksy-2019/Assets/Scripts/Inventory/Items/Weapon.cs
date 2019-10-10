@@ -9,5 +9,5 @@ public class Weapon : InventoryItems
     public Hands hands;
     public float minDamage, maxDamage;
     public int bulletPerShot;
-    public Sprite icon;
+
 }
