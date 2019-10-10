@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-public class InventoryItems : ScriptableObject
+public abstract class InventoryItems : ScriptableObject
 {
     public int itemLevel;
     public float weight;
@@ -15,14 +15,6 @@ public class InventoryItems : ScriptableObject
     public string description;
 }
 
-[CreateAssetMenu(menuName = "Weapon")]
-public class Weapon : InventoryItems
-{
-    public WeaponType weaponType;
-    public Hands hands;
-    public float minDamage, maxDamage;
-    public Sprite icon;
-}
 
 
 public enum Hands

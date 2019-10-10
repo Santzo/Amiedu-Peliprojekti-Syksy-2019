@@ -89,7 +89,6 @@ public class LevelManager : MonoBehaviour
         foreach (var door in ori.doors)
         {
 
-            Debug.Log(ori.trans.name + " " + door.exit + " " + door.corridorDone);
             if (door.corridorDone)
                 continue;
 

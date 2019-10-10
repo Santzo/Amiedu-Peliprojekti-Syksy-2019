@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: Hand Axe
+  m_Name: One-handed sword
   m_EditorClassIdentifier: 
-  itemLevel: 1
-  weight: 3
+  itemLevel: 2
+  weight: 1.2
   itemType: 0
-  description: 'A basic looking axe with a wooden handle. The axe looks like it has
-    been used a lot, but will certainly still be able to chop through flesh.
+  description: 'A sword looking like it could have been made in the 16th century.
+    Being quick and light, it suits very well for melee combat.
 
 '
   weaponType: 0
   hands: 0
-  minDamage: 6
-  maxDamage: 9
+  minDamage: 10
+  maxDamage: 12
   bulletPerShot: 0
-  icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}
+  icon: {fileID: 21300000, guid: 9f96611d4d3500b48a51b442f3b9502d, type: 3}

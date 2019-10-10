@@ -8,6 +8,7 @@ public static class CharacterStats
     public static int constitution;
     public static int dexterity;
     public static int luck;
+    public static List<InventoryItems> inventoryItems = new List<InventoryItems>();
 
     public static void ResetStats()
     {

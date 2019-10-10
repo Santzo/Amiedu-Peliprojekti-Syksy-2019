@@ -30,7 +30,7 @@ public class ShowItemsText : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        background.color = new Color(oriColor.r + 0.15f, oriColor.g + 0.06f, oriColor.b, oriColor.a + 0.05f);
+        background.color = new Color(oriColor.r + 0.2f, oriColor.g + 0.06f, oriColor.b, oriColor.a + 0.1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)

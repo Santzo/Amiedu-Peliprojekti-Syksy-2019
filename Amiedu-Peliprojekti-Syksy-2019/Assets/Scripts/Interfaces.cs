@@ -8,5 +8,5 @@ public interface ISpawn
 }
 public interface IResetUI
 {
-    void Reset();
+    void Reset(string result);
 }

@@ -80,8 +80,9 @@ public class ShowItems : MonoBehaviour, IResetUI
         itemsEntry[index].GetComponent<ShowItemsText>().text.text = text;
     }
 
-    public void Reset()
+    public void Reset(string result)
     {
+        if (result == "ShowItemsText") return;
         onClick();
     }
 }
