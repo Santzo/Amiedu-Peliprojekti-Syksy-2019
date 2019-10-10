@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Hand Axe
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  weight: 0
+  itemType: 0
+  description: An axe seemingly from an older era. It will most certainly do its job
+    when cutting off things.
+  weaponType: 0
+  minDamage: 4
+  maxDamage: 8
+  icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}

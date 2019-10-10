@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelManager : MonoBehaviour
 {
@@ -13,11 +14,21 @@ public class LevelManager : MonoBehaviour
         public int maxY;
         public List<Door> doors;
     }
+
+    public class RoomLocations
+    {
+        public Vector2 start;
+        public Vector2 end;
+    }
+
     public Material material;
-
-
     [HideInInspector]
     public Sprite[] brown;
+    [HideInInspector]
+    public Sprite[] cellar;
+    [HideInInspector]
+    public Sprite[] current;
+
 
     [HideInInspector]
     public int tileSize = 128;
@@ -50,6 +61,8 @@ public class LevelManager : MonoBehaviour
     private Vector2 cornerPieceSize;
     private Vector2 bigCornerPieceSize;
 
+    private List<RoomLocations> roomLocations = new List<RoomLocations>();
+
 
 
     [HideInInspector]
@@ -58,10 +71,12 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         brown = Resources.LoadAll<Sprite>("Brown");
+        cellar = Resources.LoadAll<Sprite>("Cellar");
+        current = cellar;
         cornerPieceSize = SpriteSizeInPixels("corner");
-        cornerPieceSize = cornerPieceSize / 2f;
+        cornerPieceSize = cornerPieceSize * 0.5f;
         bigCornerPieceSize = SpriteSizeInPixels("bigCorner");
-        bigCornerPieceSize = bigCornerPieceSize / 2f;
+        bigCornerPieceSize = bigCornerPieceSize * 0.5f;
         GenerateStartRoom(2);
 
     }
@@ -81,59 +96,59 @@ public class LevelManager : MonoBehaviour
 
             if (door.exit == Exits.East)
             {
-                CreateFloor(ori, door.location.x + corridorLength * 0.5f + 0.5f, door.location.y, Piece(brown, "middle"), door.size, corridorLength + 2f, 90f);
-                CreateWall(ori, Piece(brown, "bottom"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
-                CreateWall(ori, Piece(brown, "top"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
+                CreateFloor(ori, door.location.x + corridorLength * 0.5f + 0.5f, door.location.y, Piece(current, "middle"),  corridorLength + 2f, door.size, 0f);
+                CreateWall(ori, Piece(current, "bottom"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
+                CreateWall(ori, Piece(current, "top"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
 
-                CreateCornerPiece(ori, door.location.x + 0.5f - (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 0);
-                CreateCornerPiece(ori, door.location.x + corridorLength + 0.5f + (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 270);
+                CreateCornerPiece(ori, door.location.x + 0.5f - (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x + corridorLength + 0.5f + (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0, -1);
 
-                CreateCornerPiece(ori, door.location.x + 0.5f - (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0);
-                CreateCornerPiece(ori, door.location.x + corridorLength + 0.5f + (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x + 0.5f - (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x + corridorLength + 0.5f + (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0);
 
 
             }
             if (door.exit == Exits.West)
             {
-                CreateFloor(ori, door.location.x - corridorLength * 0.5f - 0.5f, door.location.y, Piece(brown, "middle"), door.size, corridorLength + 2f, 90f);
-                CreateWall(ori, Piece(brown, "bottom"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
-                CreateWall(ori, Piece(brown, "top"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
+                CreateFloor(ori, door.location.x - corridorLength * 0.5f - 0.5f, door.location.y, Piece(current, "middle"), corridorLength + 2f, door.size,  0f);
+                CreateWall(ori, Piece(current, "bottom"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
+                CreateWall(ori, Piece(current, "top"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
 
 
-                CreateCornerPiece(ori, door.location.x - 0.5f + (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 270);
-                CreateCornerPiece(ori, door.location.x - corridorLength - 0.5f - (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x - 0.5f + (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x - corridorLength - 0.5f - (cornerPieceSize.x / pixelsPerUnit), door.location.y - door.size * 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0);
 
-                CreateCornerPiece(ori, door.location.x - 0.5f + (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0, -1);
-                CreateCornerPiece(ori, door.location.x - corridorLength - 0.5f - (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x - 0.5f + (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x - corridorLength - 0.5f - (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
 
 
 
             }
             if (door.exit == Exits.North)
             {
-                CreateFloor(ori, door.location.x, door.location.y + corridorLength * 0.5f + 0.5f, Piece(brown, "middle"), door.size + 1f, corridorLength + 2f);
-                CreateWall(ori, Piece(brown, "left"), door.location.x - door.size * 0.5f, door.location.y + corridorLength * 0.5f + 1f, 1, corridorLength - 1f, 0f);
-                CreateWall(ori, Piece(brown, "right"), door.location.x + door.size * 0.5f, door.location.y + corridorLength * 0.5f + 1f, 1, corridorLength - 1f, 0f);
+                CreateFloor(ori, door.location.x, door.location.y + corridorLength * 0.5f + 0.5f, Piece(current, "middle"), door.size + 1f, corridorLength + 2f);
+                CreateWall(ori, Piece(current, "left"), door.location.x - door.size * 0.5f, door.location.y + corridorLength * 0.5f + 1f, 1, corridorLength - 1f, 0f);
+                CreateWall(ori, Piece(current, "right"), door.location.x + door.size * 0.5f, door.location.y + corridorLength * 0.5f + 1f, 1, corridorLength - 1f, 0f);
 
-                CreateCornerPiece(ori, door.location.x - 0.5f - (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y + corridorLength + 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 270);
-                CreateCornerPiece(ori, door.location.x + 0.5f + (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y + corridorLength + 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x - 0.5f - (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y + corridorLength + 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x + 0.5f + (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y + corridorLength + 0.5f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0);
 
-                CreateCornerPiece(ori, door.location.x - 0.5f - (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y + 1.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0);
-                CreateCornerPiece(ori, door.location.x + 0.5f + (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y + 1.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x - 0.5f - (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y + 1.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x + 0.5f + (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y + 1.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
             }
 
             if (door.exit == Exits.South)
             {
-                CreateFloor(ori, door.location.x, door.location.y - corridorLength * 0.5f - 1.75f, Piece(brown, "middle"), door.size, corridorLength + 2.5f);
-                CreateWall(ori, Piece(brown, "left"), door.location.x - door.size * 0.5f + 0.5f, door.location.y - corridorLength * 0.5f - 1f, 1, corridorLength, 0f);
-                CreateWall(ori, Piece(brown, "right"), door.location.x + door.size * 0.5f - 0.5f, door.location.y - corridorLength * 0.5f - 1f, 1, corridorLength, 0f);
+                CreateFloor(ori, door.location.x, door.location.y - corridorLength * 0.5f - 1.75f, Piece(current, "middle"), door.size, corridorLength + 2.5f);
+                CreateWall(ori, Piece(current, "left"), door.location.x - door.size * 0.5f + 0.5f, door.location.y - corridorLength * 0.5f - 1f, 1, corridorLength, 0f);
+                CreateWall(ori, Piece(current, "right"), door.location.x + door.size * 0.5f - 0.5f, door.location.y - corridorLength * 0.5f - 1f, 1, corridorLength, 0f);
 
 
-                CreateCornerPiece(ori, door.location.x - (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y - 1f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 270);
-                CreateCornerPiece(ori, door.location.x + (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y - 1f + (cornerPieceSize.y / pixelsPerUnit), Piece(brown, "corner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x - (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y - 1f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x + (door.size * 0.5f - cornerPieceSize.x / pixelsPerUnit), door.location.y - 1f + (cornerPieceSize.y / pixelsPerUnit), Piece(current, "corner"), 5, 0);
 
-                CreateCornerPiece(ori, door.location.x - (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y - corridorLength - 1f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0);
-                CreateCornerPiece(ori, door.location.x + (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y - corridorLength - 1f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(brown, "bigCorner"), 5, 0, -1);
+                CreateCornerPiece(ori, door.location.x - (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y - corridorLength - 1f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0);
+                CreateCornerPiece(ori, door.location.x + (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y - corridorLength - 1f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
 
 
             }
@@ -158,17 +173,17 @@ public class LevelManager : MonoBehaviour
         roomStats.maxX = roomX;
         roomStats.maxY = roomY;
 
-        CreateCornerPiece(roomStats, 0, 0, Piece(brown, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
-        CreateCornerPiece(roomStats, roomX, 0, Piece(brown, "bottomRight"));    // alaoikea
-        CreateCornerPiece(roomStats, 0, roomY, Piece(brown, "topLeft"));        // ylävasen
-        CreateCornerPiece(roomStats, roomX, roomY, Piece(brown, "topRight"));   // yläoikea
+        CreateCornerPiece(roomStats, 0, 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
+        CreateCornerPiece(roomStats, roomX, 0, Piece(current, "bottomRight"));    // alaoikea
+        CreateCornerPiece(roomStats, 0, roomY, Piece(current, "topLeft"));        // ylävasen
+        CreateCornerPiece(roomStats, roomX, roomY, Piece(current, "topRight"));   // yläoikea
 
-        CreateRoomWall(roomStats, Piece(brown, "top"));                             // Luodaan huoneen pääseinät yläseinä
-        CreateRoomWall(roomStats, Piece(brown, "bottom"));                          // alaseinä
-        CreateRoomWall(roomStats, Piece(brown, "left"));                            // vasen seinä
-        CreateRoomWall(roomStats, Piece(brown, "right"));                           // oikea seinä
+        CreateRoomWall(roomStats, Piece(current, "top"));                             // Luodaan huoneen pääseinät yläseinä
+        CreateRoomWall(roomStats, Piece(current, "bottom"));                          // alaseinä
+        CreateRoomWall(roomStats, Piece(current, "left"));                            // vasen seinä
+        CreateRoomWall(roomStats, Piece(current, "right"));                           // oikea seinä
 
-        CreateRoomFloor(roomStats, Piece(brown, "middle"));                         // Luodaan huoneen lattia
+        CreateRoomFloor(roomStats, Piece(current, "middle"));                         // Luodaan huoneen lattia
         CreateDoors(roomStats, roomX, roomY, minimumExits);                                       // Arvotaan ja luodaan huoneelle ovet
         CreateCorridors(roomStats);
         CreateAlignedRooms(roomStats);
@@ -186,17 +201,17 @@ public class LevelManager : MonoBehaviour
             door.location = roomStats.trans.InverseTransformPoint(door.worldLocation);
         }
 
-        CreateCornerPiece(roomStats, 0, 0, Piece(brown, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
-        CreateCornerPiece(roomStats, roomStats.maxX, 0, Piece(brown, "bottomRight"));    // alaoikea
-        CreateCornerPiece(roomStats, 0, roomStats.maxY, Piece(brown, "topLeft"));        // ylävasen
-        CreateCornerPiece(roomStats, roomStats.maxX, roomStats.maxY, Piece(brown, "topRight"));   // yläoikea
+        CreateCornerPiece(roomStats, 0, 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
+        CreateCornerPiece(roomStats, roomStats.maxX, 0, Piece(current, "bottomRight"));    // alaoikea
+        CreateCornerPiece(roomStats, 0, roomStats.maxY, Piece(current, "topLeft"));        // ylävasen
+        CreateCornerPiece(roomStats, roomStats.maxX, roomStats.maxY, Piece(current, "topRight"));   // yläoikea
 
-        CreateRoomWall(roomStats, Piece(brown, "top"));                             // Luodaan huoneen pääseinät yläseinä
-        CreateRoomWall(roomStats, Piece(brown, "bottom"));                          // alaseinä
-        CreateRoomWall(roomStats, Piece(brown, "left"));                            // vasen seinä
-        CreateRoomWall(roomStats, Piece(brown, "right"));                           // oikea seinä
+        CreateRoomWall(roomStats, Piece(current, "top"));                             // Luodaan huoneen pääseinät yläseinä
+        CreateRoomWall(roomStats, Piece(current, "bottom"));                          // alaseinä
+        CreateRoomWall(roomStats, Piece(current, "left"));                            // vasen seinä
+        CreateRoomWall(roomStats, Piece(current, "right"));                           // oikea seinä
 
-        CreateRoomFloor(roomStats, Piece(brown, "middle"));                         // Luodaan huoneen lattia
+        CreateRoomFloor(roomStats, Piece(current, "middle"));                         // Luodaan huoneen lattia
         if (numOfRooms < maxRooms)
         {
             CreateDoors(roomStats, roomStats.maxX, roomStats.maxY, 0);                  // Arvotaan ja luodaan huoneelle ovet
@@ -283,7 +298,6 @@ public class LevelManager : MonoBehaviour
     void CreateDoors(Room ori, int roomX, int roomY, int numOfMinExits = 1)
     {
 
-        //int numOfExits = Random.Range(numOfMinExits, 4);
         int numOfExits = Random.Range(0, 3);
 
         if (ori.doors == null)
@@ -293,14 +307,17 @@ public class LevelManager : MonoBehaviour
 
         numOfExits = 1;
 
+        int count = 0, maxCount = 5;
 
         for (int i = 0; i < numOfExits; i++)
         {
             exitSize = Random.Range(2, 6);
             var tempDoor = new Door();
             int a = Random.Range(0, 2);
+            a = 3;
             bool reserved = true;
 
+           
             if (ori.doors.Count > 0)
             {
                 while (reserved)
@@ -459,7 +476,7 @@ public class LevelManager : MonoBehaviour
 
     public Vector2 SpriteSizeInPixels(string name)
     {
-        var sr = Piece(brown, name);
+        var sr = Piece(current, name);
         return new Vector2(sr.bounds.size.x * pixelsPerUnit, sr.bounds.size.y * pixelsPerUnit);
     }
 
