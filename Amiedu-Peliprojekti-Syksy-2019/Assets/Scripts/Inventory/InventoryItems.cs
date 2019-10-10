@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class InventoryItems : ScriptableObject
 {
+    public int itemLevel;
     public float weight;
     public ItemType itemType;
+
     [TextArea]
     public string description;
 }

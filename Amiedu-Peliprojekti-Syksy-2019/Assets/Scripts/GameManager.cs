@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
         else
         {
@@ -40,6 +41,10 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void NewGame()
+    {
+        CharacterStats.ResetStats();
+    }
    
 
 
