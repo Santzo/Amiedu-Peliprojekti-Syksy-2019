@@ -15,7 +15,6 @@ public class ShowItemsText : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     private void Awake()
     {
-     
         background = GetComponent<Image>();
         oriColor = background.color;
         text = transform.GetChild(0).GetComponent<TextMeshProUGUI>();

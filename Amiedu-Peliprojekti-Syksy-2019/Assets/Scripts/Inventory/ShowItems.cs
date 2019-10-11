@@ -80,6 +80,7 @@ public class ShowItems : MonoBehaviour, IResetUI
     private void CreateItemEntry(int index, string text, Vector2 position)
     {
         itemsEntry[index] = ObjectPooler.op.Spawn("ShowItemsEntry", new Vector2(0f, 0f), null, transform);
+        itemsEntry[index].transform.SetParent(transform, false);
         itemsEntry[index].transform.localPosition = position;
         itemsEntry[index].transform.SetAsFirstSibling();
         itemsEntry[index].GetComponent<ShowItemsText>().text.text = text;

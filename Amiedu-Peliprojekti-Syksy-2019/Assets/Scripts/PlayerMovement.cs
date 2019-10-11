@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        transform.localScale = mousePos.x > transform.position.x ? new Vector3(1f, 1f, 1f) : new Vector3(-1f, 1f, 1f);
         light.right = new Vector2(mousePos.x - light.position.x, mousePos.y - light.position.y);
         movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
