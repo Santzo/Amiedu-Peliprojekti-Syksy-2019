@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,8 @@ public class InventoryManager : MonoBehaviour
     public List<InventoryItems> filteredItems = new List<InventoryItems>();
     public Weapon[] weapons;
     public Headgear[] headgear;
-    private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestguard", "Armguard", "Legguard", "Consumable" };
-
+    public Consumable[] consumables;
+    private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Consumable" };
     public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Consumables" };
     public static string[] weaponSortBy = new string[] { "Weapon Level", "Damage", "Weapon Type" };
 
@@ -20,6 +21,7 @@ public class InventoryManager : MonoBehaviour
         im = this;
         weapons = Resources.LoadAll<Weapon>("Inventory/Weapons");
         headgear = Resources.LoadAll<Headgear>("Inventory/Headgear");
+        consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
 
         foreach (var weapon in weapons)
         {
@@ -28,6 +30,10 @@ public class InventoryManager : MonoBehaviour
         foreach (var head in headgear)
         {
             CharacterStats.inventoryItems.Add(head);
+        }
+        foreach (var cons in consumables)
+        {
+            CharacterStats.inventoryItems.Add(cons);
         }
     }
 

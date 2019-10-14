@@ -7,6 +7,7 @@ public static class CharacterStats
     public static int strength;
     public static int constitution;
     public static int dexterity;
+    public static int adaptability;
     public static int luck;
     public static List<InventoryItems> inventoryItems = new List<InventoryItems>();
 
@@ -15,6 +16,7 @@ public static class CharacterStats
         strength = 10;
         constitution = 10;
         dexterity = 10;
+        adaptability = 10;
         luck = 10;
     }
 }

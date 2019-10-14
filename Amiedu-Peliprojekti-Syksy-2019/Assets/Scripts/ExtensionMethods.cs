@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
 
 public static class ExtensionMethods
 {
@@ -17,5 +19,19 @@ public static class ExtensionMethods
         var sr = ori.AddComponent<SpriteRenderer>();
         sr.material = mat;
         return sr;
+    }
+
+    public static void EmptyTextArray(this TextMeshProUGUI[] ori)
+    {
+        for (int i = 0; i < ori.Length; i++)
+        {
+            ori[i].text = "";
+        }
+    }
+    public static string ReplaceUnderScore(string replace)
+    {
+        replace.Replace("_", " ");
+        return replace;
+
     }
 }

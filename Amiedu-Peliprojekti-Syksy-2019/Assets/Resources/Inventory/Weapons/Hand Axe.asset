@@ -15,6 +15,9 @@ MonoBehaviour:
   itemLevel: 1
   weight: 3
   itemType: 0
+  icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}
+  colorTint: {r: 1, g: 1, b: 1, a: 1}
+  iconScale: 1
   description: 'A basic looking axe with a wooden handle. The axe looks like it has
     been used a lot, but will certainly still be able to chop through flesh.
 
@@ -23,5 +26,8 @@ MonoBehaviour:
   hands: 0
   minDamage: 6
   maxDamage: 9
+  fireRate: 1.9
+  clipSize: 0
+  reloadTime: 0
+  criticalHitChance: 31.6
   bulletPerShot: 0
-  icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}

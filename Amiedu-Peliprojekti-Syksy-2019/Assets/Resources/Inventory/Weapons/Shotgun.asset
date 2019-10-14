@@ -15,13 +15,17 @@ MonoBehaviour:
   itemLevel: 3
   weight: 2
   itemType: 0
+  icon: {fileID: 21300000, guid: 2951d818c9b9bf54591526d7c9b114e6, type: 3}
   description: 'Powerful weapon capable of tearing through flesh and armor. Shoots
     multiple pellets. Beware of the unpredictable recoil.
 
 '
-  weaponType: 0
+  weaponType: 3
   hands: 1
   minDamage: 16
   maxDamage: 24
+  fireRate: 1.1
+  clipSize: 12
+  reloadTime: 2.4
+  criticalHitChance: 0
   bulletPerShot: 3
-  icon: {fileID: 21300000, guid: 2951d818c9b9bf54591526d7c9b114e6, type: 3}

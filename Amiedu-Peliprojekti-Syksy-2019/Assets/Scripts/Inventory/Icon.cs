@@ -8,6 +8,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 {
     private Image background;
     private Color oriColor;
+    public int index;
 
     public void Awake()
     {
@@ -32,12 +33,14 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Events.onItemHover(index, Input.mousePosition);
         background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.2f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         background.color = oriColor;
+        Events.onItemLeaveHover();
     }
 
   

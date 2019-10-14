@@ -24,7 +24,14 @@ public class ShowItems : MonoBehaviour, IResetUI
 
 
 
-
+    private void OnEnable()
+    {
+        Events.onUIClick += Reset;
+    }
+    private void OnDisable()
+    {
+        Events.onUIClick -= Reset;
+    }
 
     private void Awake()
     {
