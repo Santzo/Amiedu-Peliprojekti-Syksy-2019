@@ -24,7 +24,7 @@ public class ItemEffect
     public Effect effect;
     [Tooltip("The total amount of points for the effect")]
     public float amount;
-    [Tooltip("How long the effect lasts")]
+    [Tooltip("How long the effect lasts (Leave this at 0 if you want the effect to be immediate / permanent)")]
     public float duration;
 }
 
@@ -35,11 +35,13 @@ public enum Hands
 }
 public enum ItemType
 {
-    Weapon,
+  
     Headgear,
     Chestpiece,
     Legguard,
     Armguard,
+    Weapon,
+    Lightsource,
     Consumable
 
 }
@@ -53,10 +55,10 @@ public enum WeaponType
 public enum Effect
 {
     Heals,
-    Raises_strength,
-    Raises_constitution,
-    Raises_dexterity,
-    Raises_adaptability,
-    Raises_luck,
+    Raises_Strength,
+    Raises_Constitution,
+    Raises_Dexterity,
+    Raises_Adaptability,
+    Raises_Luck,
 
 }

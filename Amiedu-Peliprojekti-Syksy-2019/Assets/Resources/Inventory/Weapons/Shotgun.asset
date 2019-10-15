@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 3
   weight: 2
-  itemType: 0
+  itemType: 4
   icon: {fileID: 21300000, guid: 2951d818c9b9bf54591526d7c9b114e6, type: 3}
+  colorTint: {r: 1, g: 1, b: 1, a: 1}
+  iconScale: 1
   description: 'Powerful weapon capable of tearing through flesh and armor. Shoots
     multiple pellets. Beware of the unpredictable recoil.
 
@@ -29,3 +31,4 @@ MonoBehaviour:
   reloadTime: 2.4
   criticalHitChance: 0
   bulletPerShot: 3
+  itemEffects: []

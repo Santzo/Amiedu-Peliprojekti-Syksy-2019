@@ -11,8 +11,8 @@ public class InventoryManager : MonoBehaviour
     public Weapon[] weapons;
     public Headgear[] headgear;
     public Consumable[] consumables;
-    private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Consumable" };
-    public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Consumables" };
+    private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Lightsource", "Consumable" };
+    public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Light sources", "Consumables" };
     public static string[] weaponSortBy = new string[] { "Weapon Level", "Damage", "Weapon Type" };
 
 

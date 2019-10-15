@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     Transform light;
     Camera mainCam;
     Vector2 movement;
+    private bool movementPossible = true;
     float moveSpeed = 5f;
 
     private void Awake()
@@ -23,19 +24,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!movementPossible)
+            return;
         rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
     }
     // Update is called once per frame
     void Update()
     {
+        HandleInput();
+        if (!movementPossible)
+            return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? new Vector3(1f, 1f, 1f) : new Vector3(-1f, 1f, 1f);
-        light.right = new Vector2(mousePos.x - light.position.x, mousePos.y - light.position.y);
+        light.right = new Vector2(mousePos.x - light.position.x, mousePos.y - light.position.y) * transform.localScale.x;
         movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
     {
         CharacterStats.ResetStats();
+    }
+
+    void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyboardConfig.inventory))
+        {
+            Events.inventoryKey();
+            movementPossible = !movementPossible;
+        }
     }
 }

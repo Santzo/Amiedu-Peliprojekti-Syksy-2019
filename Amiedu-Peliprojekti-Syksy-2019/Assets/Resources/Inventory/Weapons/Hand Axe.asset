@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 1
   weight: 3
-  itemType: 0
+  itemType: 4
   icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
@@ -31,3 +31,10 @@ MonoBehaviour:
   reloadTime: 0
   criticalHitChance: 31.6
   bulletPerShot: 0
+  itemEffects:
+  - effect: 1
+    amount: 5
+    duration: 0
+  - effect: 2
+    amount: 5
+    duration: 0

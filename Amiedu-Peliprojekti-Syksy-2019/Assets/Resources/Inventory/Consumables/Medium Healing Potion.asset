@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 1
   weight: 0.2
-  itemType: 5
+  itemType: 6
   icon: {fileID: 21300000, guid: 1761d984c60b85445b893ae1b8d9d27b, type: 3}
+  colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 0.8
   description: Medium healing potion with moderate healing properties.
   itemEffect:
   - effect: 0
-    amount: 50
-    duration: 3.5
+    amount: 60
+    duration: 4

@@ -35,31 +35,26 @@ public class ItemDetails : MonoBehaviour
     {
         itemName.text = item.name;
         itemDescription.text = item.description;
+        itemType.text = item.itemType.ToString() + " - Level " + item.itemLevel;
 
         if (item is Weapon)  // WEAPONS HERE
         {
             Weapon _item = item as Weapon;
             itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel;
-            details[0].text = "Damage <color=yellow>" + _item.minDamage + " - " + _item.maxDamage;
-            details[2].text = "Critical hit chance <color=yellow>" + _item.criticalHitChance + "<color=white>%";
+            details[0].text = "Damage " + TextColor.Return("yellow") + _item.minDamage + " - " + _item.maxDamage;
+            details[2].text = "Critical hit chance " + TextColor.Return("yellow") + _item.criticalHitChance + TextColor.Return() + "%";
             if (_item.weaponType == WeaponType.Melee)
             {
-                details[1].text = "Weapon swings <color=yellow>" + _item.fireRate + "<color=white> times per second";
+                details[1].text = "Weapon swings " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
 
             }
             else
             {
-                details[1].text = "Weapon fires <color=yellow>" + _item.fireRate + "<color=white> times per second";
-                details[3].text = "Clip size <color=yellow>" + _item.clipSize;
+                details[1].text = "Weapon fires " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
+                details[3].text = "Clip size " + TextColor.Return("yellow") + _item.clipSize;
                 details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
             }
-        }
-
-
-        else if (item is Headgear) // HEADGEAR HERE
-        {
-            itemType.text = item.itemType.ToString() + " - Level " + item.itemLevel; ;
         }
 
         else if (item is Consumable) // CONSUMABLES HERE
@@ -67,7 +62,7 @@ public class ItemDetails : MonoBehaviour
             Consumable _item = item as Consumable;
             for (int i = 0; i < _item.itemEffect.Length; i++)
             {
-                details[i].text = _item.itemEffect[i].effect.ToString().Replace("_", " ") + "<color=yellow> " + _item.itemEffect[i].amount + "<color=white> points in <color=yellow>" + _item.itemEffect[i].duration + "<color=white> seconds";
+                details[i].text = ItemEffectText(_item.itemEffect[i]);
             }
         }
     }
@@ -77,5 +72,30 @@ public class ItemDetails : MonoBehaviour
         details.EmptyTextArray();
     }
 
+
+    private string ItemEffectText(ItemEffect effect)
+    {
+        switch (effect.effect)
+        {
+            case Effect.Heals:
+                return effect.duration > 0
+                ? effect.effect.ToString().Replace("_", " ") + " you by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points in " +
+                TextColor.Return("yellow") + effect.duration + TextColor.Return() + " seconds."
+                : effect.effect.ToString().Replace("_", " ") + " you by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points " + TextColor.Return("yellow") + "immediately"
+                + TextColor.Return() + ".";
+            default:
+                {
+                    string name = effect.effect.ToString();
+                    int pos = name.IndexOf("_");
+                    string eff = name.Substring(0, pos);
+                    string attribute = name.Substring(pos + 1, name.Length - pos - 1);
+                    return effect.duration > 0
+                    ? eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points for " +
+                    TextColor.Return("yellow") + effect.duration + TextColor.Return() + " seconds."
+                    : eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points " +
+                    TextColor.Return("green") + "permanently" + TextColor.Return() + ".";
+                }
+        }
+    }
 
 }
