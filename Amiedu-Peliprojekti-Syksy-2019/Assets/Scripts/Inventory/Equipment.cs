@@ -35,7 +35,7 @@ public class Equipment : MonoBehaviour
     }
     private void ItemHover(int index, Vector2 pos)
     {
-        current = (int)InventoryManager.im.filteredItems[index].itemType;
+        current = (int)InventoryManager.im.filteredItems[index].item.itemType;
         if (current < 6) anim[current].SetBool("Hover", true);
 
     }

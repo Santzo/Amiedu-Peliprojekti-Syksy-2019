@@ -7,7 +7,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager im;
     [HideInInspector]
-    public List<InventoryItems> filteredItems = new List<InventoryItems>();
+    public List<Inventory> filteredItems = new List<Inventory>();
     public Weapon[] weapons;
     public Headgear[] headgear;
     public Consumable[] consumables;
@@ -25,22 +25,22 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var weapon in weapons)
         {
-            CharacterStats.inventoryItems.Add(weapon);
+            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = weapon});
         }
         foreach (var head in headgear)
         {
-            CharacterStats.inventoryItems.Add(head);
+            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = head });
         }
         foreach (var cons in consumables)
         {
-            CharacterStats.inventoryItems.Add(cons);
+            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = cons });
         }
     }
 
 
     public void FilterItems(string name)
     {
-        filteredItems = new List<InventoryItems>();
+        filteredItems = new List<Inventory>();
         int index = 0;
         for (int i = 0; i < itemsToShow.Length; i++)
         {
@@ -50,7 +50,7 @@ public class InventoryManager : MonoBehaviour
                 break;
             }
         }
-        filteredItems = index != 0 ? CharacterStats.inventoryItems.FindAll(item => item.GetType().ToString() == itemTypes[index]) : CharacterStats.inventoryItems;
+        filteredItems = index != 0 ? CharacterStats.inventoryItems.FindAll(item => item.item.GetType().ToString() == itemTypes[index]) : CharacterStats.inventoryItems;
         Events.updateFilteredItems(filteredItems);
 
     }

@@ -36,7 +36,7 @@ public class InventoryGrid : MonoBehaviour
         Events.onItemLeaveHover -= ItemLeave;
     }
 
-    private void UpdateList(List<InventoryItems> items)
+    private void UpdateList(List<Inventory> items)
     {
         if (itemsIcons != null)
         {
@@ -56,8 +56,8 @@ public class InventoryGrid : MonoBehaviour
             icon.index = i;
 
             Image itemImage = itemsIcons[i].transform.GetChild(0).GetComponent<Image>();
-            itemImage.sprite = items[i].icon;
-            itemImage.transform.localScale = Vector3.one * InventoryManager.im.filteredItems[i].iconScale;
+            itemImage.sprite = items[i].item.icon;
+            itemImage.transform.localScale = Vector3.one * InventoryManager.im.filteredItems[i].item.iconScale;
         }
 
        
@@ -67,7 +67,7 @@ public class InventoryGrid : MonoBehaviour
         hoverItem = ObjectPooler.op.Spawn("ItemDetails");
         hoverItem.transform.SetParent(transform, false);
         hoverItem.transform.position = position;
-        hoverItem.GetComponent<ItemDetails>().DisplayDetails(InventoryManager.im.filteredItems[index]);
+        hoverItem.GetComponent<ItemDetails>().DisplayDetails(InventoryManager.im.filteredItems[index].item);
   
     }
     private void ItemLeave()

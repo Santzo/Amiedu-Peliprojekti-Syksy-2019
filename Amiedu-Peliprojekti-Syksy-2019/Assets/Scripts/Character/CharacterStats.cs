@@ -9,8 +9,9 @@ public static class CharacterStats
     public static int dexterity;
     public static int adaptability;
     public static int luck;
-    public static List<InventoryItems> inventoryItems = new List<InventoryItems>();
+    public static List<Inventory> inventoryItems = new List<Inventory>();
 
+   
     public static void ResetStats()
     {
         strength = 10;
@@ -19,4 +20,10 @@ public static class CharacterStats
         adaptability = 10;
         luck = 10;
     }
+}
+
+public class Inventory
+{
+    public InventoryItems item;
+    public int amount;
 }
