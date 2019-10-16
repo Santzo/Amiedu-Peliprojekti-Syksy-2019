@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
         }
         foreach (var cons in consumables)
         {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = cons });
+            CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(2, 500), item = cons });
         }
     }
 

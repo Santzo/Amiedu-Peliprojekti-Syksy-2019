@@ -10,6 +10,8 @@ public static class CharacterStats
     public static int adaptability;
     public static int luck;
     public static List<Inventory> inventoryItems = new List<Inventory>();
+    public static CharacterEquipment characterEquipment = new CharacterEquipment();
+
 
    
     public static void ResetStats()
@@ -20,6 +22,16 @@ public static class CharacterStats
         adaptability = 10;
         luck = 10;
     }
+}
+
+public class CharacterEquipment
+{
+    public Headgear head;
+    public Chestgear chest;
+    public Leggear legs;
+    public Armgear arms;
+    public Weapon weapon;
+    public Lightsource lightSource;
 }
 
 public class Inventory

@@ -35,7 +35,7 @@ public class ItemDetails : MonoBehaviour
     {
         itemName.text = item.name;
         itemDescription.text = item.description;
-        itemType.text = item.itemType.ToString() + " - Level " + item.itemLevel;
+        itemType.text = item.GetType().ToString() + " - Level " + item.itemLevel;
 
         if (item is Weapon)  // WEAPONS HERE
         {
@@ -69,7 +69,13 @@ public class ItemDetails : MonoBehaviour
 
     private void OnEnable()
     {
+        Events.onItemDragStart += () => gameObject.SetActive(false);
         details.EmptyTextArray();
+    }
+
+    private void OnDisable()
+    {
+        Events.onItemDragStart -= () => gameObject.SetActive(false);
     }
 
 

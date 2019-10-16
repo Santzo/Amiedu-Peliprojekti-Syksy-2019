@@ -54,6 +54,7 @@ public class InventoryGrid : MonoBehaviour
             itemsIcons[i].transform.localPosition = new Vector2(placeHolder.x + ((i - (row * maxWidth)) * iconWidth), placeHolder.y + (-row * iconWidth));
             Icon icon = itemsIcons[i].GetComponent<Icon>();
             icon.index = i;
+            icon.CheckAmount();
 
             Image itemImage = itemsIcons[i].transform.GetChild(0).GetComponent<Image>();
             itemImage.sprite = items[i].item.icon;

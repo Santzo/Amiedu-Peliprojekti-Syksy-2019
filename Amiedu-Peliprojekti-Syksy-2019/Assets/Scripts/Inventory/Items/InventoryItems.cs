@@ -9,7 +9,6 @@ public abstract class InventoryItems : ScriptableObject
 {
     public int itemLevel;
     public float weight;
-    public ItemType itemType;
     public Sprite icon;
     public Color colorTint = new Color(1f,1f,1f,1f);
     public float iconScale = 1;
@@ -33,18 +32,7 @@ public enum Hands
     One_handed,
     Two_handed
 }
-public enum ItemType
-{
-  
-    Headgear,
-    Chestpiece,
-    Legguard,
-    Armguard,
-    Weapon,
-    Lightsource,
-    Consumable
 
-}
 public enum WeaponType
 {
     Melee,

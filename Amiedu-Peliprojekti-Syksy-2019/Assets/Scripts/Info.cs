@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Info : MonoBehaviour
+public class Info
 {
-    public float CanvasScale { get { return 5; } }
-    public static float Canvas()
-    {
-        return GameObject.Find("UI").GetComponent<Canvas>().scaleFactor;
-    }
+    private static Canvas canvas = GameObject.Find("UI").GetComponent<Canvas>();
+    public static float CanvasScale { get { return canvas.scaleFactor; } }
+
 }

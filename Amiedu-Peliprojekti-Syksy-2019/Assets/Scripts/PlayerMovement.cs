@@ -11,6 +11,27 @@ public class PlayerMovement : MonoBehaviour
     private bool movementPossible = true;
     float moveSpeed = 5f;
 
+
+    private int HandleVertical
+    {
+        get
+        {
+            if (Input.GetKey(KeyboardConfig.up[0]) || Input.GetKey(KeyboardConfig.up[1])) return 1;
+            if (Input.GetKey(KeyboardConfig.down[0]) || Input.GetKey(KeyboardConfig.down[1])) return -1;
+            return 0;
+        }
+    }
+
+    private int HandleHorizontal
+    {
+        get
+        {
+            if (Input.GetKey(KeyboardConfig.right[0]) || Input.GetKey(KeyboardConfig.right[1])) return 1;
+            if (Input.GetKey(KeyboardConfig.left[0]) || Input.GetKey(KeyboardConfig.left[1])) return -1;
+            return 0;
+        }
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -37,7 +58,9 @@ public class PlayerMovement : MonoBehaviour
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? new Vector3(1f, 1f, 1f) : new Vector3(-1f, 1f, 1f);
         light.right = new Vector2(mousePos.x - light.position.x, mousePos.y - light.position.y) * transform.localScale.x;
-        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        
+
+        movement = new Vector2(HandleHorizontal, HandleVertical);
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
@@ -47,10 +70,12 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleInput()
     {
-        if (Input.GetKeyDown(KeyboardConfig.inventory))
+        if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
         {
             Events.inventoryKey();
             movementPossible = !movementPossible;
         }
     }
+
+
 }
