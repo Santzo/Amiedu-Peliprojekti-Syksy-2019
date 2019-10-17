@@ -152,6 +152,8 @@ public class Equipment : MonoBehaviour
                 equipment[index].itemIcon.sprite = temp.icon;
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
+                GameObject obj = Array.Find(InventoryManager.im.prefabs, prefab => prefab.name == equipment[index].item.name);
+                if (obj != null) PlayerEquipment.AddEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
 
 

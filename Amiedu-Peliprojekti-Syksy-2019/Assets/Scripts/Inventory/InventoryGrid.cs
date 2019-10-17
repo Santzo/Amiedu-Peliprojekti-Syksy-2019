@@ -39,6 +39,7 @@ public class InventoryGrid : MonoBehaviour
         Events.onItemHover += ItemHover;
         Events.onItemLeaveHover += ItemLeave;
         slider.onValueChanged.AddListener(sliderChange);
+        if (hoverItem != null) ObjectPooler.op.DeSpawn(hoverItem);
     }
 
 
@@ -49,6 +50,7 @@ public class InventoryGrid : MonoBehaviour
         Events.onItemHover -= ItemHover;
         Events.onItemLeaveHover -= ItemLeave;
         slider.onValueChanged.RemoveAllListeners();
+        if (hoverItem != null) ObjectPooler.op.DeSpawn(hoverItem);
     }
 
 

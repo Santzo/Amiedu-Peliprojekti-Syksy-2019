@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
-    Transform light;
     Camera mainCam;
     Vector2 movement;
     private bool movementPossible = true;
@@ -35,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        light = transform.GetChild(0);
     }
     void Start()
     {
@@ -57,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? new Vector3(1f, 1f, 1f) : new Vector3(-1f, 1f, 1f);
-        light.right = new Vector2(mousePos.x - light.position.x, mousePos.y - light.position.y) * transform.localScale.x;
         
 
         movement = new Vector2(HandleHorizontal, HandleVertical);

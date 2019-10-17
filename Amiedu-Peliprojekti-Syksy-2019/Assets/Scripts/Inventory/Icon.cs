@@ -46,6 +46,11 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             transform.position = Input.mousePosition;
         }
     }
+    public void OnEnable()
+    {
+        background.color = oriColor;
+
+    }
 
     public void OnEndDrag(PointerEventData eventData)
     {
