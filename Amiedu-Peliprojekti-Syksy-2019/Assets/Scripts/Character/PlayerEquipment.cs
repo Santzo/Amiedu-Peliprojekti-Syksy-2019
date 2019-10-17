@@ -12,7 +12,7 @@ public class PlayerEquipment : MonoBehaviour
         equipment.Populate();
         for (int i = 0; i < transform.childCount; i++)
         {
-            equipment[i].obj = transform.GetChild(i);
+            equipment[i].trans = transform.GetChild(i);
             equipment[i].item = null;
         }
     }
@@ -27,16 +27,18 @@ public class PlayerEquipment : MonoBehaviour
             i = 1;
         else if (item.GetType() == typeof(Weapon))
             i = 2;
-       
 
+        if (equipment[i].item != null &&  equipment[i].item.Equals(item)) return;
         equipment[i].item = item;
-        GameObject instance = Instantiate(obj);
-        instance.transform.SetParent(equipment[i].obj, false);
+        if (equipment[i].obj != null) Destroy(equipment[i].obj);
+        equipment[i].obj = Instantiate(obj);
+        equipment[i].obj.transform.SetParent(equipment[i].trans, false);
     }
 
 }
 public class Equipped
 {
-    public Transform obj;
+    public Transform trans;
+    public GameObject obj;
     public InventoryItems item;
 }

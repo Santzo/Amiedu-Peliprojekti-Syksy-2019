@@ -108,7 +108,11 @@ public class Equipment : MonoBehaviour
 
                         else if (!(equipment[index].item is null))
                         {
-                            if (_item is null)
+                            if (equipment[index].item.Equals(item.item))
+                            {
+                                break;
+                            }
+                            else if (_item is null)
                             {
                                 item.item = equipment[index].item;
                             }
