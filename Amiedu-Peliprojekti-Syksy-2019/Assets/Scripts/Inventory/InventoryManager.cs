@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
     public Weapon[] weapons;
     public Headgear[] headgear;
     public Consumable[] consumables;
+    public Leggear[] leggear;
     private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Lightsource", "Consumable" };
     public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Light sources", "Consumables" };
     public static string[] weaponSortBy = new string[] { "Weapon Level", "Damage", "Weapon Type" };
@@ -22,10 +23,11 @@ public class InventoryManager : MonoBehaviour
         weapons = Resources.LoadAll<Weapon>("Inventory/Weapons");
         headgear = Resources.LoadAll<Headgear>("Inventory/Headgear");
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
+        leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
 
         foreach (var weapon in weapons)
         {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = weapon});
+            CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon});
         }
         foreach (var head in headgear)
         {
@@ -34,6 +36,11 @@ public class InventoryManager : MonoBehaviour
         foreach (var cons in consumables)
         {
             CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(2, 500), item = cons });
+        }
+
+        foreach (var lg in leggear)
+        {
+            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = lg });
         }
     }
 

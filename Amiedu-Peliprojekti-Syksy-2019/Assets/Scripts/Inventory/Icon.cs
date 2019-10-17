@@ -14,6 +14,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private Transform oriParent;
     private TextMeshProUGUI amount;
     private Type type;
+    [HideInInspector]
     public int index;
 
     public void Awake()
@@ -54,15 +55,17 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             Events.onItemDragStop(index, transform.position);
             transform.position = oriPos;
             transform.SetParent(oriParent);
-            background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.2f);
+            background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.75f);
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (Events.onDrag) return;
-        Events.onItemHover(index, Input.mousePosition);
-        background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.2f);
+        var pos = transform.position.y / Info.CanvasScale;
+        if (pos >= 480) Events.onItemHover(index, transform.position);
+        else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 450 * Info.CanvasScale));
+        background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.75f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -74,7 +77,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void CheckAmount()
     {
-        
+        background.color = oriColor;
         int amo = InventoryManager.im.filteredItems[index].amount;
         amount.text = amo > 1 ? amo.ToString() :  "";
     }

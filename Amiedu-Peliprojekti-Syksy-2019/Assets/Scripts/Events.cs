@@ -12,6 +12,8 @@ public static class Events
     public static Action<int, Vector2> onItemDragStop = delegate { };
     public static Action onItemDragStart = delegate { };
     public static Action inventoryKey = delegate { };
+    public static Action<int> onEquipmentIconHover = delegate { };
+    public static Action<int> onEquipmentIconHoverLeave = delegate { };
 
     public static bool onDrag = false;
    

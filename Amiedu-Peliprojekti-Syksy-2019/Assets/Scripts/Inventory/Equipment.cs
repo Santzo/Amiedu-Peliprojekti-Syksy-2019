@@ -2,13 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Equipment : MonoBehaviour
 {
-
+    private GameObject _obj;
     private Type current;
     private Child[] equipment;
+    private string[] types = new string[] { "head", "chest", "arms", "legs", "weapon", "lightSource" };
 
     public class Child
     {
@@ -28,31 +30,56 @@ public class Equipment : MonoBehaviour
             equipment[i].itemIcon = transform.GetChild(i).Find("ItemIcon").GetComponent<Image>();
         }
     }
+
+ 
     private void OnEnable()
     {
         Events.onItemHover += ItemHover;
         Events.onItemLeaveHover += ItemLeave;
         Events.onItemDragStop += ItemDragStop;
+        Events.onEquipmentIconHover += EquipmentHover;
+        Events.onEquipmentIconHoverLeave += EquipmentHoverLeave;
         foreach (var ani in equipment)
             ani.anim.SetBool("Hover", false);
     }
 
   
-
     private void OnDisable()
     {
         Events.onItemHover -= ItemHover;
         Events.onItemLeaveHover -= ItemLeave;
         Events.onItemDragStop -= ItemDragStop;
+        Events.onEquipmentIconHover -= EquipmentHover;
+        Events.onEquipmentIconHoverLeave -= EquipmentHoverLeave;
+        if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
 
     }
+
+    private void EquipmentHover(int obj)
+    {
+        equipment[obj].anim.SetBool("Hover", true);
+        var info = typeof(CharacterEquipment).GetField(types[obj]);
+        if (info.GetValue(CharacterStats.characterEquipment) != null)
+        {
+            InventoryItems item = info.GetValue(CharacterStats.characterEquipment) as InventoryItems;
+            _obj = InventoryGrid.ShowItemDetails(item, transform.GetChild(obj).transform.position, transform);
+        }
+    }
+
+    private void EquipmentHoverLeave(int obj)
+    {
+        equipment[obj].anim.SetBool("Hover", false);
+        if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
+    }
+
 
     private void ItemDragStop(int index, Vector2 pos)
     {
         Vector2 childPos = transform.GetChild(ReturnType(current)).position;
-         var distance = new Vector2(Math.Abs(pos.x - childPos.x), Math.Abs(pos.y - childPos.y)) / Info.CanvasScale;
+        var distance = new Vector2(Math.Abs(pos.x - childPos.x), Math.Abs(pos.y - childPos.y)) / Info.CanvasScale;
         if (distance.x < 75 && distance.y < 75)
             EquipNewItem(index, InventoryManager.im.filteredItems[index]);
+        ItemLeave();
 
     }
 
@@ -67,23 +94,65 @@ public class Equipment : MonoBehaviour
                 int index = ReturnType(current);
 
                 var temp = item.item;
+                var _item = CharacterStats.inventoryItems.Find(inv => inv.item == equipment[index].item);
 
-                if (equipment[index].item is null && item.amount == 1)
+                switch (item.amount)
                 {
-                    CharacterStats.inventoryItems.Remove(item);
-                    InventoryManager.im.filteredItems.Remove(item);
-                    Events.updateFilteredItems(InventoryManager.im.filteredItems);
+                    case 1:
+
+                        if (equipment[index].item is null)
+                        {
+                            CharacterStats.inventoryItems.Remove(item);
+                            InventoryManager.im.filteredItems.Remove(item);
+                        }
+
+                        else if (!(equipment[index].item is null))
+                        {
+                            if (_item is null)
+                            {
+                                item.item = equipment[index].item;
+                            }
+                            else
+                            {
+                                _item.amount++;
+                                CharacterStats.inventoryItems.Remove(item);
+                                InventoryManager.im.filteredItems.Remove(item);
+                            }
+                        }
+                        break;
+                    default:
+                        if (equipment[index].item is null)
+                        {
+                            item.amount--;
+                        }
+                        else if (!(equipment[index].item is null) && equipment[index].item.Equals(item.item))
+                        {
+                            break;
+                        }
+                        else
+                        {
+
+                            if (_item is null)
+                            {
+                                CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = equipment[index].item });
+                                item.amount--;
+                            }
+                            else
+                            {
+                                _item.amount++;
+                                item.amount--;
+                            }
+                        }
+                        break;
                 }
-                else if (!(equipment[index].item is null) && item.amount == 1)
-                {
-                    item.item = equipment[index].item;
-                }
+
                 typeInfo.SetValue(CharacterStats.characterEquipment, item.item);
                 equipment[index].placeHolder.enabled = false;
                 equipment[index].item = temp;
                 equipment[index].itemIcon.sprite = temp.icon;
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
+                Events.updateFilteredItems(InventoryManager.im.filteredItems);
 
 
                 break;
@@ -119,7 +188,5 @@ public class Equipment : MonoBehaviour
         return 6;
     }
 
-    
-
-
+ 
 }
