@@ -10,7 +10,7 @@ public class RightClickEntry : MonoBehaviour, IPointerEnterHandler, IPointerClic
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        rightClick.EntryClick(transform.GetSiblingIndex());
+        rightClick.EntryClick(transform.GetSiblingIndex(), eventData.button);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

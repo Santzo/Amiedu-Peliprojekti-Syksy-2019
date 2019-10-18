@@ -109,8 +109,12 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                 break;
             case PointerEventData.InputButton.Right:
                 GameObject right = ObjectPooler.op.Spawn("RightClick");
-                right.transform.SetParent(transform.parent, false);
+                right.transform.SetParent(transform.parent.parent.parent, false);
                 right.transform.position = transform.position;
+                RightClick rce = right.GetComponent<RightClick>();
+                rce.itemIndex = index;
+                rce.line[0].text = "Equip";
+                rce.line[1].text = "Discard";
                 break;
         }
     }
