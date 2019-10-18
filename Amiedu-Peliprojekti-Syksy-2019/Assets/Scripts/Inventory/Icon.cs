@@ -86,21 +86,32 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         background.color = oriColor;
         int amo = InventoryManager.im.filteredItems[index].amount;
-        amount.text = amo > 1 ? amo.ToString() :  "";
+        amount.text = amo > 1 ? amo.ToString() : "";
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         if (Events.onDrag) return;
-        if (!clicked)
+
+        switch (eventData.button)
         {
-            StartCoroutine(DoubleClickCheck());
-        }
-        else
-        {
-            Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
-            Events.onItemLeaveHover();
-            clicked = false;
+            case PointerEventData.InputButton.Left:
+                if (!clicked)
+                {
+                    StartCoroutine(DoubleClickCheck());
+                }
+                else
+                {
+                    Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
+                    Events.onItemLeaveHover();
+                    clicked = false;
+                }
+                break;
+            case PointerEventData.InputButton.Right:
+                GameObject right = ObjectPooler.op.Spawn("RightClick");
+                right.transform.SetParent(transform.parent, false);
+                right.transform.position = transform.position;
+                break;
         }
     }
 
