@@ -69,7 +69,6 @@ public class InventoryGrid : MonoBehaviour
         slider.gameObject.SetActive(items.Count > 30 ? true : false);
         if (slider)
         {
-            Debug.Log(items.Count);
             int itemsOver = items.Count - 30;
             int scrollableRows = Mathf.CeilToInt((float) itemsOver / (float) maxWidth);
             slider.value = 0;
@@ -84,11 +83,13 @@ public class InventoryGrid : MonoBehaviour
             itemsIcons[i] = ObjectPooler.op.Spawn("InventoryItem");
             itemsIcons[i].transform.SetParent(mask, false);
             itemsIcons[i].transform.localPosition = new Vector2(placeHolder.x + ((i - (row * maxWidth)) * iconWidth), placeHolder.y + (-row * iconWidth));
+
             Icon icon = itemsIcons[i].GetComponent<Icon>();
             icon.index = i;
             icon.CheckAmount();
+
             Image itemImage = itemsIcons[i].transform.GetChild(0).GetComponent<Image>();
-            itemImage.sprite = items[i].item.icon;
+            itemImage.sprite = items[i].item.icon == null ? items[i].item.obj.GetComponent<SpriteRenderer>().sprite : items[i].item.icon;
             itemImage.transform.localScale = Vector3.one * InventoryManager.im.filteredItems[i].item.iconScale;
         }
         content.localPosition = new Vector2(0f, 0f);
@@ -104,22 +105,24 @@ public class InventoryGrid : MonoBehaviour
         ObjectPooler.op.DeSpawn(hoverItem);
     }
 
-    public static GameObject ShowItemDetails(int index, Vector2 position, Transform parent)
+    public static GameObject ShowItemDetails(int index, Vector2 position, Transform parent, bool equipped = false)
     {
         GameObject obj = ObjectPooler.op.Spawn("ItemDetails");
+  
         obj.transform.SetParent(parent, false);
         obj.transform.SetAsLastSibling();
         obj.transform.position = position;
         obj.GetComponent<ItemDetails>().DisplayDetails(InventoryManager.im.filteredItems[index].item);
         return obj;
     }
-    public static GameObject ShowItemDetails(InventoryItems item, Vector2 position, Transform parent)
+
+    public static GameObject ShowItemDetails(InventoryItems item, Vector2 position, Transform parent, bool equipped = false)
     {
         GameObject obj = ObjectPooler.op.Spawn("ItemDetails");
         obj.transform.SetParent(parent, false);
         obj.transform.SetAsLastSibling();
         obj.transform.position = position;
-        obj.GetComponent<ItemDetails>().DisplayDetails(item);
+        obj.GetComponent<ItemDetails>().DisplayDetails(item, equipped);
         return obj;
     }
 

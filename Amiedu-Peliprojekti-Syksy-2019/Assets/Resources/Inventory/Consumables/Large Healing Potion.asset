@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 1
   weight: 0.3
-  itemType: 6
-  icon: {fileID: 21300000, guid: 1761d984c60b85445b893ae1b8d9d27b, type: 3}
+  obj: {fileID: 5510500478359403533, guid: d8c2c5dd319156943a2f9cebd6ac1a3a, type: 3}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: Large healing potion with greatly increased healing effect.

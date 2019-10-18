@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 5
   weight: 0.5
-  itemType: 0
-  icon: {fileID: 21300000, guid: e9c88bd54d02128468d22fd2a706ad73, type: 3}
+  obj: {fileID: 535755129081763948, guid: a244295692d75524a8678bda476a860f, type: 3}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: Marvelous hat.

@@ -9,6 +9,8 @@ public abstract class InventoryItems : ScriptableObject
 {
     public int itemLevel;
     public float weight;
+    public GameObject obj;
+    [Tooltip("Optional sprite if you want the inventory icon to look different")]
     public Sprite icon;
     public Color colorTint = new Color(1f,1f,1f,1f);
     public float iconScale = 1;

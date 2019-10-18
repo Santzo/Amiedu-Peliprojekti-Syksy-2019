@@ -7,6 +7,7 @@ public static class Events
 {
     public static Action<List<Inventory>> updateFilteredItems = delegate { };
     public static Action<string> onUIClick = delegate { };
+    public static Action<int, Inventory> onIconDoubleClick = delegate { };
     public static Action<int, Vector2> onItemHover = delegate { };
     public static Action onItemLeaveHover = delegate { };
     public static Action<int, Vector2> onItemDragStop = delegate { };

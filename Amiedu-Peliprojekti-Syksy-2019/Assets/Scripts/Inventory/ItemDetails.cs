@@ -8,6 +8,7 @@ public class ItemDetails : MonoBehaviour
 {
     private TextMeshProUGUI itemName;
     private TextMeshProUGUI itemType;
+    private TextMeshProUGUI equipped;
     private TextMeshProUGUI itemDescription;
     private Transform info;
     private TextMeshProUGUI[] details;
@@ -17,6 +18,7 @@ public class ItemDetails : MonoBehaviour
     {
         itemName = transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
         itemType = transform.Find("ItemType").GetComponent<TextMeshProUGUI>();
+        equipped = transform.Find("Equipped").GetComponent<TextMeshProUGUI>();
         itemDescription = transform.Find("ItemDescription").GetComponent<TextMeshProUGUI>();
         anim = GetComponent<Animator>();
         info = transform.Find("Info");
@@ -31,11 +33,12 @@ public class ItemDetails : MonoBehaviour
 
 
 
-    public void DisplayDetails(InventoryItems item)
+    public void DisplayDetails(InventoryItems item, bool _equipped = false)
     {
         itemName.text = item.name;
         itemDescription.text = item.description;
         itemType.text = item.GetType().ToString() + " - Level " + item.itemLevel;
+        equipped.enabled = _equipped;
 
         if (item is Weapon)  // WEAPONS HERE
         {

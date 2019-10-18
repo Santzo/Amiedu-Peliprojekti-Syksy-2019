@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
     private Image background;
     private Color oriColor;
@@ -16,6 +16,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private Type type;
     [HideInInspector]
     public int index;
+    private bool clicked = false;
 
     public void Awake()
     {
@@ -43,7 +44,8 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         if (type != typeof(Consumable))
         {
-            transform.position = Input.mousePosition;
+            Vector2 pos = Info.camera.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector2(pos.x, pos.y);
         }
     }
     public void OnEnable()
@@ -67,9 +69,9 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (Events.onDrag) return;
-        var pos = transform.position.y / Info.CanvasScale;
-        if (pos >= 480) Events.onItemHover(index, transform.position);
-        else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 450 * Info.CanvasScale));
+        var pos = transform.localPosition.y / Info.CanvasScale;
+        if (pos >= -13f) Events.onItemHover(index, transform.position);
+        else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 4f * Info.CanvasScale));
         background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.75f);
     }
 
@@ -85,5 +87,27 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         background.color = oriColor;
         int amo = InventoryManager.im.filteredItems[index].amount;
         amount.text = amo > 1 ? amo.ToString() :  "";
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (Events.onDrag) return;
+        if (!clicked)
+        {
+            StartCoroutine(DoubleClickCheck());
+        }
+        else
+        {
+            Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
+            Events.onItemLeaveHover();
+            clicked = false;
+        }
+    }
+
+    private IEnumerator DoubleClickCheck()
+    {
+        clicked = true;
+        yield return new WaitForSeconds(KeyboardConfig.doubleClickInterval);
+        clicked = false;
     }
 }

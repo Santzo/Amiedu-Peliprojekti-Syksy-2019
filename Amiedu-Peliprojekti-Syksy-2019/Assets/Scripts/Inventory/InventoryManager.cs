@@ -13,7 +13,6 @@ public class InventoryManager : MonoBehaviour
     public Lightsource[] lightsources;
     public Consumable[] consumables;
     public Leggear[] leggear;
-    public GameObject[] prefabs;
     private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Lightsource", "Consumable" };
     public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Light sources", "Consumables" };
     public static string[] weaponSortBy = new string[] { "Weapon Level", "Damage", "Weapon Type" };
@@ -26,7 +25,6 @@ public class InventoryManager : MonoBehaviour
         headgear = Resources.LoadAll<Headgear>("Inventory/Headgear");
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
         leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
-        prefabs = Resources.LoadAll<GameObject>("Equipment");
         lightsources = Resources.LoadAll<Lightsource>("Inventory/Lightsources");
 
         foreach (var weapon in weapons)
@@ -50,9 +48,6 @@ public class InventoryManager : MonoBehaviour
         {
             CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = ls });
         }
-
-        foreach (var prefab in prefabs)
-            Debug.Log(prefab.name);
     }
 
 

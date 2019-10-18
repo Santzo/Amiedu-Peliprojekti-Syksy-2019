@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class KeyboardConfig 
 {
+    // Delay time to check for a double click
+    public static float doubleClickInterval = 0.25f; 
+
     // Inventory Key
     public static KeyCode[] inventory =     new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("inventoryKey", "I")),
                                                         (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("inventoryKeyAlt", "O")) };

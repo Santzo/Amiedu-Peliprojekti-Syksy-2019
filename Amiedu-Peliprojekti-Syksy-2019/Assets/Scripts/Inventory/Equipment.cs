@@ -39,6 +39,7 @@ public class Equipment : MonoBehaviour
         Events.onItemDragStop += ItemDragStop;
         Events.onEquipmentIconHover += EquipmentHover;
         Events.onEquipmentIconHoverLeave += EquipmentHoverLeave;
+        Events.onIconDoubleClick += EquipNewItem;
         foreach (var ani in equipment)
             ani.anim.SetBool("Hover", false);
     }
@@ -51,6 +52,7 @@ public class Equipment : MonoBehaviour
         Events.onItemDragStop -= ItemDragStop;
         Events.onEquipmentIconHover -= EquipmentHover;
         Events.onEquipmentIconHoverLeave -= EquipmentHoverLeave;
+        Events.onIconDoubleClick -= EquipNewItem;
         if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
 
     }
@@ -58,12 +60,7 @@ public class Equipment : MonoBehaviour
     private void EquipmentHover(int obj)
     {
         equipment[obj].anim.SetBool("Hover", true);
-        var info = typeof(CharacterEquipment).GetField(types[obj]);
-        if (info.GetValue(CharacterStats.characterEquipment) != null)
-        {
-            InventoryItems item = info.GetValue(CharacterStats.characterEquipment) as InventoryItems;
-            _obj = InventoryGrid.ShowItemDetails(item, transform.GetChild(obj).transform.position, transform);
-        }
+        EquipmentItemDetails(obj);
     }
 
     private void EquipmentHoverLeave(int obj)
@@ -72,6 +69,18 @@ public class Equipment : MonoBehaviour
         if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
     }
 
+
+    private void EquipmentItemDetails(int obj)
+    {
+        var info = typeof(CharacterEquipment).GetField(types[obj]);
+        if (info.GetValue(CharacterStats.characterEquipment) != null)
+        {
+            InventoryItems item = info.GetValue(CharacterStats.characterEquipment) as InventoryItems;
+            Vector2 pos = transform.GetChild(obj).transform.position;
+            pos = obj < 4 ? pos : new Vector2(pos.x - 2f * Info.CanvasScale, pos.y);
+            _obj = InventoryGrid.ShowItemDetails(item, pos, transform, true);
+        }
+    }
 
     private void ItemDragStop(int index, Vector2 pos)
     {
@@ -153,10 +162,10 @@ public class Equipment : MonoBehaviour
                 typeInfo.SetValue(CharacterStats.characterEquipment, item.item);
                 equipment[index].placeHolder.enabled = false;
                 equipment[index].item = temp;
-                equipment[index].itemIcon.sprite = temp.icon;
+                equipment[index].itemIcon.sprite = temp.icon == null ? temp.obj.GetComponent<SpriteRenderer>().sprite : temp.icon;
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
-                GameObject obj = Array.Find(InventoryManager.im.prefabs, prefab => prefab.name == equipment[index].item.name);
+                GameObject obj = equipment[index].item.obj;
                 if (obj != null) PlayerEquipment.AddEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
 
@@ -170,11 +179,13 @@ public class Equipment : MonoBehaviour
     {
         current = InventoryManager.im.filteredItems[index].item.GetType();
         if (current != typeof(Consumable)) equipment[ReturnType(current)].anim.SetBool("Hover", true);
+        if (ReturnType(current) < 6) EquipmentItemDetails(ReturnType(current));
 
     }
     private void ItemLeave()
     {
         if (current != typeof(Consumable)) equipment[ReturnType(current)].anim.SetBool("Hover", false);
+        if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
     }
 
     private int ReturnType(Type type)

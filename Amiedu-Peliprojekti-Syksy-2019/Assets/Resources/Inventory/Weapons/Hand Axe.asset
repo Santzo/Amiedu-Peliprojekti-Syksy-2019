@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemLevel: 1
   weight: 3
-  itemType: 4
-  icon: {fileID: 21300000, guid: 2c3eb803e924a3b4aa3efb799183b32d, type: 3}
+  obj: {fileID: 4659233301652964338, guid: 5c5b21365bf0f71499f04bb6ffc75788, type: 3}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: 'A basic looking axe with a wooden handle. The axe looks like it has
