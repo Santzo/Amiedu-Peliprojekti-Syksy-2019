@@ -9,6 +9,7 @@ public static class CharacterStats
     public static int dexterity;
     public static int adaptability;
     public static int luck;
+    public static float weightLimit;
     public static List<Inventory> inventoryItems = new List<Inventory>();
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
 
@@ -17,10 +18,11 @@ public static class CharacterStats
     public static void ResetStats()
     {
         strength = 10;
-        constitution = 10;
+        constitution = 11;
         dexterity = 10;
         adaptability = 10;
         luck = 10;
+        weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
     }
 }
 

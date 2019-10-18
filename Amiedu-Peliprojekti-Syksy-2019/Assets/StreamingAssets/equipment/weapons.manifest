@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 3293602690
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b73b2b1f8cff15fefce73118789f53d4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4b146e0cbd23b7aa3fec05da15223acc
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Inventory/Weapons/One-handed sword.asset
+- Assets/Resources/Inventory/Weapons/Hand Axe.asset
+- Assets/Resources/Inventory/Weapons/Shotgun.asset
+Dependencies: []

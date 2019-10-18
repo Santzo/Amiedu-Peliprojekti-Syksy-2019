@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: 24128ffb96cb5a842ab7bd0e305439ca
-NativeFormatImporter:
+guid: 057fbaf876100cd47951fbc0bea6a8ae
+TextScriptImporter:
   externalObjects: {}
-  mainObjectFileID: 11400000
   userData: 
   assetBundleName: equipment/weapons
   assetBundleVariant: 

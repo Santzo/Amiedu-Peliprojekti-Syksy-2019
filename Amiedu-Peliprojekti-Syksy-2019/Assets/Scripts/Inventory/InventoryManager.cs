@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -21,6 +22,9 @@ public class InventoryManager : MonoBehaviour
     void Awake()
     {
         im = this;
+
+        //weapons = weapons.LoadAssets("equipment/weapons"); // When building the final product, replace Resources.LoadAll calls with LoadAssets calls
+
         weapons = Resources.LoadAll<Weapon>("Inventory/Weapons");
         headgear = Resources.LoadAll<Headgear>("Inventory/Headgear");
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
@@ -68,4 +72,7 @@ public class InventoryManager : MonoBehaviour
 
     }
 
+ 
 }
+
+

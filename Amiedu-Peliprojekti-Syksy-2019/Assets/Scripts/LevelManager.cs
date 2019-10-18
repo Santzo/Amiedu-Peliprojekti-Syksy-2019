@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         brown = Resources.LoadAll<Sprite>("Brown");
         cellar = Resources.LoadAll<Sprite>("Cellar");
         current = cellar;

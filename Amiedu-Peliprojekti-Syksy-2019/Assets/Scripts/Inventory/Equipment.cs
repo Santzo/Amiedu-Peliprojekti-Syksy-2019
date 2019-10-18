@@ -162,10 +162,12 @@ public class Equipment : MonoBehaviour
                 typeInfo.SetValue(CharacterStats.characterEquipment, item.item);
                 equipment[index].placeHolder.enabled = false;
                 equipment[index].item = temp;
+                GameObject obj = equipment[index].item.obj;
                 equipment[index].itemIcon.sprite = temp.icon == null ? temp.obj.GetComponent<SpriteRenderer>().sprite : temp.icon;
+
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
-                GameObject obj = equipment[index].item.obj;
+                
                 if (obj != null) PlayerEquipment.AddEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
 

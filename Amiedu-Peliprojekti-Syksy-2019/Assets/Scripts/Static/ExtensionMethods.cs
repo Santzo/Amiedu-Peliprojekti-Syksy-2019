@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 
@@ -33,5 +34,12 @@ public static class ExtensionMethods
         replace.Replace("_", " ");
         return replace;
 
+    }
+
+    public static T[] LoadAssets<T>(this T[] arr, string path) where T : Object
+    {
+        var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, path));
+        var assets = assetBundle.LoadAllAssets<T>();
+        return assets;
     }
 }
