@@ -27,7 +27,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (Events.onDiscard) return;
+        if (Events.onDialogueBox) return;
         type = InventoryManager.im.filteredItems[index].item.GetType();
 
         if (type != typeof(Consumable))
@@ -43,7 +43,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (Events.onDiscard) return;
+        if (Events.onDialogueBox) return;
         if (type != typeof(Consumable))
         {
             Vector2 pos = Info.camera.ScreenToWorldPoint(Input.mousePosition);
@@ -58,7 +58,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (Events.onDiscard) return;
+        if (Events.onDialogueBox) return;
         if (type != typeof(Consumable))
         {
             Events.onDrag = false;
@@ -71,8 +71,8 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Events.onDrag || Events.onDiscard) return;
-        var pos = transform.localPosition.y;
+        if (Events.onDrag || Events.onDialogueBox) return;
+        var pos = transform.localPosition.y + Info.content.localPosition.y;
         if (pos >= -13f) Events.onItemHover(index, transform.position);
         else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 4f));
         background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.75f);
@@ -80,7 +80,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (Events.onDrag || Events.onDiscard) return;
+        if (Events.onDrag || Events.onDialogueBox) return;
         background.color = oriColor;
         Events.onItemLeaveHover();
     }
@@ -94,7 +94,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (Events.onDrag || Events.onDiscard) return;
+        if (Events.onDrag || Events.onDialogueBox) return;
 
         switch (eventData.button)
         {
@@ -105,15 +105,25 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                 }
                 else
                 {
-                    Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
+                    Inventory item = InventoryManager.im.filteredItems[index];
+                    if (item.item.GetType() == typeof(Consumable))
+                    {
+                        Events.onDialogueBox = true;
+                        GameObject obj = ObjectPooler.op.SpawnUI("EquipConsumable", transform.localPosition.x > 270 ? new Vector2(transform.position.x - 0.75f, transform.position.y) : (Vector2)transform.position, transform.parent.parent.parent);
+                        Events.onEquipConsumable(item);
+                    }
+                    else
+                    {
+                        Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
+                     
+                    }
                     Events.onItemLeaveHover();
                     clicked = false;
                 }
                 break;
+
             case PointerEventData.InputButton.Right:
-                GameObject right = ObjectPooler.op.Spawn("RightClick");
-                right.transform.SetParent(transform.parent.parent.parent, false);
-                right.transform.position = transform.position;
+                GameObject right = ObjectPooler.op.SpawnUI("RightClick", transform.position, transform.parent.parent.parent);
                 RightClick rce = right.GetComponent<RightClick>();
                 rce.itemIndex = index;
                 rce.uitem[0].text.text = "Equip";

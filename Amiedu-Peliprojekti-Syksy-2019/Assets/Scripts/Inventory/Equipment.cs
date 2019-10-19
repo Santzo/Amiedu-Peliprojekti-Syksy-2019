@@ -86,7 +86,7 @@ public class Equipment : MonoBehaviour
     {
         Vector2 childPos = transform.GetChild(ReturnType(current)).position;
         var distance = new Vector2(Math.Abs(pos.x - childPos.x), Math.Abs(pos.y - childPos.y)) / Info.CanvasScale;
-        if (distance.x < 1.5 && distance.y < 1.5)
+        if (distance.x < 0.75f && distance.y < 1f)
             EquipNewItem(index, InventoryManager.im.filteredItems[index]);
         ItemLeave();
 
@@ -101,7 +101,6 @@ public class Equipment : MonoBehaviour
             {
                 var typeInfo = typeof(CharacterEquipment).GetField(field.Name);
                 int index = ReturnType(current);
-
                 var temp = item.item;
                 var _item = CharacterStats.inventoryItems.Find(inv => inv.item == equipment[index].item);
 
@@ -159,9 +158,9 @@ public class Equipment : MonoBehaviour
                         break;
                 }
 
-                typeInfo.SetValue(CharacterStats.characterEquipment, item.item);
                 equipment[index].placeHolder.enabled = false;
                 equipment[index].item = temp;
+                typeInfo.SetValue(CharacterStats.characterEquipment, temp);
                 GameObject obj = equipment[index].item.obj;
                 equipment[index].itemIcon.sprite = temp.icon == null ? temp.obj.GetComponent<SpriteRenderer>().sprite : temp.icon;
 
@@ -170,7 +169,6 @@ public class Equipment : MonoBehaviour
                 
                 if (obj != null) PlayerEquipment.AddEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
-
 
                 break;
             }

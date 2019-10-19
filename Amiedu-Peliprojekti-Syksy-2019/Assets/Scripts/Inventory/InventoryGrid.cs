@@ -22,6 +22,7 @@ public class InventoryGrid : MonoBehaviour
         slider = transform.Find("Slider").GetComponent<Slider>();
         slider.gameObject.SetActive(false);
         content = transform.Find("Mask").GetChild(0);
+        Info.content = content;
     
     }
 
@@ -80,8 +81,7 @@ public class InventoryGrid : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             row = i % maxWidth == 0 && i > 0 ? row + 1 : row;
-            itemsIcons[i] = ObjectPooler.op.Spawn("InventoryItem");
-            itemsIcons[i].transform.SetParent(mask, false);
+            itemsIcons[i] = ObjectPooler.op.SpawnUI("InventoryItem", null, mask);
             itemsIcons[i].transform.localPosition = new Vector2(placeHolder.x + ((i - (row * maxWidth)) * iconWidth), placeHolder.y + (-row * iconWidth));
 
             Icon icon = itemsIcons[i].GetComponent<Icon>();
@@ -107,21 +107,16 @@ public class InventoryGrid : MonoBehaviour
 
     public static GameObject ShowItemDetails(int index, Vector2 position, Transform parent, bool equipped = false)
     {
-        GameObject obj = ObjectPooler.op.Spawn("ItemDetails");
-  
-        obj.transform.SetParent(parent, false);
+        GameObject obj = ObjectPooler.op.SpawnUI("ItemDetails", position, parent);
         obj.transform.SetAsLastSibling();
-        obj.transform.position = position;
         obj.GetComponent<ItemDetails>().DisplayDetails(InventoryManager.im.filteredItems[index].item);
         return obj;
     }
 
     public static GameObject ShowItemDetails(InventoryItems item, Vector2 position, Transform parent, bool equipped = false)
     {
-        GameObject obj = ObjectPooler.op.Spawn("ItemDetails");
-        obj.transform.SetParent(parent, false);
+        GameObject obj = ObjectPooler.op.SpawnUI("ItemDetails", position, parent);
         obj.transform.SetAsLastSibling();
-        obj.transform.position = position;
         obj.GetComponent<ItemDetails>().DisplayDetails(item, equipped);
         return obj;
     }

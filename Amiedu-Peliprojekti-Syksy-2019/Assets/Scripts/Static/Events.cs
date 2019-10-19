@@ -15,8 +15,10 @@ public static class Events
     public static Action inventoryKey = delegate { };
     public static Action<int> onEquipmentIconHover = delegate { };
     public static Action<int> onEquipmentIconHoverLeave = delegate { };
+    public static Action onInventoryChange = delegate { };
+    public static Action<Inventory> onEquipConsumable = delegate { };
 
     public static bool onDrag = false;
-    public static bool onDiscard = false;
+    public static bool onDialogueBox = false;
    
 }

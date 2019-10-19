@@ -26,6 +26,11 @@ public static class KeyboardConfig
     public static KeyCode[] right =         new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("rightKey", "D")),
                                                         (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("rightKeyAlt", "RightArrow")) };
 
+    public static KeyCode[] hotbar =        new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar1", "1")),
+                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar2", "2")),
+                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar3", "3")),
+                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar4", "4")) };
+
 
 
 }

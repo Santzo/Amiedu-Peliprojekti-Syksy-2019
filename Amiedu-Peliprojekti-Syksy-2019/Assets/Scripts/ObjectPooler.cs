@@ -51,6 +51,18 @@ public class ObjectPooler : MonoBehaviour
         return obj;
     }
 
+    public GameObject SpawnUI(string tag, Vector3? position = null, Transform parent = null)
+    {
+        GameObject obj = poolDictionary[tag].Dequeue();
+        obj.SetActive(true);
+        obj.transform.SetParent(parent, false);
+        obj.transform.position = position ?? new Vector3(0f, 0f, 0f);
+        poolDictionary[tag].Enqueue(obj);
+        ISpawn spawn = obj.GetComponent<ISpawn>();
+        if (!(spawn is null)) spawn.Spawn();
+        return obj;
+    }
+
     public GameObject DeSpawn(GameObject obj)
     {
         obj.SetActive(false);

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77c0531cdb07f064f8e215aa260a1ef8, type: 3}
-  m_Name: Top Hat
+  m_Name: Blaa Hat
   m_EditorClassIdentifier: 
   itemLevel: 5
   weight: 0.5
-  obj: {fileID: 535755129081763948, guid: a244295692d75524a8678bda476a860f, type: 3}
+  obj: {fileID: 5453726839419475768, guid: 1830d1f61573eea4d89864f7106509db, type: 3}
   icon: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1

@@ -31,15 +31,23 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
             switch (buttonType)
             {
                 case "Equip":
-                    Events.onIconDoubleClick(itemIndex, InventoryManager.im.filteredItems[itemIndex]);
+                    Inventory item = InventoryManager.im.filteredItems[itemIndex];
+                    if (item.item.GetType() == typeof(Consumable))
+                    {
+                        SpawnDialogue("EquipConsumable");
+                        Events.onDialogueBox = true;
+                        Events.onEquipConsumable(item);
+                     
+                    }
+                    else
+                    {
+                        Events.onIconDoubleClick(itemIndex, item);
+               
+                    }
                     break;
                 case "Discard":
-                    Events.onDiscard = true;
-                    GameObject obj = ObjectPooler.op.Spawn("DiscardItem");
-                    obj.transform.SetParent(transform.parent, false);
-                    obj.transform.position = transform.localPosition.x > 270 ? new Vector2(transform.position.x - 0.75f, transform.position.y): (Vector2) transform.position;
-                    DiscardItems ditem = obj.GetComponent<DiscardItems>();
-                    ditem.Spawn(itemIndex);
+                    Events.onDialogueBox = true;
+                    SpawnDialogue("DiscardItem");
 
                     break;
             }
@@ -55,4 +63,15 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
     {
         ObjectPooler.op.DeSpawn(gameObject);
     }
+
+    private void SpawnDialogue(string objName)
+    {
+        GameObject obj = ObjectPooler.op.SpawnUI(objName, transform.localPosition.x > 270 ? new Vector2(transform.position.x - 0.75f, transform.position.y) : (Vector2)transform.position, transform.parent);
+        if (objName == "DiscardItem")
+        {
+            DiscardItems ditem = obj.GetComponent<DiscardItems>();
+            ditem.Spawn(itemIndex);
+        }
+    }
+
 }

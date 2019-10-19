@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var weapon in weapons)
         {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon});
+            CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
         }
         foreach (var head in headgear)
         {
@@ -71,8 +71,21 @@ public class InventoryManager : MonoBehaviour
         Events.updateFilteredItems(filteredItems);
 
     }
-
- 
+    public void RemoveItems(int index, int amount)
+    {
+        Inventory item = filteredItems[index];
+        if (amount == item.amount)
+        {
+            CharacterStats.inventoryItems.Remove(item);
+            filteredItems.Remove(item);
+        }
+        else
+        {
+            item.amount -= amount;
+        }
+        Events.updateFilteredItems(filteredItems);
+        Events.onInventoryChange();
+    }
 }
 
 

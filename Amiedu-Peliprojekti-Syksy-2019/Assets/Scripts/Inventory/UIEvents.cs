@@ -7,6 +7,7 @@ public class UIEvents : MonoBehaviour, IPointerEnterHandler, IPointerClickHandle
 {
     [HideInInspector]
     public IUIHandler mouseController;
+    [HideInInspector]
     public int index;
 
     public void OnPointerClick(PointerEventData eventData)

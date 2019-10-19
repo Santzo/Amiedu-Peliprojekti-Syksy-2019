@@ -23,5 +23,5 @@ public class UIItem
 {
     public Animator anim;
     public TextMeshProUGUI text;
-    public string name;
+    public Transform trans;
 }

@@ -49,7 +49,8 @@ public static class ExtensionMethods
         {
             if (trans.GetComponent<UIEvents>() != null)
             {
-                uitem.Add(new UIItem { name = trans.name, anim = trans.GetComponent<Animator>(), text = trans.GetChild(0).GetComponent<TextMeshProUGUI>() });
+             
+                uitem.Add(new UIItem { trans = trans, anim = trans.GetComponent<Animator>(), text = trans.GetComponentInChildren<TextMeshProUGUI>() });
                 UIEvents uievent = trans.GetComponent<UIEvents>();
                 uievent.mouseController = transform.GetComponent<IUIHandler>();
                 uievent.index = uitem.Count - 1;

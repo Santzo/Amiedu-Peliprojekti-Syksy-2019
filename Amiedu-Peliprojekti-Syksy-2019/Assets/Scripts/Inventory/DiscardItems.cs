@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DiscardItems : MonoBehaviour, IUIHandler, IPointerExitHandler, IPointerClickHandler
+public class DiscardItems : MonoBehaviour, IUIHandler,  IPointerClickHandler
 {
     List<UIItem> uitem = new List<UIItem>();
     TextMeshProUGUI text;
@@ -24,15 +24,21 @@ public class DiscardItems : MonoBehaviour, IUIHandler, IPointerExitHandler, IPoi
         sliderText = slider.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
         text = transform.Find("TitleText").GetComponent<TextMeshProUGUI>();
         itemIndex = -1;
-        slider.onValueChanged.AddListener(amo => sliderText.text = amo.ToString());
+        slider.onValueChanged.AddListener(amo => sliderText.text = amo + " / " + amount);
 
     }
 
 
     public void EntryClick(int index, PointerEventData.InputButton button)
     {
-        if (button == PointerEventData.InputButton.Right || button == PointerEventData.InputButton.Left && uitem[index].name == "Cancel")
+        if (button == PointerEventData.InputButton.Right || button == PointerEventData.InputButton.Left && uitem[index].trans.name == "Cancel")
             Close();
+        if (button == PointerEventData.InputButton.Left && uitem[index].trans.name == "OK")
+        {
+            int amo = slider.gameObject.activeSelf ? (int) slider.value : 1; 
+            InventoryManager.im.RemoveItems(itemIndex, amo);
+            Close();
+        }
     }
 
     public void EntryEnter(int index)
@@ -56,7 +62,7 @@ public class DiscardItems : MonoBehaviour, IUIHandler, IPointerExitHandler, IPoi
             if (amount > 1)
             {
                 slider.maxValue = amount;
-                slider.value = 0;
+                slider.value = 1;
             }
             text.text = "Discard " + TextColor.Return("yellow") + item.item.name + TextColor.Return("defaultTitle") + " ?";
         }
@@ -64,13 +70,8 @@ public class DiscardItems : MonoBehaviour, IUIHandler, IPointerExitHandler, IPoi
 
     private void Close()
     {
-        Events.onDiscard = false;
+        Events.onDialogueBox = false;
         ObjectPooler.op.DeSpawn(gameObject);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Close();
     }
 
     public void OnPointerClick(PointerEventData eventData)
