@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerEquipment : MonoBehaviour
 {
     public static Equipped[] equipment;
+    public SpriteMask mask;
 
     private void Awake()
     {
@@ -15,6 +16,8 @@ public class PlayerEquipment : MonoBehaviour
             equipment[i].trans = transform.GetChild(i);
             equipment[i].item = null;
         }
+        mask = transform.Find("LeftHand").Find("LOS").GetComponent<SpriteMask>();
+
     }
 
     public static void AddEquipment(GameObject obj, InventoryItems item)
@@ -24,7 +27,11 @@ public class PlayerEquipment : MonoBehaviour
         if (item.GetType() == typeof(Headgear))
             i = 0;
         if (item.GetType() == typeof(Lightsource))
+        {
             i = 1;
+            Lightsource ls = item as Lightsource;
+            Info.playerEquipment.mask.transform.localScale = new Vector3(ls.lightRadius, ls.lightRadius, ls.lightRadius);
+        }
         else if (item.GetType() == typeof(Weapon))
             i = 2;
 
@@ -33,6 +40,7 @@ public class PlayerEquipment : MonoBehaviour
         if (equipment[i].obj != null) Destroy(equipment[i].obj);
         equipment[i].obj = Instantiate(obj);
         equipment[i].obj.transform.SetParent(equipment[i].trans, false);
+
     }
 
 }

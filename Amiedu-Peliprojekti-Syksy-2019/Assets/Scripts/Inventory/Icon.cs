@@ -117,6 +117,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                         Events.onIconDoubleClick(index, InventoryManager.im.filteredItems[index]);
                      
                     }
+                    background.color = oriColor;
                     Events.onItemLeaveHover();
                     clicked = false;
                 }

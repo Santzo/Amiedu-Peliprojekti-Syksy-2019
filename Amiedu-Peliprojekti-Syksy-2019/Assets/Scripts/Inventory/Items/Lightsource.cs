@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Light source")]
 public class Lightsource: InventoryItems
 {
+    public float lightRadius;
     public ItemEffect[] itemEffect;
 
 }

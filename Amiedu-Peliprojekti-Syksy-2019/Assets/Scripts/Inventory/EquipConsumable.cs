@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EquipConsumable : MonoBehaviour, IUIHandler
+public class EquipConsumable : MonoBehaviour, IUIHandler, IPointerClickHandler
 {
     List<UIItem> uitem = new List<UIItem>();
     Inventory currentItem;
@@ -46,7 +46,7 @@ public class EquipConsumable : MonoBehaviour, IUIHandler
 
     public void EntryClick(int index, PointerEventData.InputButton button)
     {
-        if (button == PointerEventData.InputButton.Left)
+        if (button == PointerEventData.InputButton.Left && index > -1)
         {
             CharacterStats.hotbar[index] = currentItem;
         }
@@ -56,7 +56,6 @@ public class EquipConsumable : MonoBehaviour, IUIHandler
 
     public void EntryEnter(int index)
     {
-        uitem[index].anim.enabled = true;
         icon[index].enabled = true;
         icon[index].sprite = currentItem.item.icon == null ? currentItem.item.obj.GetComponent<SpriteRenderer>().sprite : currentItem.item.icon;
 
@@ -66,6 +65,7 @@ public class EquipConsumable : MonoBehaviour, IUIHandler
 
     public void EntryLeave(int index)
     {
+
         uitem[index].anim.SetBool("Hover", false);
         icon[index].enabled = CharacterStats.hotbar[index].item != null;
         if (icon[index].enabled)
@@ -89,17 +89,24 @@ public class EquipConsumable : MonoBehaviour, IUIHandler
        
         for (int i = 0; i < icon.Length; i++)
         {
-            uitem[i].anim.enabled = false;
-            var tempIcon = CharacterStats.hotbar[i].item != null ? CharacterStats.hotbar[i].item.icon != null ? CharacterStats.hotbar[i].item.icon : 
-                           CharacterStats.hotbar[i].item.obj.GetComponent<SpriteRenderer>().sprite : null;
-
-            icon[i].sprite = tempIcon != null ? tempIcon : icon[i].sprite;
-            icon[i].color = new Color(1f, 1f, 1f, 1f);
+            var hot = CharacterStats.hotbar[i].item;
+            var tempIcon = hot != null ? hot.icon != null ? hot.icon : hot.obj.GetComponent<SpriteRenderer>().sprite : null;
+            icon[i].sprite = tempIcon ?? icon[i].sprite;
+            icon[i].color = hot != null ? hot.colorTint : Color.white;
             if (CharacterStats.hotbar[i].item != null) icon[i].transform.localScale = Vector3.one * CharacterStats.hotbar[i].item.iconScale;
 
             icon[i].enabled = tempIcon;
             icon[i].preserveAspect = true;
         
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Events.onDialogueBox = false;
+            ObjectPooler.op.DeSpawn(gameObject);
         }
     }
 }

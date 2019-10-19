@@ -8,5 +8,6 @@ public class Info
     public static Camera camera = Camera.main;
     public static float CanvasScale { get { return canvas.scaleFactor; } }
     public static Transform content; 
+    public static PlayerEquipment playerEquipment = GameObject.Find("PlayerEquipment").GetComponent<PlayerEquipment>();
 
 }
