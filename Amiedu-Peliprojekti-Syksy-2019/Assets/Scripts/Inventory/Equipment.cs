@@ -77,7 +77,7 @@ public class Equipment : MonoBehaviour
         {
             InventoryItems item = info.GetValue(CharacterStats.characterEquipment) as InventoryItems;
             Vector2 pos = transform.GetChild(obj).transform.position;
-            pos = obj < 4 ? pos : new Vector2(pos.x - 2f * Info.CanvasScale, pos.y);
+            pos = obj < 4 ? pos : new Vector2(pos.x - 2f, pos.y);
             _obj = InventoryGrid.ShowItemDetails(item, pos, transform, true);
         }
     }
@@ -86,7 +86,7 @@ public class Equipment : MonoBehaviour
     {
         Vector2 childPos = transform.GetChild(ReturnType(current)).position;
         var distance = new Vector2(Math.Abs(pos.x - childPos.x), Math.Abs(pos.y - childPos.y)) / Info.CanvasScale;
-        if (distance.x < 75 && distance.y < 75)
+        if (distance.x < 1.5 && distance.y < 1.5)
             EquipNewItem(index, InventoryManager.im.filteredItems[index]);
         ItemLeave();
 

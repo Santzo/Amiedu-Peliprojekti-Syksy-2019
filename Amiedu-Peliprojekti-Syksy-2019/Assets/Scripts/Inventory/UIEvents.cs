@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RightClickEntry : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
+public class UIEvents : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     [HideInInspector]
-    public RightClick rightClick;
+    public IUIHandler mouseController;
+    public int index;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        rightClick.EntryClick(transform.GetSiblingIndex(), eventData.button);
+        mouseController.EntryClick(index, eventData.button);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rightClick.EntryEnter(transform.GetSiblingIndex());
+        mouseController.EntryEnter(index);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        rightClick.EntryLeave(transform.GetSiblingIndex());
+        mouseController.EntryLeave(index);
     }
 }

@@ -27,6 +27,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (Events.onDiscard) return;
         type = InventoryManager.im.filteredItems[index].item.GetType();
 
         if (type != typeof(Consumable))
@@ -42,6 +43,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (Events.onDiscard) return;
         if (type != typeof(Consumable))
         {
             Vector2 pos = Info.camera.ScreenToWorldPoint(Input.mousePosition);
@@ -56,6 +58,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (Events.onDiscard) return;
         if (type != typeof(Consumable))
         {
             Events.onDrag = false;
@@ -68,16 +71,16 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Events.onDrag) return;
-        var pos = transform.localPosition.y / Info.CanvasScale;
+        if (Events.onDrag || Events.onDiscard) return;
+        var pos = transform.localPosition.y;
         if (pos >= -13f) Events.onItemHover(index, transform.position);
-        else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 4f * Info.CanvasScale));
+        else Events.onItemHover(index, new Vector2(transform.position.x, transform.position.y + 4f));
         background.color = new Color(oriColor.r, oriColor.g, oriColor.b, 0.75f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (Events.onDrag) return;
+        if (Events.onDrag || Events.onDiscard) return;
         background.color = oriColor;
         Events.onItemLeaveHover();
     }
@@ -91,7 +94,7 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (Events.onDrag) return;
+        if (Events.onDrag || Events.onDiscard) return;
 
         switch (eventData.button)
         {
@@ -113,8 +116,8 @@ public class Icon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                 right.transform.position = transform.position;
                 RightClick rce = right.GetComponent<RightClick>();
                 rce.itemIndex = index;
-                rce.line[0].text = "Equip";
-                rce.line[1].text = "Discard";
+                rce.uitem[0].text.text = "Equip";
+                rce.uitem[1].text.text = "Discard";
                 break;
         }
     }

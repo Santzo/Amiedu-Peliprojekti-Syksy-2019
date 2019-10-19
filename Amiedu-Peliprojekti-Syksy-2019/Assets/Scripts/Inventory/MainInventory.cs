@@ -23,6 +23,7 @@ public class MainInventory : MonoBehaviour
             if (results.Count > 0) Events.onUIClick(results[0].gameObject.name);
             else Events.onUIClick("");
         }
+
     }
 
 }

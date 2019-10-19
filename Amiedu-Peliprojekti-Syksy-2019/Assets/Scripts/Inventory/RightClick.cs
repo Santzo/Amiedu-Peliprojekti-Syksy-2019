@@ -4,33 +4,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RightClick : MonoBehaviour, IPointerExitHandler
+public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
 {
-    [HideInInspector]
-    public TextMeshProUGUI[] line;
-    private Animator[] anim;
-    [HideInInspector]
+
+    public List<UIItem> uitem = new List<UIItem>();
     public int itemIndex;
 
-
-    private void Awake()
+    public void Awake()
     {
-        line = new TextMeshProUGUI[transform.childCount];
-        anim = new Animator[transform.childCount];
+        uitem.UItemInitialize(transform);
 
-        for (int i = 0; i < transform.childCount - 1; i++)
-        {
-            Transform child = transform.GetChild(i);
-            anim[i] = child.GetComponent<Animator>();
-            line[i] = child.GetChild(0).GetComponent<TextMeshProUGUI>();
-            child.GetComponent<RightClickEntry>().rightClick = this;
-            
-        }
     }
 
     public void EntryEnter(int index)
     {
-        anim[index].SetBool("Hover", true);
+        uitem[index].anim.SetBool("Hover", true);
     }
 
     public void EntryClick(int index, PointerEventData.InputButton button)
@@ -39,11 +27,20 @@ public class RightClick : MonoBehaviour, IPointerExitHandler
             ObjectPooler.op.DeSpawn(gameObject);
         if (button == PointerEventData.InputButton.Left)
         {
-            string buttonType = line[index].text;
+            string buttonType = uitem[index].text.text;
             switch (buttonType)
             {
                 case "Equip":
                     Events.onIconDoubleClick(itemIndex, InventoryManager.im.filteredItems[itemIndex]);
+                    break;
+                case "Discard":
+                    Events.onDiscard = true;
+                    GameObject obj = ObjectPooler.op.Spawn("DiscardItem");
+                    obj.transform.SetParent(transform.parent, false);
+                    obj.transform.position = transform.localPosition.x > 270 ? new Vector2(transform.position.x - 0.75f, transform.position.y): (Vector2) transform.position;
+                    DiscardItems ditem = obj.GetComponent<DiscardItems>();
+                    ditem.Spawn(itemIndex);
+
                     break;
             }
             ObjectPooler.op.DeSpawn(gameObject);
@@ -51,7 +48,7 @@ public class RightClick : MonoBehaviour, IPointerExitHandler
     }
     public void EntryLeave(int index)
     {
-        anim[index].SetBool("Hover", false);
+        uitem[index].anim.SetBool("Hover", false);
     }
 
     public void OnPointerExit(PointerEventData eventData)

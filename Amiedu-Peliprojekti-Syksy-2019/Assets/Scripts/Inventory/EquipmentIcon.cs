@@ -7,13 +7,13 @@ public class EquipmentIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Events.onDrag) return;
+        if (Events.onDrag || Events.onDiscard) return;
         Events.onEquipmentIconHover(transform.GetSiblingIndex());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (Events.onDrag) return;
+        if (Events.onDrag || Events.onDiscard) return;
         Events.onEquipmentIconHoverLeave(transform.GetSiblingIndex());
      
     }

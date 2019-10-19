@@ -42,4 +42,19 @@ public static class ExtensionMethods
         var assets = assetBundle.LoadAllAssets<T>();
         return assets;
     }
+
+    public static void UItemInitialize(this List<UIItem> uitem, Transform transform)
+    {
+        foreach (Transform trans in transform)
+        {
+            if (trans.GetComponent<UIEvents>() != null)
+            {
+                uitem.Add(new UIItem { name = trans.name, anim = trans.GetComponent<Animator>(), text = trans.GetChild(0).GetComponent<TextMeshProUGUI>() });
+                UIEvents uievent = trans.GetComponent<UIEvents>();
+                uievent.mouseController = transform.GetComponent<IUIHandler>();
+                uievent.index = uitem.Count - 1;
+            }
+
+        }
+    }
 }

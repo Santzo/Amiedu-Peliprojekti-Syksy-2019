@@ -17,5 +17,6 @@ public static class Events
     public static Action<int> onEquipmentIconHoverLeave = delegate { };
 
     public static bool onDrag = false;
+    public static bool onDiscard = false;
    
 }

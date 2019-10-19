@@ -29,16 +29,19 @@ public class ShowItemsText : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (Events.onDrag || Events.onDiscard) return;
         background.color = new Color(oriColor.r + 0.2f, oriColor.g + 0.06f, oriColor.b, oriColor.a + 0.1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (Events.onDrag || Events.onDiscard) return;
         showItems.onClick(text.text);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (Events.onDrag || Events.onDiscard) return;
         background.color = oriColor;
     }
 
