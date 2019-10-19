@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     Camera mainCam;
     Vector2 movement;
+    Destroyer fogOfWar;
     private bool movementPossible = true;
     float moveSpeed = 5f;
 
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main;
+        fogOfWar = GameObject.Find("FogOfWar").GetComponent<Destroyer>();
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
     }
 
@@ -47,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
         if (!movementPossible)
             return;
         rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
+ 
     }
     // Update is called once per frame
     void Update()
@@ -59,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         
 
         movement = new Vector2(HandleHorizontal, HandleVertical);
+        if (movement != Vector2.zero) fogOfWar.ClearFog(transform.position);
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS

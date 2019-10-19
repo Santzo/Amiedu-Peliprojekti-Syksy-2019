@@ -19,7 +19,6 @@ public static class ExtensionMethods
     {
         var sr = ori.AddComponent<SpriteRenderer>();
         sr.material = mat;
-        sr.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         return sr;
     }
 

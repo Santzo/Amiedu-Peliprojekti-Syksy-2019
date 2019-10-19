@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerEquipment : MonoBehaviour
 {
     public static Equipped[] equipment;
-    public SpriteMask mask;
+
 
     private void Awake()
     {
@@ -16,7 +16,6 @@ public class PlayerEquipment : MonoBehaviour
             equipment[i].trans = transform.GetChild(i);
             equipment[i].item = null;
         }
-        mask = transform.Find("LeftHand").Find("LOS").GetComponent<SpriteMask>();
 
     }
 
@@ -30,7 +29,6 @@ public class PlayerEquipment : MonoBehaviour
         {
             i = 1;
             Lightsource ls = item as Lightsource;
-            Info.playerEquipment.mask.transform.localScale = new Vector3(ls.lightRadius, ls.lightRadius, ls.lightRadius);
         }
         else if (item.GetType() == typeof(Weapon))
             i = 2;
