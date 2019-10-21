@@ -2,14 +2,14 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex ("Main Texture", 2D) = "white" {}
+		_SecondaryTex("Secondary Texture", 2D) = "white" {}
     }
     SubShader
     {
-		Tags
-		{
-		"Queue"="Transparency+1"
-		}
+		Tags{
+		"Queue" = "Transparent+1"
+}
         Pass
         {
 			Blend SrcAlpha OneMinusSrcAlpha
@@ -40,13 +40,15 @@
             }
 
             sampler2D _MainTex;
+			sampler2D _SecondaryTex;
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-				col.a = 2.0f - col.r * 2.0f - col.b * 1.5f;
+                fixed4 col = tex2D(_MainTex, i.uv)  + tex2D(_SecondaryTex, i.uv);
+				col.a = 2.0f - col.r * 1.6f - col.b * 0.4f;
 				return fixed4(0, 0, 0, col.a);
-            }
+		
+			}
             ENDCG
         }
     }
