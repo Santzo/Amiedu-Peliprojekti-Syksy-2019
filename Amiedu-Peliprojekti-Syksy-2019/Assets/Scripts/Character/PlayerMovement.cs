@@ -6,8 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
     Camera mainCam;
+    Camera fogOfWarCam;
     Vector2 movement;
-    Destroyer fogOfWar;
+    Vector3 oriScale;
     private bool movementPossible = true;
     float moveSpeed = 5f;
 
@@ -35,12 +36,15 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        oriScale = transform.localScale;
 
     }
     void Start()
     {
         mainCam = Camera.main;
-        fogOfWar = GameObject.Find("FogOfWar").GetComponent<Destroyer>();
+        fogOfWarCam = GameObject.Find("FogOfWarCamera").GetComponent<Camera>();
+        fogOfWarCam.clearFlags = CameraClearFlags.Nothing;
+
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
     }
 
@@ -58,11 +62,10 @@ public class PlayerMovement : MonoBehaviour
         if (!movementPossible)
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        transform.localScale = mousePos.x > transform.position.x ? new Vector3(1f, 1f, 1f) : new Vector3(-1f, 1f, 1f);
+        transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         
 
         movement = new Vector2(HandleHorizontal, HandleVertical);
-        if (movement != Vector2.zero) fogOfWar.ClearFog(transform.position);
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
