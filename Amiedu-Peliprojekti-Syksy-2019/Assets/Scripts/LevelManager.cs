@@ -1,8 +1,7 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+
 
 public class LevelManager : MonoBehaviour
 {
@@ -54,7 +53,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private int exitSize = 6;
-    private int maxRooms = 20;
+    private int maxRooms = 50;
     private int numOfRooms = 1;
     private float pixelsPerUnit = 128f;
 
@@ -62,6 +61,7 @@ public class LevelManager : MonoBehaviour
     private Vector2 bigCornerPieceSize;
 
     private List<RoomLocations> roomLocations = new List<RoomLocations>();
+    public RoomLocations gameField = new RoomLocations();
 
 
 
@@ -78,8 +78,12 @@ public class LevelManager : MonoBehaviour
         cornerPieceSize = cornerPieceSize * 0.5f;
         bigCornerPieceSize = SpriteSizeInPixels("bigCorner");
         bigCornerPieceSize = bigCornerPieceSize * 0.5f;
-        GenerateStartRoom(2);
 
+
+    }
+    private void Start()
+    {
+        GenerateStartRoom(2);
     }
 
 
@@ -158,49 +162,8 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    void GenerateStartRoom(int minimumExits = 0)
+    void CreateRoomWallsAndFloors(Room roomStats)
     {
-        int roomX = Random.Range(12, 26);
-        int roomY = Random.Range(12, 26);
-
-
-        GameObject room = new GameObject();
-        room.transform.position = new Vector2(0f, 0f);
-
-        Room roomStats = new Room();
-        roomStats.trans = room.transform;
-        roomStats.location = room.transform.position;
-        roomStats.maxX = roomX;
-        roomStats.maxY = roomY;
-
-        CreateCornerPiece(roomStats, 0, 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
-        CreateCornerPiece(roomStats, roomX, 0, Piece(current, "bottomRight"));    // alaoikea
-        CreateCornerPiece(roomStats, 0, roomY, Piece(current, "topLeft"));        // ylävasen
-        CreateCornerPiece(roomStats, roomX, roomY, Piece(current, "topRight"));   // yläoikea
-
-        CreateRoomWall(roomStats, Piece(current, "top"));                             // Luodaan huoneen pääseinät yläseinä
-        CreateRoomWall(roomStats, Piece(current, "bottom"));                          // alaseinä
-        CreateRoomWall(roomStats, Piece(current, "left"));                            // vasen seinä
-        CreateRoomWall(roomStats, Piece(current, "right"));                           // oikea seinä
-
-        CreateRoomFloor(roomStats, Piece(current, "middle"));                         // Luodaan huoneen lattia
-        CreateDoors(roomStats, roomX, roomY, minimumExits);                                       // Arvotaan ja luodaan huoneelle ovet
-        CreateCorridors(roomStats);
-        CreateAlignedRooms(roomStats);
-    }
-
-    void CreateRoom(Room roomStats)
-    {
-        GameObject room = new GameObject();
-        room.name = "Size X " + roomStats.maxX + " Size Y " + roomStats.maxY;
-        room.transform.position = roomStats.location;
-        roomStats.trans = room.transform;
-
-        foreach (var door in roomStats.doors)
-        {
-            door.location = roomStats.trans.InverseTransformPoint(door.worldLocation);
-        }
-
         CreateCornerPiece(roomStats, 0, 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
         CreateCornerPiece(roomStats, roomStats.maxX, 0, Piece(current, "bottomRight"));    // alaoikea
         CreateCornerPiece(roomStats, 0, roomStats.maxY, Piece(current, "topLeft"));        // ylävasen
@@ -218,6 +181,53 @@ public class LevelManager : MonoBehaviour
             CreateCorridors(roomStats);
             CreateAlignedRooms(roomStats);
         }
+
+        CheckGameFieldSize(roomStats);
+    }
+
+    private void CheckGameFieldSize(Room roomStats)
+    {
+        gameField.start.x = roomStats.location.x < gameField.start.x ? roomStats.location.x : gameField.start.x;
+        gameField.start.y = roomStats.location.y < gameField.start.y ? roomStats.location.y : gameField.start.y;
+
+        gameField.end.x = roomStats.location.x + roomStats.maxX > gameField.end.x ? roomStats.location.x + roomStats.maxX : gameField.end.x;
+        gameField.end.y = roomStats.location.y + roomStats.maxY > gameField.end.y ? roomStats.location.y + roomStats.maxY : gameField.end.y;
+
+    }
+
+    void GenerateStartRoom(int minimumExits = 0)
+    {
+        int roomX = Random.Range(12, 26);
+        int roomY = Random.Range(12, 26);
+
+
+        GameObject room = new GameObject();
+        room.transform.position = new Vector2(0f, 0f);
+
+        Room roomStats = new Room();
+        roomStats.trans = room.transform;
+        roomStats.location = room.transform.position;
+        roomStats.maxX = roomX;
+        roomStats.maxY = roomY;
+
+        CreateRoomWallsAndFloors(roomStats);
+        Events.onFieldInitialized(gameField);
+
+    }
+
+    void AdjacentRoom(Room roomStats)
+    {
+        GameObject room = new GameObject();
+        room.name = "Size X " + roomStats.maxX + " Size Y " + roomStats.maxY;
+        room.transform.position = roomStats.location;
+        roomStats.trans = room.transform;
+
+        foreach (var door in roomStats.doors)
+        {
+            door.location = roomStats.trans.InverseTransformPoint(door.worldLocation);
+        }
+        CreateRoomWallsAndFloors(roomStats);
+    
     }
 
     void CreateAlignedRooms(Room ori)
@@ -291,7 +301,7 @@ public class LevelManager : MonoBehaviour
             newRoom.maxX = roomX;
             newRoom.maxY = roomY;
   
-            CreateRoom(newRoom);
+            AdjacentRoom(newRoom);
         }
     }
 
@@ -307,14 +317,13 @@ public class LevelManager : MonoBehaviour
 
         numOfExits = 1;
 
-        int count = 0, maxCount = 5;
 
         for (int i = 0; i < numOfExits; i++)
         {
             exitSize = Random.Range(2, 6);
             var tempDoor = new Door();
             int a = Random.Range(0, 2);
-            a = 3;
+            a = 2;
             bool reserved = true;
 
            
@@ -322,7 +331,7 @@ public class LevelManager : MonoBehaviour
             {
                 while (reserved)
                 {
-                    a = Random.Range(0, 2);
+                    a = 1;
                     foreach (var door in ori.doors)
                     {
                         reserved = false;

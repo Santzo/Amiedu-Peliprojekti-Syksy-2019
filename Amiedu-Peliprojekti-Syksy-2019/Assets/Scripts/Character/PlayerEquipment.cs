@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
     public static Equipped[] equipment;
+    public static Transform LOSCircle;
 
 
     private void Awake()
@@ -16,28 +18,30 @@ public class PlayerEquipment : MonoBehaviour
             equipment[i].trans = transform.GetChild(i);
             equipment[i].item = null;
         }
-
+        
+    }
+    private void Start()
+    {
+        LOSCircle = transform.parent.Find("MainFogCircle");
     }
 
     public static void AddEquipment(GameObject obj, InventoryItems item)
     {
-        int i = 0;
+        var equip = Array.Find(equipment, a => item.GetType().ToString() == a.trans.name);
 
-        if (item.GetType() == typeof(Headgear))
-            i = 0;
-        if (item.GetType() == typeof(Lightsource))
+        if (equip.item != null && equip.item.Equals(item)) return;
+        equip.item = item;
+        if (equip.obj != null) Destroy(equip.obj);
+        equip.obj = Instantiate(obj);
+        equip.obj.transform.SetParent(equip.trans, false);
+
+        if (equip.item.GetType() == typeof(Lightsource))
         {
-            i = 1;
-            Lightsource ls = item as Lightsource;
-        }
-        else if (item.GetType() == typeof(Weapon))
-            i = 2;
+            Debug.Log("JEEJEE");
+            Lightsource temp = equip.item as Lightsource;
+            LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
 
-        if (equipment[i].item != null &&  equipment[i].item.Equals(item)) return;
-        equipment[i].item = item;
-        if (equipment[i].obj != null) Destroy(equipment[i].obj);
-        equipment[i].obj = Instantiate(obj);
-        equipment[i].obj.transform.SetParent(equipment[i].trans, false);
+        }
 
     }
 
