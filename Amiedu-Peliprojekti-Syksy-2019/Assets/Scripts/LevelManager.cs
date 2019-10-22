@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Rendering;
 
 public class LevelManager : MonoBehaviour
 {
@@ -183,6 +183,16 @@ public class LevelManager : MonoBehaviour
         }
 
         CheckGameFieldSize(roomStats);
+        SortObjects();
+    }
+
+    private void SortObjects()
+    {
+        var objects = FindObjectsOfType<SortingGroup>();
+        foreach (var obj in objects)
+        {
+            obj.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+        }
     }
 
     private void CheckGameFieldSize(Room roomStats)

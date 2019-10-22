@@ -5,20 +5,24 @@ using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
-    public static Equipped[] equipment;
+    public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     public static Transform LOSCircle;
 
 
     private void Awake()
     {
-        equipment = new Equipped[transform.childCount];
-        equipment.Populate();
-        for (int i = 0; i < transform.childCount; i++)
+  
+
+        var gear = CharacterStats.characterEquipment.GetType().GetFields();
+        foreach (var g in gear)
         {
-            equipment[i].trans = transform.GetChild(i);
-            equipment[i].item = null;
+            Transform trans = transform.parent.GetFromAllChildren(g.FieldType.ToString());
+            equipment.Add(trans.name, new Equipped { trans = trans, item = null, obj = null });
+
         }
-        
+
+
+
     }
     private void Start()
     {
@@ -27,8 +31,7 @@ public class PlayerEquipment : MonoBehaviour
 
     public static void AddEquipment(GameObject obj, InventoryItems item)
     {
-        var equip = Array.Find(equipment, a => item.GetType().ToString() == a.trans.name);
-
+        var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
         equip.item = item;
         if (equip.obj != null) Destroy(equip.obj);
@@ -37,7 +40,6 @@ public class PlayerEquipment : MonoBehaviour
 
         if (equip.item.GetType() == typeof(Lightsource))
         {
-            Debug.Log("JEEJEE");
             Lightsource temp = equip.item as Lightsource;
             LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
 

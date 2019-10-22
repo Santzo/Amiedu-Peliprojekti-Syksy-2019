@@ -10,4 +10,9 @@ public class Info
     public static Transform content; 
     public static PlayerEquipment playerEquipment = GameObject.Find("PlayerEquipment").GetComponent<PlayerEquipment>();
 
+    public static int SortingOrder(float yPos)
+    {
+        yPos *= 100;
+        return Mathf.RoundToInt(-yPos);
+    }
 }

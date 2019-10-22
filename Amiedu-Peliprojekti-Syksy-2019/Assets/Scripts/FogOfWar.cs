@@ -29,7 +29,6 @@ public class FogOfWar : MonoBehaviour
 
         fogSize.sizeDelta = gameFieldSize + new Vector2(padding, padding);
         fogSize.position = position;
-        Debug.Log(fogSize.sizeDelta);
         int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 7f);
         int y = Mathf.RoundToInt(fogSize.sizeDelta.y * 7f);
         fogOfWarMain = new RenderTexture(x, y, 0, RenderTextureFormat.Default);

@@ -58,4 +58,22 @@ public static class ExtensionMethods
 
         }
     }
+
+    public static Transform GetFromAllChildren(this Transform ori, string tag)
+    {
+        Transform result = null;
+        foreach (Transform child in ori)
+        {
+            if (child.name == tag)
+                return child;
+
+            result = child.GetFromAllChildren(tag);
+
+            if (result != null)
+                return result;
+        }
+
+        return result;
+
+    }
 }

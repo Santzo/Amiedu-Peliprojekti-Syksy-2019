@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
     Camera mainCam;
     Camera fogOfWarCam;
+    Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    SortingGroup sortingGroup;
     private bool movementPossible = true;
     float moveSpeed = 5f;
-
+    float moveAnim;
 
     private int HandleVertical
     {
@@ -37,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         oriScale = transform.localScale;
+        sortingGroup = GetComponent<SortingGroup>();
+        anim = GetComponent<Animator>();
+        //anim.SetFloat("Movement", 0.5f);
 
     }
     void Start()
@@ -63,9 +69,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
-        
-
         movement = new Vector2(HandleHorizontal, HandleVertical);
+        moveAnim = movement != Vector2.zero ? moveAnim >= 1f ? 1f : moveAnim += 0.05f : 0f;
+        anim.SetFloat("Movement", moveAnim);
+        sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS

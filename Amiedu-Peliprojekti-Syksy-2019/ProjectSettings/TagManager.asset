@@ -15,7 +15,7 @@ TagManager:
   - 
   - FogOfWarMain
   - FogOfWarSecondary
-  - 
+  - ObjectCollider
   - 
   - 
   - 
@@ -40,6 +40,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: FloorObjects
+    uniqueID: 400957895
+    locked: 0
+  - name: MainCharacter
+    uniqueID: 918335077
     locked: 0
   - name: Objects
     uniqueID: 689501021
