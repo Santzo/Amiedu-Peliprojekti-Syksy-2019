@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -14,8 +15,9 @@ public class LevelManager : MonoBehaviour
         public List<Door> doors;
     }
 
-    public class RoomLocations
+    public class AllRooms
     {
+        public Room room;
         public Vector2 start;
         public Vector2 end;
     }
@@ -34,11 +36,10 @@ public class LevelManager : MonoBehaviour
 
     public enum Exits
     {
-        North,
-        South,
-        East,
-        West,
-        Nothing
+        top,
+        bottom,
+        right,
+        left,
     }
 
     public class Door
@@ -56,12 +57,13 @@ public class LevelManager : MonoBehaviour
     private int maxRooms = 50;
     private int numOfRooms = 1;
     private float pixelsPerUnit = 128f;
+    private float unitsPerPixel = 100f / 128f / 100f;
 
     private Vector2 cornerPieceSize;
     private Vector2 bigCornerPieceSize;
 
-    private List<RoomLocations> roomLocations = new List<RoomLocations>();
-    public RoomLocations gameField = new RoomLocations();
+    private List<AllRooms> allRooms = new List<AllRooms>();
+    public AllRooms gameField = new AllRooms();
 
 
 
@@ -83,7 +85,7 @@ public class LevelManager : MonoBehaviour
     }
     private void Start()
     {
-        GenerateStartRoom(2);
+        InitializeLevel(2);
     }
 
 
@@ -98,9 +100,9 @@ public class LevelManager : MonoBehaviour
                 continue;
 
 
-            if (door.exit == Exits.East)
+            if (door.exit == Exits.right)
             {
-                CreateFloor(ori, door.location.x + corridorLength * 0.5f + 0.5f, door.location.y, Piece(current, "middle"),  corridorLength + 2f, door.size, 0f);
+                CreateFloor(ori, door.location.x + corridorLength * 0.5f + 0.5f, door.location.y, Piece(current, "middle"), corridorLength + 2f, door.size, 0f);
                 CreateWall(ori, Piece(current, "bottom"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
                 CreateWall(ori, Piece(current, "top"), door.location.x + corridorLength * 0.5f + 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
 
@@ -112,9 +114,9 @@ public class LevelManager : MonoBehaviour
 
 
             }
-            if (door.exit == Exits.West)
+            if (door.exit == Exits.left)
             {
-                CreateFloor(ori, door.location.x - corridorLength * 0.5f - 0.5f, door.location.y, Piece(current, "middle"), corridorLength + 2f, door.size,  0f);
+                CreateFloor(ori, door.location.x - corridorLength * 0.5f - 0.5f, door.location.y, Piece(current, "middle"), corridorLength + 2f, door.size, 0f);
                 CreateWall(ori, Piece(current, "bottom"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y - door.size * 0.5f + 0.5f, corridorLength, 1, 0f);
                 CreateWall(ori, Piece(current, "top"), door.location.x - corridorLength * 0.5f - 0.5f, door.location.y + door.size * 0.5f - 1f, corridorLength, 2f, 0f);
 
@@ -128,7 +130,7 @@ public class LevelManager : MonoBehaviour
 
 
             }
-            if (door.exit == Exits.North)
+            if (door.exit == Exits.top)
             {
                 CreateFloor(ori, door.location.x, door.location.y + corridorLength * 0.5f + 0.5f, Piece(current, "middle"), door.size + 1f, corridorLength + 2f);
                 CreateWall(ori, Piece(current, "left"), door.location.x - door.size * 0.5f, door.location.y + corridorLength * 0.5f + 1f, 1, corridorLength - 1f, 0f);
@@ -141,7 +143,7 @@ public class LevelManager : MonoBehaviour
                 CreateCornerPiece(ori, door.location.x + 0.5f + (door.size * 0.5f - bigCornerPieceSize.x / pixelsPerUnit), door.location.y + 1.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
             }
 
-            if (door.exit == Exits.South)
+            if (door.exit == Exits.bottom)
             {
                 CreateFloor(ori, door.location.x, door.location.y - corridorLength * 0.5f - 1.75f, Piece(current, "middle"), door.size, corridorLength + 2.5f);
                 CreateWall(ori, Piece(current, "left"), door.location.x - door.size * 0.5f + 0.5f, door.location.y - corridorLength * 0.5f - 1f, 1, corridorLength, 0f);
@@ -157,15 +159,23 @@ public class LevelManager : MonoBehaviour
 
             }
             door.length = corridorLength;
-       
+
         }
 
     }
 
     void CreateRoomWallsAndFloors(Room roomStats)
     {
-        CreateCornerPiece(roomStats, 0, 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
-        CreateCornerPiece(roomStats, roomStats.maxX, 0, Piece(current, "bottomRight"));    // alaoikea
+        if (numOfRooms < maxRooms)
+        {
+            CreateDoors(roomStats, roomStats.maxX, roomStats.maxY, 0);                  // Arvotaan ja luodaan huoneelle ovet
+            CreateCorridors(roomStats);
+            CreateAlignedRooms(roomStats);
+
+
+        }
+        CreateCornerPiece(roomStats, 0f - SpritePositionAdjusted(SpriteSizeInPixels("bottomLeft").x), 0, Piece(current, "bottomLeft"));         // Luodaan huoneen kulmat alavasen
+        CreateCornerPiece(roomStats, roomStats.maxX + SpritePositionAdjusted(SpriteSizeInPixels("bottomRight").x), 0, Piece(current, "bottomRight"));    // alaoikea
         CreateCornerPiece(roomStats, 0, roomStats.maxY, Piece(current, "topLeft"));        // ylävasen
         CreateCornerPiece(roomStats, roomStats.maxX, roomStats.maxY, Piece(current, "topRight"));   // yläoikea
 
@@ -174,16 +184,13 @@ public class LevelManager : MonoBehaviour
         CreateRoomWall(roomStats, Piece(current, "left"));                            // vasen seinä
         CreateRoomWall(roomStats, Piece(current, "right"));                           // oikea seinä
 
-        CreateRoomFloor(roomStats, Piece(current, "middle"));                         // Luodaan huoneen lattia
-        if (numOfRooms < maxRooms)
-        {
-            CreateDoors(roomStats, roomStats.maxX, roomStats.maxY, 0);                  // Arvotaan ja luodaan huoneelle ovet
-            CreateCorridors(roomStats);
-            CreateAlignedRooms(roomStats);
-        }
+        // Luodaan huoneen lattia
+        CreateRoomFloor(roomStats, Piece(current, "middle"));
+
+        allRooms.Add(new AllRooms { room = roomStats, start = new Vector2(roomStats.trans.position.x, roomStats.trans.position.y), end = new Vector2(roomStats.trans.position.x + roomStats.maxX, roomStats.trans.position.y + roomStats.maxY) });
 
         CheckGameFieldSize(roomStats);
-        SortObjects();
+
     }
 
     private void SortObjects()
@@ -191,7 +198,8 @@ public class LevelManager : MonoBehaviour
         var objects = FindObjectsOfType<SortingGroup>();
         foreach (var obj in objects)
         {
-            obj.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+            if (obj.sortingLayerName != "Wall" && obj.sortingLayerName != "FloorObjects")
+                obj.sortingOrder = Info.SortingOrder(obj.transform.position.y);
         }
     }
 
@@ -205,7 +213,7 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    void GenerateStartRoom(int minimumExits = 0)
+    void InitializeLevel(int minimumExits = 0)
     {
         int roomX = Random.Range(12, 26);
         int roomY = Random.Range(12, 26);
@@ -221,6 +229,7 @@ public class LevelManager : MonoBehaviour
         roomStats.maxY = roomY;
 
         CreateRoomWallsAndFloors(roomStats);
+        SortObjects();
         Events.onFieldInitialized(gameField);
 
     }
@@ -237,7 +246,7 @@ public class LevelManager : MonoBehaviour
             door.location = roomStats.trans.InverseTransformPoint(door.worldLocation);
         }
         CreateRoomWallsAndFloors(roomStats);
-    
+
     }
 
     void CreateAlignedRooms(Room ori)
@@ -253,7 +262,7 @@ public class LevelManager : MonoBehaviour
                 return;
 
             if (door.corridorDone)
-                continue; 
+                continue;
 
             Room newRoom = new Room();
             Door tempdoor = new Door();
@@ -265,27 +274,27 @@ public class LevelManager : MonoBehaviour
 
             tempdoor.worldLocation = door.worldLocation;
 
-            if (door.exit == Exits.North)
+            if (door.exit == Exits.top)
             {
-                tempdoor.exit = Exits.South;
+                tempdoor.exit = Exits.bottom;
                 tempdoor.worldLocation = new Vector2(tempdoor.worldLocation.x, tempdoor.worldLocation.y + door.length);
                 int xPos = Random.Range(3, roomX - 1);
                 newRoom.location = new Vector2(ori.trans.position.x + door.location.x - xPos, ori.trans.position.y + door.location.y + door.length + 1f);
                 float multi = Mathf.Abs((ori.trans.position.x % 1)) != Mathf.Abs((newRoom.location.x % 1)) ? 0f : 0.5f;
                 newRoom.location = new Vector2(newRoom.location.x + multi, newRoom.location.y);
             }
-            else if (door.exit == Exits.South)
+            else if (door.exit == Exits.bottom)
             {
-                tempdoor.exit = Exits.North;
+                tempdoor.exit = Exits.top;
                 tempdoor.worldLocation = new Vector2(tempdoor.worldLocation.x, tempdoor.worldLocation.y - door.length);
                 int xPos = Random.Range(3, roomX - 1);
                 newRoom.location = new Vector2(ori.trans.position.x + door.location.x - xPos, ori.trans.position.y - door.location.y - roomY - door.length - 1f);
                 float multi = Mathf.Abs((ori.trans.position.x % 1)) != Mathf.Abs((newRoom.location.x % 1)) ? 0f : 0.5f;
                 newRoom.location = new Vector2(newRoom.location.x + multi, newRoom.location.y);
             }
-            else if (door.exit == Exits.East)
+            else if (door.exit == Exits.right)
             {
-                tempdoor.exit = Exits.West;
+                tempdoor.exit = Exits.left;
                 tempdoor.worldLocation = new Vector2(tempdoor.worldLocation.x + door.length, tempdoor.worldLocation.y);
                 int yPos = Random.Range(3, roomY - 1);
                 newRoom.location = new Vector2(ori.trans.position.x + door.location.x + door.length + 1f, ori.trans.position.y + door.location.y - yPos);
@@ -294,7 +303,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                tempdoor.exit = Exits.East;
+                tempdoor.exit = Exits.right;
                 tempdoor.worldLocation = new Vector2(tempdoor.worldLocation.x - door.length, tempdoor.worldLocation.y);
                 int yPos = Random.Range(3, roomY - 1);
                 newRoom.location = new Vector2(ori.trans.position.x - door.location.x - door.length - 1f - roomX, ori.trans.position.y + door.location.y - yPos);
@@ -310,7 +319,7 @@ public class LevelManager : MonoBehaviour
             newRoom.doors.Add(tempdoor);
             newRoom.maxX = roomX;
             newRoom.maxY = roomY;
-  
+
             AdjacentRoom(newRoom);
         }
     }
@@ -336,7 +345,7 @@ public class LevelManager : MonoBehaviour
             a = 2;
             bool reserved = true;
 
-           
+
             if (ori.doors.Count > 0)
             {
                 while (reserved)
@@ -360,26 +369,26 @@ public class LevelManager : MonoBehaviour
             float lY = Mathf.Abs(locationY);
             switch ((Exits)a)
             {
-                case Exits.North:
+                case Exits.top:
                     {
                         int exitX = Random.Range(2, roomX - exitSize - 1);
                         tempDoor.location = new Vector2(exitX + exitSize * 0.5f - 0.5f, roomY - 0.5f);
                         break;
                     }
-                case Exits.South:
+                case Exits.bottom:
                     {
                         int exitX = Random.Range(2, roomX - exitSize - 1);
                         tempDoor.location = new Vector2(exitX + exitSize * 0.5f - 0.5f, 0.5f);
                         break;
                     }
-                case Exits.East:
+                case Exits.right:
                     {
                         exitSize = exitSize < 4 ? 4 : exitSize;
                         int exitY = Random.Range(2, roomY - exitSize - 1);
                         tempDoor.location = new Vector2(roomX, exitY + exitSize * 0.5f - 0.5f);
                         break;
                     }
-                case Exits.West:
+                case Exits.left:
                     {
                         exitSize = exitSize < 4 ? 4 : exitSize;
                         int exitY = Random.Range(2, roomY - exitSize - 1);
@@ -397,6 +406,7 @@ public class LevelManager : MonoBehaviour
 
     void CreateWall(Room ori, Sprite sprit, float x, float y, float width, float height, float rot, int sort = 5)
     {
+
         GameObject wall = new GameObject();
         wall.transform.parent = ori.trans;
 
@@ -404,12 +414,136 @@ public class LevelManager : MonoBehaviour
         sr.sortingOrder = sort;
         sr.drawMode = SpriteDrawMode.Tiled;
         sr.sprite = sprit;
-        sr.size = new Vector2(width, height);
-        wall.transform.eulerAngles = new Vector3(0f, 0f, rot);
-        wall.transform.localPosition = new Vector2(x, y);
+
+        Vector2 size = SpriteSizeInPixels(sprit.name);
+        Vector2 scale = size / pixelsPerUnit;
+
+        wall.name = sprit.name + "Cor";
+        switch (sprit.name)
+        {
+            case "top":
+            case "bottom":
+                wall.transform.localPosition = sprit.name == "top" ? new Vector2(x, y) : new Vector2(x, y - SpritePositionAdjusted(size.y));
+                sr.size = new Vector2(width, scale.y);
+                break;
+            case "left":
+            case "right":
+                sr.size = new Vector2(scale.x, height);
+                wall.transform.localPosition = sprit.name == "left" ? new Vector2(x - SpritePositionAdjusted(size.x), y) : new Vector2(x + SpritePositionAdjusted(size.x), y);
+                break;
+
+
+        }
+        AddWallSortingGroup(wall);
+        AddCollisionBox(wall);
     }
 
+    void AddWallSortingGroup(GameObject wall, int order = 0)
+    {
+        var sortingGroup = wall.AddComponent<SortingGroup>();
+        if (wall.name == "top" || wall.name == "topLeft" || wall.name == "topRight" || wall.name == "bigCorner" || wall.name == "topCor" || wall.name == "topDoor")
+        {
+            sortingGroup.sortingLayerName = "FloorObjects";
+            sortingGroup.sortingOrder = wall.name != "bigCorner" ? order : 1;
+
+        }
+        else
+        {
+            sortingGroup.sortingLayerName = "Wall";
+            sortingGroup.sortingOrder = order;
+        }
+
+    }
     void CreateRoomWall(Room ori, Sprite sprit, int sort = 1)
+    {
+        var wall = NewWall(ori, sprit);
+        GameObject otherWall = null;
+        var sr = wall.GetComponent<SpriteRenderer>();
+        Vector2 size = SpriteSizeInPixels(sprit.name);
+        Vector2 scale = size / pixelsPerUnit;
+
+        var doorOnWall = ori.doors.Find(door => door.exit.ToString() == wall.name);
+
+        if (doorOnWall == null)
+        {
+            switch (wall.name)
+            {
+                case "top":
+                    wall.transform.localPosition = new Vector2(ori.maxX * 0.5f, ori.maxY);
+                    sr.size = new Vector2(ori.maxX, scale.y);
+                    break;
+                case "bottom":
+                    wall.transform.localPosition = new Vector2(ori.maxX * 0.5f, 0f - SpritePositionAdjusted(size.y));
+                    sr.size = new Vector2(ori.maxX + size.x / pixelsPerUnit, scale.y);
+                    break;
+                case "left":
+                    sr.size = new Vector2(scale.x, ori.maxY + 0.5f);
+                    wall.transform.localPosition = new Vector2(0f - SpritePositionAdjusted(size.x), ori.maxY * 0.5f + 0.625f);
+                    break;
+                case "right":
+                    sr.size = new Vector2(scale.x, ori.maxY + 0.5f);
+                    wall.transform.localPosition = new Vector2(ori.maxX + SpritePositionAdjusted(size.x), ori.maxY * 0.5f + 0.625f);
+                    break;
+
+            }
+        }
+        else
+        {
+
+            switch (wall.name)
+            {
+
+                case "right":
+                case "left":
+
+                    float wallSize = doorOnWall.location.y - doorOnWall.size * 0.5f - 0.5f;
+                    sr.size = new Vector2(scale.x, wallSize);
+                    wall.transform.localPosition = wall.name == "right" ? new Vector2(ori.maxX + SpritePositionAdjusted(size.x), wallSize * 0.5f + 0.5f)
+                                                                        : new Vector2(0f - SpritePositionAdjusted(size.x), wallSize * 0.5f + 0.5f);
+
+                    wallSize = ori.maxY - (doorOnWall.location.y + doorOnWall.size * 0.5f) + 0.75f;
+
+                    otherWall = NewWall(ori, sprit, "Other");
+                    var otherSr = otherWall.GetComponent<SpriteRenderer>();
+
+                    otherSr.size = new Vector2(scale.x, wallSize);
+                    otherWall.transform.localPosition = wall.name == "right" ? new Vector2(ori.maxX + SpritePositionAdjusted(size.x), ori.maxY - wallSize * 0.5f + 0.75f)
+                                                                                : new Vector2(0f - SpritePositionAdjusted(size.x), ori.maxY - wallSize * 0.5f + 0.75f);
+                    break;
+                case "bottom":
+                case "top":
+                    wallSize = doorOnWall.location.x - doorOnWall.size * 0.5f + 0.5f;
+                    sr.size = new Vector2(wallSize, scale.y);
+                    wall.transform.localPosition = wall.name == "top" ? new Vector2(wallSize * 0.5f - 0.5f, ori.maxY - SpritePositionAdjusted(size.y) - 0.5f)
+                                                                      : new Vector2(wallSize * 0.5f - 0.5f, 0f - SpritePositionAdjusted(size.y));
+
+                    wallSize = ori.maxX - (doorOnWall.location.x + doorOnWall.size * 0.5f) + 0.5f;
+
+                    otherWall = NewWall(ori, sprit, "Other");
+                    otherSr = otherWall.GetComponent<SpriteRenderer>();
+
+                    otherSr.size = new Vector2(wallSize, scale.y);
+                    otherWall.transform.localPosition = wall.name == "top" ? new Vector2(ori.maxX - wallSize * 0.5f + 0.5f, ori.maxY - SpritePositionAdjusted(size.y) - 0.5f)
+                                                                           : new Vector2(ori.maxX - wallSize * 0.5f + 0.5f, 0f - SpritePositionAdjusted(size.y));
+                    break;
+
+
+
+
+
+            }
+            wall.name += "Door";
+        }
+        AddWallSortingGroup(wall);
+        AddCollisionBox(wall);
+        if (otherWall != null)
+        {
+            AddWallSortingGroup(otherWall);
+            AddCollisionBox(otherWall);
+        }
+    }
+
+    GameObject NewWall(Room ori, Sprite sprit, string _name = "", int sort = 1)
     {
         GameObject wall = new GameObject();
         wall.transform.parent = ori.trans;
@@ -419,38 +553,23 @@ public class LevelManager : MonoBehaviour
 
         sr.drawMode = SpriteDrawMode.Tiled;
         sr.sprite = sprit;
-        sr.size = new Vector2(ori.maxX - 1, 1f);
 
-        if (sprit.name == "top")
-        {
-            wall.transform.localPosition = new Vector2(ori.maxX * 0.5f, ori.maxY);
-            sr.size = new Vector2(sr.size.x, 2f);
-        }
-        if (sprit.name == "bottom")
-            wall.transform.localPosition = new Vector2(ori.maxX * 0.5f, 0f);
-        if (sprit.name == "left")
-        {
-            sr.size = new Vector2(1f, ori.maxY - 1);
-            wall.transform.localPosition = new Vector2(0f, ori.maxY * 0.5f);
-        }
-        if (sprit.name == "right")
-        {
-            sr.size = new Vector2(1f, ori.maxY - 1);
-            wall.transform.localPosition = new Vector2(ori.maxX, ori.maxY * 0.5f);
-        }
+        wall.name = sprit.name + _name;
+        return wall;
     }
-
     void CreateCornerPiece(Room ori, float x, float y, Sprite sprit, int sort = 3, float rot = 0, float xSwap = 1f)
     {
         GameObject corner = new GameObject();
         corner.transform.parent = ori.trans;
-
+        corner.name = sprit.name;
         var sr = corner.AddRenderer(material);
         sr.sortingOrder = sort;
         sr.sprite = sprit;
         corner.transform.localPosition = new Vector2(x, y);
         corner.transform.localScale = new Vector3(xSwap, 1f, 1f);
         corner.transform.eulerAngles = new Vector3(0f, 0f, rot);
+        AddWallSortingGroup(corner, 10);
+        if (corner.name != "bottomLeft" && corner.name != "bottomRight" && corner.name != "corner") AddCollisionBox(corner);
     }
 
     void CreateRoomFloor(Room ori, Sprite sprit, int sort = 0)
@@ -460,7 +579,7 @@ public class LevelManager : MonoBehaviour
         var fsr = floor.AddRenderer(material);
         fsr.sprite = sprit;
         fsr.drawMode = SpriteDrawMode.Tiled;
-        fsr.size = new Vector2(ori.maxX - 1f, ori.maxY - 1f);
+        fsr.size = new Vector2(ori.maxX + 1f, ori.maxY + 1f);
         fsr.sortingOrder = sort;
         floor.transform.localPosition = new Vector2(ori.maxX * 0.5f, ori.maxY * 0.5f);
     }
@@ -499,18 +618,67 @@ public class LevelManager : MonoBehaviour
         return new Vector2(sr.bounds.size.x * pixelsPerUnit, sr.bounds.size.y * pixelsPerUnit);
     }
 
+    private float SpritePositionAdjusted(float pos)
+    {
+        return (1f - unitsPerPixel * pos) / 2f;
+    }
     Exits Opposite(Exits exit)
     {
-        if (exit == Exits.East)
-            return Exits.West;
-        if (exit == Exits.West)
-            return Exits.East;
-        if (exit == Exits.North)
-            return Exits.South;
-        if (exit == Exits.South)
-            return Exits.North;
+        if (exit == Exits.right)
+            return Exits.left;
+        if (exit == Exits.left)
+            return Exits.right;
+        if (exit == Exits.top)
+            return Exits.bottom;
+        if (exit == Exits.bottom)
+            return Exits.top;
 
-        return Exits.North;
+        return Exits.top;
     }
+    private void AddCollisionBox(GameObject wall)
+    {
+        string name = wall.name;
+        var colbox = wall.AddComponent<BoxCollider2D>();
+        var sr = wall.GetComponent<SpriteRenderer>();
+        switch (name)
+        {
+            case "left":
+            case "right":
+            case "leftCor":
+            case "rightCor":
+                colbox.size = new Vector2(sr.size.x, sr.size.y + 3f);
+                colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y - 1f);
+                break;
+            case "rightDoor":
+            case "leftDoor":
+                colbox.size = new Vector2(sr.size.x, sr.size.y + 1.5f);
+                colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y - 1.279f);
+                break;
+            case "rightOther":
+            case "leftOther":
+                colbox.size = new Vector2(sr.size.x, sr.size.y);
+                break;
+
+            case "bottom":
+            case "bottomCor":
+            case "bottomDoor":
+            case "bottomOther":
+                colbox.size = new Vector2(sr.size.x, sr.size.y);
+                colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y - 0.7f);
+                break;
+            case "top":
+            case "topCor":
+            case "topLeft":
+            case "topRight":
+            case "bigCorner":
+            case "topDoor":
+            case "topOther":
+                colbox.size = new Vector2(sr.size.x, sr.size.y);
+                colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y + 0.05f);
+                break;
+
+        }
+    }
+
 }
 

@@ -22,7 +22,7 @@ public class FogOfWar : MonoBehaviour
         Events.onFieldInitialized += GameFieldInitialized;
     }
 
-    private void GameFieldInitialized(LevelManager.RoomLocations obj)
+    private void GameFieldInitialized(LevelManager.AllRooms obj)
     {
         Vector2 gameFieldSize = obj.end - obj.start;
         Vector2 position = obj.start - new Vector2(padding * 0.5f, padding * 0.5f);

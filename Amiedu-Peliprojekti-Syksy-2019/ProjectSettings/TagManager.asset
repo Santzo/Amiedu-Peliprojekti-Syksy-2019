@@ -50,6 +50,9 @@ TagManager:
   - name: Objects
     uniqueID: 689501021
     locked: 0
+  - name: Wall
+    uniqueID: 2453385979
+    locked: 0
   - name: FogOfWar
     uniqueID: 2467074195
     locked: 0
