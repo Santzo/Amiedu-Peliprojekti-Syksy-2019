@@ -441,7 +441,7 @@ public class LevelManager : MonoBehaviour
     void AddWallSortingGroup(GameObject wall, int order = 0)
     {
         var sortingGroup = wall.AddComponent<SortingGroup>();
-        if (wall.name == "top" || wall.name == "topLeft" || wall.name == "topRight" || wall.name == "bigCorner" || wall.name == "topCor" || wall.name == "topDoor")
+        if (wall.name == "top" || wall.name == "topLeft" || wall.name == "topRight" || wall.name == "bigCorner" || wall.name == "topCor" || wall.name == "topDoor" || wall.name=="topOther")
         {
             sortingGroup.sortingLayerName = "FloorObjects";
             sortingGroup.sortingOrder = wall.name != "bigCorner" ? order : 1;
@@ -644,10 +644,13 @@ public class LevelManager : MonoBehaviour
         {
             case "left":
             case "right":
-            case "leftCor":
-            case "rightCor":
                 colbox.size = new Vector2(sr.size.x, sr.size.y + 3f);
                 colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y - 1f);
+                break;
+            case "leftCor":
+            case "rightCor":
+                colbox.size = new Vector2(sr.size.x, sr.size.y);
+                colbox.offset = new Vector2(colbox.offset.x, colbox.offset.y - 0.529f);
                 break;
             case "rightDoor":
             case "leftDoor":
