@@ -10,8 +10,10 @@ public static class KeyboardConfig
     // Inventory Key
     public static KeyCode[] inventory =     new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("inventoryKey", "I")),
                                                         (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("inventoryKeyAlt", "O")) };
+    public static KeyCode[] sprint =    new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("sprintKey", "LeftShift")),
+                                                        (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("sprintKeyAlt", "RightShift")) };
 
-
+    
 
     // Up, Down, Left & Right keys
     public static KeyCode[] up =            new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("upKey", "W")),

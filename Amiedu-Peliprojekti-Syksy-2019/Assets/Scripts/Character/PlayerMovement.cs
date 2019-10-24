@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private bool movementPossible = true;
     float moveSpeed = 5f;
     float moveAnim;
+    bool sprinting;
 
     private int HandleVertical
     {
@@ -52,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
         fogOfWarCam.clearFlags = CameraClearFlags.Nothing;
 
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
+        References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
+        References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
     }
 
     private void FixedUpdate()
@@ -59,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         if (!movementPossible)
             return;
         rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
- 
+
     }
     // Update is called once per frame
     void Update()
@@ -69,9 +72,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
-        movement = new Vector2(HandleHorizontal, HandleVertical);
+        movement = sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
         moveAnim = movement != Vector2.zero ? moveAnim >= 1f ? 1f : moveAnim += 0.05f : 0f;
         anim.SetFloat("Movement", moveAnim);
+        anim.speed = sprinting ? CharacterStats.movementSpeedMultiplier : 1f;
         sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
     }
 
@@ -82,12 +86,46 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleInput()
     {
+        if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
+        {
+            sprinting = false;
+            if (CharacterStats.stamina < CharacterStats.maxStamina)
+            {
+                CharacterStats.stamina += 0.1f;
+                if (CharacterStats.stamina > CharacterStats.maxStamina)
+                    CharacterStats.stamina = CharacterStats.maxStamina;
+                References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
+            }
+        }
+
+        if (!Input.anyKey) return;
+
+        if (Input.GetKey(KeyboardConfig.sprint[0]) || Input.GetKey(KeyboardConfig.sprint[1]))
+        {
+            if (CharacterStats.stamina <= 0f)
+            {
+                sprinting = false;
+                return;
+            }
+            CharacterStats.stamina -= 0.5f;
+            sprinting = true;
+            References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
+
+        }
+
+
         if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
         {
+            ResetAnimations();
             Events.inventoryKey();
             movementPossible = !movementPossible;
         }
     }
 
 
+    private void ResetAnimations()
+    {
+        anim.speed = 1f;
+        anim.SetFloat("Movement", 0f);
+    }
 }

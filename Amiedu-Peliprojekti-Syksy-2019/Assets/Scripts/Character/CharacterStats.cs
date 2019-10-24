@@ -14,6 +14,8 @@ public static class CharacterStats
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
     public static Inventory[] hotbar = new Inventory[4];
 
+    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier;
+
 
     public static void ResetStats()
     {
@@ -25,6 +27,10 @@ public static class CharacterStats
         adaptability = 10;
         luck = 10;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
+        health = maxHealth = 100f;
+        stamina = maxStamina = 100f;
+        staminaRegenerationRate = 0.1f;
+        movementSpeedMultiplier = 1.7f;
 
     }
 }
