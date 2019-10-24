@@ -7,12 +7,11 @@ public class PlayerEquipment : MonoBehaviour
 {
     public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     public static Transform LOSCircle;
+    public Animator anim;
 
 
     private void Awake()
     {
-  
-
         var gear = CharacterStats.characterEquipment.GetType().GetFields();
         foreach (var g in gear)
         {
@@ -20,16 +19,19 @@ public class PlayerEquipment : MonoBehaviour
             equipment.Add(trans.name, new Equipped { trans = trans, item = null, obj = null });
 
         }
-
-
-
+        anim = transform.parent.GetComponent<Animator>();
     }
     private void Start()
     {
+        Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
     }
 
-    public static void AddEquipment(GameObject obj, InventoryItems item)
+    private void OnDisable()
+    {
+        Events.onAddPlayerEquipment -= AddEquipment;
+    }
+    public void AddEquipment(GameObject obj, InventoryItems item)
     {
         var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
@@ -42,7 +44,13 @@ public class PlayerEquipment : MonoBehaviour
         {
             Lightsource temp = equip.item as Lightsource;
             LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
-
+        }
+        else if (equip.item.GetType() == typeof(Weapon))
+        {
+            Weapon temp = equip.item as Weapon;
+            if (temp.hands == Hands.Two_handed) anim.SetLayerWeight(1, 1f);
+            else anim.SetLayerWeight(1, 0f);
+            
         }
 
     }

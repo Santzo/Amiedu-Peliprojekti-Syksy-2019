@@ -167,7 +167,7 @@ public class Equipment : MonoBehaviour
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
                 
-                if (obj != null) PlayerEquipment.AddEquipment(obj, equipment[index].item);
+                if (obj != null) Events.onAddPlayerEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
 
                 break;

@@ -6,6 +6,7 @@ public class Info
 {
     private static Canvas canvas = GameObject.Find("UI").GetComponent<Canvas>();
     public static Camera camera = Camera.main;
+    public static GameObject player = GameObject.Find("Player");
     public static float CanvasScale { get { return canvas.scaleFactor; } }
     public static Transform content; 
     public static PlayerEquipment playerEquipment = GameObject.Find("PlayerEquipment").GetComponent<PlayerEquipment>();

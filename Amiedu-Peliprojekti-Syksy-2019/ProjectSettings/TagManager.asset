@@ -53,6 +53,12 @@ TagManager:
   - name: Wall
     uniqueID: 2453385979
     locked: 0
+  - name: LOSBlocker
+    uniqueID: 4134898005
+    locked: 0
+  - name: Big Weapon
+    uniqueID: 46272547
+    locked: 0
   - name: FogOfWar
     uniqueID: 2467074195
     locked: 0

@@ -10,31 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: Hand Axe 10
+  m_Name: Bloodied Sword
   m_EditorClassIdentifier: 
-  itemLevel: 1
-  weight: 3
-  obj: {fileID: 4659233301652964338, guid: 5c5b21365bf0f71499f04bb6ffc75788, type: 3}
+  itemLevel: 3
+  weight: 1.3
+  obj: {fileID: 5447659618020291305, guid: c0546d9b2d3c6254b91d70b73d969c5a, type: 3}
   icon: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
-  iconScale: 1
-  description: 'A basic looking axe with a wooden handle. The axe looks like it has
-    been used a lot, but will certainly still be able to chop through flesh.
+  iconScale: 1.5
+  description: 'A massive two-handed sword. Covered in blood, making it an excellent
+    close quarters weapon.
 
 '
   weaponType: 0
-  hands: 0
-  minDamage: 6
-  maxDamage: 9
-  fireRate: 1.9
+  hands: 1
+  minDamage: 21
+  maxDamage: 35
+  fireRate: 1.95
   clipSize: 0
   reloadTime: 0
-  criticalHitChance: 31.6
+  criticalHitChance: 20
   bulletPerShot: 0
-  itemEffects:
-  - effect: 1
-    amount: 5
-    duration: 0
-  - effect: 2
-    amount: 5
-    duration: 0
+  itemEffects: []
