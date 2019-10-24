@@ -511,12 +511,17 @@ public class LevelManager : MonoBehaviour
                     sr.size = new Vector2(wallSize, scale.y);
                     wall.transform.localPosition = wall.name == "top" ? new Vector2(wallSize * 0.5f - 0.5f, ori.maxY - SpritePositionAdjusted(size.y) - 0.5f)
                                                                       : new Vector2(wallSize * 0.5f - 0.5f, 0f - SpritePositionAdjusted(size.y));
+                    if (wall.name == "top")
+                        CreateWallShadow(ori.trans, new Vector2(wall.transform.localPosition.x + 0.138f,  wall.transform.localPosition.y), new Vector2(wallSize - 0.95f, sr.size.y));
+
                     wallSize = ori.maxX - (doorOnWall.location.x + doorOnWall.size * 0.5f) + 0.5f;
                     otherWall = NewWall(ori, sprit, "Other");
                     otherSr = otherWall.GetComponent<SpriteRenderer>();
                     otherSr.size = new Vector2(wallSize, scale.y);
                     otherWall.transform.localPosition = wall.name == "top" ? new Vector2(ori.maxX - wallSize * 0.5f + 0.5f, ori.maxY - SpritePositionAdjusted(size.y) - 0.5f)
                                                                            : new Vector2(ori.maxX - wallSize * 0.5f + 0.5f, 0f - SpritePositionAdjusted(size.y));
+                    if (wall.name == "top")
+                        CreateWallShadow(ori.trans, new Vector2(otherWall.transform.localPosition.x - 0.138f, otherWall.transform.localPosition.y), new Vector2(wallSize - 0.95f, otherSr.size.y));
                     break;
             }
             wall.name += "Door";
