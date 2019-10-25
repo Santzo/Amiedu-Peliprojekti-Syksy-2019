@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MainMenu: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class MainMenu: MonoBehaviour, IMainMenuObject
 {
     public Animator anim;
-    public MainMenuHandler mainMenuHandler;
+    public IMainMenuHandler mainMenuHandler;
 
     public void Awake()
     {
         anim = GetComponent<Animator>();
-        mainMenuHandler = transform.parent.gameObject.GetComponent<MainMenuHandler>();
+        mainMenuHandler = transform.parent.gameObject.GetComponent<IMainMenuHandler>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        mainMenuHandler.OnClick(eventData.pointerPress.name);
+        mainMenuHandler.OnClick(transform);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

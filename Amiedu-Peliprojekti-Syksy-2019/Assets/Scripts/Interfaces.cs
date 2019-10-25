@@ -25,3 +25,13 @@ public class UIItem
     public TextMeshProUGUI text;
     public Transform trans;
 }
+public interface IMainMenuObject: IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+{
+ 
+}
+public interface IMainMenuHandler
+{
+    void OnClick(Transform trans);
+    void OnEnter(Transform trans);
+    void OnExit(Transform trans);
+}

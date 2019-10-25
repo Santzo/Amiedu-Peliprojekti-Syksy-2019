@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuHandler : MonoBehaviour
+public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
 {
- 
-    public void OnClick(string obj)
+    public void OnClick(Transform trans)
     {
-        switch (obj)
+       switch (trans.name)
         {
             case "StartGame":
                 {
@@ -16,5 +15,15 @@ public class MainMenuHandler : MonoBehaviour
                     break;
                 }
         }
+    }
+
+    public void OnEnter(Transform trans)
+    {
+       
+    }
+
+    public void OnExit(Transform trans)
+    {
+        
     }
 }
