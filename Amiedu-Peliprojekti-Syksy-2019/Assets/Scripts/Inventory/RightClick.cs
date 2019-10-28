@@ -6,14 +6,13 @@ using UnityEngine.EventSystems;
 
 public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
 {
-
     public List<UIItem> uitem = new List<UIItem>();
+    public InventoryItems unEquip;
     public int itemIndex;
 
     public void Awake()
     {
         uitem.UItemInitialize(transform);
-
     }
 
     public void EntryEnter(int index)
@@ -45,6 +44,11 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
                
                     }
                     break;
+                case "Unequip":
+                    InventoryManager.im.AddItem(unEquip);
+                    Events.onUnEquip(unEquip.GetType(), itemIndex);
+                    unEquip = null;
+                    break;
                 case "Discard":
                     Events.onDialogueBox = true;
                     SpawnDialogue("DiscardItem");
@@ -70,7 +74,8 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
         if (objName == "DiscardItem")
         {
             DiscardItems ditem = obj.GetComponent<DiscardItems>();
-            ditem.Spawn(itemIndex);
+            if (unEquip == null) ditem.Spawn(itemIndex);
+            else ditem.Spawn(unEquip);
         }
     }
 

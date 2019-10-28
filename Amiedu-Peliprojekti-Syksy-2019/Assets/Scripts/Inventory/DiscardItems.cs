@@ -67,6 +67,15 @@ public class DiscardItems : MonoBehaviour, IUIHandler,  IPointerClickHandler
             text.text = "Discard " + TextColor.Return("yellow") + item.item.name + TextColor.Return("defaultTitle") + " ?";
         }
     }
+    public void Spawn(InventoryItems item)
+    {
+        if (item != null)
+        {
+            slider.gameObject.SetActive(false);
+            text.text = "Discard " + TextColor.Return("yellow") + item.name + TextColor.Return("defaultTitle") + " ?";
+        }
+    }
+
 
     private void Close()
     {

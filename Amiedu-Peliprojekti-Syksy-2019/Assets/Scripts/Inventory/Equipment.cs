@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Equipment : MonoBehaviour
 {
     private GameObject _obj;
+    private Color placeholderColor;
     private Type current;
     private Child[] equipment;
     private string[] types = new string[] { "head", "chest", "arms", "legs", "weapon", "lightSource" };
@@ -29,6 +30,7 @@ public class Equipment : MonoBehaviour
             equipment[i].placeHolder = transform.GetChild(i).Find("IconBackground").GetComponent<Image>();
             equipment[i].itemIcon = transform.GetChild(i).Find("ItemIcon").GetComponent<Image>();
         }
+        placeholderColor = equipment[0].itemIcon.color;
     }
 
  
@@ -39,12 +41,15 @@ public class Equipment : MonoBehaviour
         Events.onItemDragStop += ItemDragStop;
         Events.onEquipmentIconHover += EquipmentHover;
         Events.onEquipmentIconHoverLeave += EquipmentHoverLeave;
+        Events.onEquipmentIconPress += EquipmentPress;
         Events.onIconDoubleClick += EquipNewItem;
+        Events.onUnEquip += UnEquipItem;
         foreach (var ani in equipment)
             ani.anim.SetBool("Hover", false);
     }
 
-  
+ 
+
     private void OnDisable()
     {
         Events.onItemHover -= ItemHover;
@@ -52,10 +57,42 @@ public class Equipment : MonoBehaviour
         Events.onItemDragStop -= ItemDragStop;
         Events.onEquipmentIconHover -= EquipmentHover;
         Events.onEquipmentIconHoverLeave -= EquipmentHoverLeave;
+        Events.onEquipmentIconPress -= EquipmentPress;
         Events.onIconDoubleClick -= EquipNewItem;
+        Events.onUnEquip -= UnEquipItem;
         if (_obj != null) ObjectPooler.op.DeSpawn(_obj);
 
     }
+
+    private void UnEquipItem(Type itemType, int index)
+    {
+        equipment[index].placeHolder.enabled = true;
+        equipment[index].item = null;
+        var info = typeof(CharacterEquipment).GetField(types[index]);
+        info.SetValue(CharacterStats.characterEquipment, null);
+        equipment[index].itemIcon.sprite = null;
+        equipment[index].itemIcon.color = placeholderColor;
+        References.rf.playerEquipment.RemoveEquipment(itemType);
+;
+
+        //if (obj != null) Events.onAddPlayerEquipment(obj, equipment[index].item);
+        //Events.updateFilteredItems(InventoryManager.im.filteredItems);
+    }
+    private void EquipmentPress(int obj)
+    {
+        var info = typeof(CharacterEquipment).GetField(types[obj]);
+        if (info.GetValue(CharacterStats.characterEquipment) != null)
+        {
+            Vector2 pos = transform.GetChild(obj).position;
+            GameObject right = ObjectPooler.op.SpawnUI("RightClick", pos, transform.parent);
+            RightClick rce = right.GetComponent<RightClick>();
+            rce.unEquip = info.GetValue(CharacterStats.characterEquipment) as InventoryItems;
+            rce.itemIndex = obj;
+            rce.uitem[0].text.text = "Unequip";
+            rce.uitem[1].text.text = "Discard";
+        }
+    }
+
 
     private void EquipmentHover(int obj)
     {

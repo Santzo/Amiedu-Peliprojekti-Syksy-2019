@@ -8,6 +8,8 @@ public class References : MonoBehaviour
     public Bar healthBar;
     [HideInInspector]
     public Bar staminaBar;
+    [HideInInspector]
+    public PlayerEquipment playerEquipment;
 
     public static References rf;
     private void Awake()
@@ -29,6 +31,7 @@ public class References : MonoBehaviour
     {
         healthBar = GameObject.Find("HealthBar").GetComponent<Bar>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Bar>();
+        playerEquipment = FindObjectOfType<PlayerEquipment>();
 
     }
 

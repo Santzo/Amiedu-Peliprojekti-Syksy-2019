@@ -25,7 +25,7 @@ public class UIItem
     public TextMeshProUGUI text;
     public Transform trans;
 }
-public interface IMainMenuObject: IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public interface IUIObject: IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
  
 }

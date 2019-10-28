@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MainMenu: MonoBehaviour, IMainMenuObject
+public class MainMenu: MonoBehaviour, IUIObject
 {
     public Animator anim;
     public IMainMenuHandler mainMenuHandler;

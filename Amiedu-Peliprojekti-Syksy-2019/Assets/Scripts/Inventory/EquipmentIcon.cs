@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquipmentIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EquipmentIcon : MonoBehaviour, IUIObject
 {
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+            Events.onEquipmentIconPress(transform.GetSiblingIndex());
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (Events.onDrag || Events.onDialogueBox) return;
@@ -15,6 +21,6 @@ public class EquipmentIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (Events.onDrag || Events.onDialogueBox) return;
         Events.onEquipmentIconHoverLeave(transform.GetSiblingIndex());
-     
+
     }
 }

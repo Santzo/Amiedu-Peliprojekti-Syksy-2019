@@ -8,6 +8,7 @@ public class PlayerEquipment : MonoBehaviour
     public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     public static Transform LOSCircle;
     public Animator anim;
+    private float lightRadius = 1.75f;
 
 
     private void Awake()
@@ -25,6 +26,7 @@ public class PlayerEquipment : MonoBehaviour
     {
         Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
+        LOSCircle.transform.localScale = Vector3.one * lightRadius;
     }
 
     private void OnDisable()
@@ -52,7 +54,22 @@ public class PlayerEquipment : MonoBehaviour
             else anim.SetLayerWeight(1, 0f);
             
         }
+    }
+    public void RemoveEquipment(Type item)
+    {
+        var equip = equipment[item.ToString()];
+        if (equip.item != null && equip.item.Equals(item)) return;
+        equip.item = null;
+        if (equip.obj != null) Destroy(equip.obj);
 
+        if (item == typeof(Lightsource))
+        {
+            LOSCircle.transform.localScale = Vector3.one * lightRadius;
+        }
+        else if (item == typeof(Weapon))
+        {
+            anim.SetLayerWeight(1, 0f);
+        }
     }
 
 }
