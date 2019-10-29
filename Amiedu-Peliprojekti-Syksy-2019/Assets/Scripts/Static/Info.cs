@@ -16,4 +16,21 @@ public class Info
         yPos *= 100;
         return Mathf.RoundToInt(-yPos);
     }
+
+    public static int MinDamage
+    {
+        get
+        {
+            int dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.minDamage : 0;
+            return dmg;
+        }
+    }
+    public static int MaxDamage
+    {
+        get
+        {
+            int dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.maxDamage : 0;
+            return dmg;
+        }
+    }
 }

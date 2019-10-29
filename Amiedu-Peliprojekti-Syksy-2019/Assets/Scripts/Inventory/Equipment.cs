@@ -73,10 +73,7 @@ public class Equipment : MonoBehaviour
         equipment[index].itemIcon.sprite = null;
         equipment[index].itemIcon.color = placeholderColor;
         References.rf.playerEquipment.RemoveEquipment(itemType);
-;
-
-        //if (obj != null) Events.onAddPlayerEquipment(obj, equipment[index].item);
-        //Events.updateFilteredItems(InventoryManager.im.filteredItems);
+        References.rf.statsDetails.UpdateStats();
     }
     private void EquipmentPress(int obj)
     {
@@ -206,6 +203,7 @@ public class Equipment : MonoBehaviour
                 
                 if (obj != null) Events.onAddPlayerEquipment(obj, equipment[index].item);
                 Events.updateFilteredItems(InventoryManager.im.filteredItems);
+                References.rf.statsDetails.UpdateStats();
 
                 break;
             }

@@ -205,7 +205,12 @@ public class LevelManager : MonoBehaviour
         foreach (var obj in objects)
         {
             if (obj.sortingLayerName != "Wall" && obj.sortingLayerName != "FloorObjects")
-                obj.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+            {
+                float offset = 0f;
+                SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+                if (sr != null) offset = sr.bounds.extents.y;
+                obj.sortingOrder = Info.SortingOrder(obj.transform.position.y - offset);
+            }
         }
     }
 

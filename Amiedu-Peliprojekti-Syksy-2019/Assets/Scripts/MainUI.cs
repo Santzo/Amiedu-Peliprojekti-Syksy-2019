@@ -8,7 +8,7 @@ public class MainUI : MonoBehaviour
     private void Awake()
     {
         inventory = transform.Find("Inventory").gameObject;
-        inventory.SetActive(false);
+        //inventory.SetActive(false);
     }
     private void OnEnable()
     {

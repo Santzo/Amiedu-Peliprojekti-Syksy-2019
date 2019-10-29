@@ -10,6 +10,10 @@ public class References : MonoBehaviour
     public Bar staminaBar;
     [HideInInspector]
     public PlayerEquipment playerEquipment;
+    [HideInInspector]
+    public StatsDetails statsDetails;
+    [HideInInspector]
+    public MainInventory mainInventory;
 
     public static References rf;
     private void Awake()
@@ -32,7 +36,9 @@ public class References : MonoBehaviour
         healthBar = GameObject.Find("HealthBar").GetComponent<Bar>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Bar>();
         playerEquipment = FindObjectOfType<PlayerEquipment>();
-
+        statsDetails = FindObjectOfType<StatsDetails>();
+        mainInventory = FindObjectOfType<MainInventory>();
+        mainInventory.gameObject.SetActive(false);
     }
 
 }

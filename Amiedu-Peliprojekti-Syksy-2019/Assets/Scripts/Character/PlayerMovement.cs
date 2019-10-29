@@ -128,4 +128,9 @@ public class PlayerMovement : MonoBehaviour
         anim.speed = 1f;
         anim.SetFloat("Movement", 0f);
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+       //DynamicObject _do = collision.collider.GetComponent<DynamicObject>();
+       // if (_do != null) _do.UpdateSortLayer(movement);
+    }
 }

@@ -86,6 +86,7 @@ public class InventoryManager : MonoBehaviour
         Events.updateFilteredItems(filteredItems);
         Events.onInventoryChange();
     }
+
     public void AddItem(InventoryItems itemToAdd)
     {
         var tempItem = CharacterStats.inventoryItems.Find(_item => _item.item == itemToAdd);
