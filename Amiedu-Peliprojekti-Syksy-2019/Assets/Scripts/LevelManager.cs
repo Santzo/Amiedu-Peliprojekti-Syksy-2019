@@ -208,7 +208,7 @@ public class LevelManager : MonoBehaviour
             {
                 float offset = 0f;
                 SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-                if (sr != null) offset = sr.bounds.extents.y;
+                if (sr != null) offset = sr.bounds.extents.y * 0.5f;
                 obj.sortingOrder = Info.SortingOrder(obj.transform.position.y - offset);
             }
         }

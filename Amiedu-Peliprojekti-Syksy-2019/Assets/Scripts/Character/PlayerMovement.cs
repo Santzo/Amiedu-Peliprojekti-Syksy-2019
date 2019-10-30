@@ -100,6 +100,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (!Input.anyKey) return;
 
+        if (Input.GetKeyDown(KeyboardConfig.attack[0]) || Input.GetKeyDown(KeyboardConfig.attack[1]))
+        {
+            anim.SetTrigger("Attack");
+        }
         if (Input.GetKey(KeyboardConfig.sprint[0]) || Input.GetKey(KeyboardConfig.sprint[1]))
         {
             if (CharacterStats.stamina <= 0f)

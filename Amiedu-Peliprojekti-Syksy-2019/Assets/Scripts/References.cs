@@ -14,6 +14,8 @@ public class References : MonoBehaviour
     public StatsDetails statsDetails;
     [HideInInspector]
     public MainInventory mainInventory;
+    [HideInInspector]
+    public Transform uiUnderLay;
 
     public static References rf;
     private void Awake()

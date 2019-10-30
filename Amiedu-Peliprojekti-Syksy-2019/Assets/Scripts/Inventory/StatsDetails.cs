@@ -17,12 +17,18 @@ public class StatsDetails : MonoBehaviour
     public void UpdateStats()
     {
         Weapon curWep = CharacterStats.characterEquipment.weapon;
-        string damageText = "No weapon equipped";
+        for (int i = 0; i < details.Length; i++)
+        {
+            details[i].text = "";
+        }
+        details[0].text = "No weapon equipped";
+   
         if (curWep != null)
         {
-            damageText = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
-            damageText += TextColor.Return("green") + Info.MinDamage + TextColor.Return() + " - " + TextColor.Return("green") + Info.MaxDamage;
+            details[0].text = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
+            details[0].text += TextColor.Return("green") + Info.StatsMinDamage + TextColor.Return() + " - " + TextColor.Return("green") + Info.StatsMaxDamage;
+            //details[1].text = curWep.weaponType == WeaponType.Melee ? ""
         }
-        details[0].text = damageText;
+        
     }
 }

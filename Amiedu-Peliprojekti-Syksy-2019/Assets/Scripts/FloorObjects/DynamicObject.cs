@@ -25,7 +25,7 @@ public class DynamicObject : MonoBehaviour
         shadow = transform.GetChild(0);
         //shadow.transform.SetParent(null);
         //shadowOffset = transform.position - shadow.position;
-        spriteBoundsY = GetComponent<SpriteRenderer>().bounds.extents.y;
+        spriteBoundsY = GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
     }
 
     private void Update()
