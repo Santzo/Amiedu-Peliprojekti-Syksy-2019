@@ -6,6 +6,7 @@ using UnityEngine;
 public class Weapon : InventoryItems
 {
     public WeaponType weaponType;
+    public AnimationClip attackAnimation;
     public Hands hands;
     public float minDamage, maxDamage;
     [Tooltip("How many shots / swings (melee) per second.")]

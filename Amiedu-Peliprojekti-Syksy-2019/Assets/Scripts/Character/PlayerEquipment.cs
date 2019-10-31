@@ -6,9 +6,17 @@ using UnityEngine;
 public class PlayerEquipment : MonoBehaviour
 {
     public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
-    public static Transform LOSCircle;
+    private Transform LOSCircle;
+    private int animationLayerIndex = 0;
+    private int attackLayerIndex = 0;
+    [HideInInspector]
     public Animator anim;
+    private int weaponLayerIndex = 0;
     private float lightRadius = 1.75f;
+    public AnimationClip oneHandedMelee;
+    public AnimationClip twoHandedMelee;
+    public AnimationClip oneHandedRanged;
+    public AnimationClip twoHandedRanged;
 
 
     private void Awake()
@@ -21,6 +29,14 @@ public class PlayerEquipment : MonoBehaviour
 
         }
         anim = transform.parent.GetComponent<Animator>();
+        for (int i = 0; i < anim.runtimeAnimatorController.animationClips.Length; i++)
+        {
+            if (anim.runtimeAnimatorController.animationClips[i].name == "BaseAttack")
+            {
+                weaponLayerIndex = i;
+                break;
+            }
+        }
     }
     private void Start()
     {
@@ -50,9 +66,13 @@ public class PlayerEquipment : MonoBehaviour
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
-            if (temp.hands == Hands.Two_handed) anim.SetLayerWeight(1, 1f);
-            else anim.SetLayerWeight(1, 0f);
-            
+            AnimationClip attackClip = temp.attackAnimation == null ? DefaultClip(temp.hands + temp.weaponType.ToString()) : temp.attackAnimation;
+            AnimatorOverrideController _override = new AnimatorOverrideController();
+            _override.runtimeAnimatorController = anim.runtimeAnimatorController;
+            Debug.Log(_override.animationClips[weaponLayerIndex]);
+            _override[_override.animationClips[weaponLayerIndex]] = attackClip;
+            Debug.Log(_override.animationClips[weaponLayerIndex]);
+            anim.runtimeAnimatorController = _override;     
         }
     }
     public void RemoveEquipment(Type item)
@@ -68,8 +88,23 @@ public class PlayerEquipment : MonoBehaviour
         }
         else if (item == typeof(Weapon))
         {
-            anim.SetLayerWeight(1, 0f);
         }
+    }
+
+    private AnimationClip DefaultClip(string weapon)
+    {
+        switch (weapon)
+        {
+            case "One_handedMelee":
+                return oneHandedMelee;
+            case "Two_handedMelee":
+                return twoHandedMelee;
+            case "One_handedRanged":
+                return oneHandedRanged;
+            case "Two_handedRanged":
+                return twoHandedRanged;
+        }
+        return null;
     }
 
 }

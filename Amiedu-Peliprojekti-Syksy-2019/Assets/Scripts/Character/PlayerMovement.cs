@@ -86,6 +86,15 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleInput()
     {
+        if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
+        {
+            ResetAnimations();
+            Events.inventoryKey();
+            movementPossible = !movementPossible;
+        }
+
+        if (!movementPossible) return;
+
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
         {
             sprinting = false;
@@ -118,12 +127,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
-        {
-            ResetAnimations();
-            Events.inventoryKey();
-            movementPossible = !movementPossible;
-        }
+  
     }
 
 

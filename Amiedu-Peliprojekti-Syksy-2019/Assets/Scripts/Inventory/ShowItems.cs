@@ -13,7 +13,6 @@ public class ShowItems : MonoBehaviour, IResetUI
 
 
     private float itemHeight, borderHeight;
-    private int howManyItemsShown = 1;
     private Image background;
     private Color oriColor;
     private bool expanded = false;

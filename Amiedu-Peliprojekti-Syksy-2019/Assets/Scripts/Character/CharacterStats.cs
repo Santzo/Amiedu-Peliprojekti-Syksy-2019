@@ -14,7 +14,7 @@ public static class CharacterStats
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
     public static Inventory[] hotbar = new Inventory[4];
 
-    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier;
+    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier, attackSpeed;
 
 
     public static void ResetStats()
@@ -31,6 +31,7 @@ public static class CharacterStats
         stamina = maxStamina = 100f;
         staminaRegenerationRate = 0.1f;
         movementSpeedMultiplier = 1.7f;
+        attackSpeed = 1f;
 
     }
 }
