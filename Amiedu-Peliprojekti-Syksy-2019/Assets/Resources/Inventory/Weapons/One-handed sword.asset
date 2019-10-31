@@ -23,6 +23,7 @@ MonoBehaviour:
 
 '
   weaponType: 0
+  attackAnimation: {fileID: 0}
   hands: 0
   minDamage: 10
   maxDamage: 12

@@ -17,6 +17,7 @@ public class PlayerEquipment : MonoBehaviour
     public AnimationClip twoHandedMelee;
     public AnimationClip oneHandedRanged;
     public AnimationClip twoHandedRanged;
+    private AnimatorOverrideController overrider;
 
 
     private void Awake()
@@ -37,6 +38,8 @@ public class PlayerEquipment : MonoBehaviour
                 break;
             }
         }
+        overrider = new AnimatorOverrideController();
+        overrider.runtimeAnimatorController = anim.runtimeAnimatorController;
     }
     private void Start()
     {
@@ -66,13 +69,15 @@ public class PlayerEquipment : MonoBehaviour
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
-            AnimationClip attackClip = temp.attackAnimation == null ? DefaultClip(temp.hands + temp.weaponType.ToString()) : temp.attackAnimation;
-            AnimatorOverrideController _override = new AnimatorOverrideController();
-            _override.runtimeAnimatorController = anim.runtimeAnimatorController;
-            Debug.Log(_override.animationClips[weaponLayerIndex]);
-            _override[_override.animationClips[weaponLayerIndex]] = attackClip;
-            Debug.Log(_override.animationClips[weaponLayerIndex]);
-            anim.runtimeAnimatorController = _override;     
+            string defWep = temp.weaponType == WeaponType.Melee ? "Melee" : "Ranged";
+
+            AnimationClip attackClip = temp.attackAnimation == null ? DefaultClip(temp.hands + defWep) : temp.attackAnimation;
+            overrider["BaseAttack"] = attackClip;
+            anim.runtimeAnimatorController = overrider;
+
+            var rb = obj.GetComponent<Rigidbody2D>();
+            if (rb != null)
+                References.rf.playerMovement.weaponRb = obj.GetComponent<Rigidbody2D>();
         }
     }
     public void RemoveEquipment(Type item)

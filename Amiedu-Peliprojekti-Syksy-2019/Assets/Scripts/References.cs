@@ -16,6 +16,8 @@ public class References : MonoBehaviour
     public MainInventory mainInventory;
     [HideInInspector]
     public Transform uiUnderLay;
+    [HideInInspector]
+    public PlayerMovement playerMovement;
 
     public static References rf;
     private void Awake()
@@ -38,6 +40,7 @@ public class References : MonoBehaviour
         healthBar = GameObject.Find("HealthBar").GetComponent<Bar>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Bar>();
         playerEquipment = FindObjectOfType<PlayerEquipment>();
+        playerMovement = FindObjectOfType<PlayerMovement>();
         statsDetails = FindObjectOfType<StatsDetails>();
         mainInventory = FindObjectOfType<MainInventory>();
         mainInventory.gameObject.SetActive(false);

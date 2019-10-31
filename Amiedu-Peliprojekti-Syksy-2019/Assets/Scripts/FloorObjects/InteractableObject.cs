@@ -14,13 +14,17 @@ public class InteractableObject : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (obj == null || !obj.activeSelf) obj = ObjectPooler.op.Spawn("InteractableObjectText", new Vector2(transform.position.x, transform.position.y + spriteY));
-        io = obj.GetComponent<InteractableObjectText>();
-        io.text.text = TextColor.Return() + "Press " + TextColor.Return("green") + KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString()) + TextColor.Return() + " to open the " + name + ".";
-        io.ToggleTextActive(true);
+        if (collision.CompareTag("PlayerCollider"))
+        {
+            if (obj == null || !obj.activeSelf) obj = ObjectPooler.op.Spawn("InteractableObjectText", new Vector2(transform.position.x, transform.position.y + spriteY));
+            io = obj.GetComponent<InteractableObjectText>();
+            io.text.text = TextColor.Return() + "Press " + TextColor.Return("green") + KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString()) + TextColor.Return() + " to open the " + name + ".";
+            io.ToggleTextActive(true);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (io != null) io.ToggleTextActive(false);
+        if (collision.CompareTag("PlayerCollider"))
+            if (io != null) io.ToggleTextActive(false);
     }
 }

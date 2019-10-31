@@ -1,22 +1,58 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public class PlayerAnimations
+    {
+        private float moveAnim;
+        private bool sprinting;
+        PlayerMovement pm;
+        public PlayerAnimations(PlayerMovement pm)
+        {
+            this.pm = pm;
+        }
+        public float MoveAnim
+        {
+            get
+            {
+                return moveAnim;
+            }
+            set
+            {
+                if (value == moveAnim) return;
+                moveAnim = value;
+                pm.UpdateMoveAnimation();
+            }
+        }
+        public bool Sprinting
+        {
+            get
+            {
+                return sprinting;
+            }
+            set
+            {
+                if (value == sprinting) return;
+                sprinting = value;
+                pm.UpdateMoveAnimation();
+            }
+        }
+    }
     Rigidbody2D rb;
+    [HideInInspector]
+    public Rigidbody2D weaponRb;
     Camera mainCam;
-    Camera fogOfWarCam;
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
     SortingGroup sortingGroup;
     private bool movementPossible = true;
-    float moveSpeed = 5f;
-    float moveAnim;
-    bool sprinting;
-
+    PlayerAnimations pa;
+    private bool activeAttackFrames;
     private int HandleVertical
     {
         get
@@ -43,15 +79,11 @@ public class PlayerMovement : MonoBehaviour
         oriScale = transform.localScale;
         sortingGroup = GetComponent<SortingGroup>();
         anim = GetComponent<Animator>();
-        //anim.SetFloat("Movement", 0.5f);
-
+        pa = new PlayerAnimations(this);
     }
     void Start()
     {
         mainCam = Camera.main;
-        fogOfWarCam = GameObject.Find("FogOfWarCamera").GetComponent<Camera>();
-        fogOfWarCam.clearFlags = CameraClearFlags.Nothing;
-
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
@@ -61,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!movementPossible)
             return;
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.deltaTime);
+        rb.MovePosition(rb.position + movement * CharacterStats.moveSpeed * Time.deltaTime);
 
     }
     // Update is called once per frame
@@ -72,11 +104,15 @@ public class PlayerMovement : MonoBehaviour
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
-        movement = sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
-        moveAnim = movement != Vector2.zero ? moveAnim >= 1f ? 1f : moveAnim += 0.05f : 0f;
-        anim.SetFloat("Movement", moveAnim);
-        anim.speed = sprinting ? CharacterStats.movementSpeedMultiplier : 1f;
+        movement = pa.Sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
+        pa.MoveAnim = movement != Vector2.zero ? pa.MoveAnim >= 1f ? 1f : pa.MoveAnim += 0.05f : 0f;
         sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
+    }
+
+    void UpdateMoveAnimation()
+    {
+        anim.SetFloat("Movement", pa.MoveAnim);
+        anim.SetFloat("MovementMultiplier", pa.Sprinting ? CharacterStats.movementSpeedMultiplier : 1f);
     }
 
     void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
@@ -97,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
         {
-            sprinting = false;
+            pa.Sprinting = false;
             if (CharacterStats.stamina < CharacterStats.maxStamina)
             {
                 CharacterStats.stamina += 0.1f;
@@ -117,20 +153,28 @@ public class PlayerMovement : MonoBehaviour
         {
             if (CharacterStats.stamina <= 0f)
             {
-                sprinting = false;
+                pa.Sprinting = false;
                 return;
             }
             CharacterStats.stamina -= 0.5f;
-            sprinting = true;
+            pa.Sprinting = true;
             References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
 
         }
-
-
-  
     }
-
-
+    public void MeleeWeaponHit(Vector2 position)
+    {
+        if (!activeAttackFrames) return;
+        Debug.Log("Attack hits");
+        ObjectPooler.op.Spawn("ObjectMeleeHit", position);
+        activeAttackFrames = false;
+        anim.SetTrigger("StopAttack");
+        anim.ResetTrigger("Attack");
+    }
+    public void ActivateAttackFrames(int activate)
+    {
+        activeAttackFrames = activate == 1;
+    }
     private void ResetAnimations()
     {
         anim.speed = 1f;
@@ -138,7 +182,6 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       //DynamicObject _do = collision.collider.GetComponent<DynamicObject>();
-       // if (_do != null) _do.UpdateSortLayer(movement);
+        Debug.Log(collision.otherCollider.name);
     }
 }

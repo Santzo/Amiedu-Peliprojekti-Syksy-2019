@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerCollider
+  - MeleeWeapon
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - ObjectCollider
   - FloorObject
   - ActionTrigger
-  - 
+  - MeleeWeapon
   - 
   - 
   - 
@@ -58,6 +60,9 @@ TagManager:
     locked: 0
   - name: Big Weapon
     uniqueID: 46272547
+    locked: 0
+  - name: ParticleEffects
+    uniqueID: 2601177617
     locked: 0
   - name: FogOfWar
     uniqueID: 2467074195
