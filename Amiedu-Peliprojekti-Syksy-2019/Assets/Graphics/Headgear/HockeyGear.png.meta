@@ -7,13 +7,22 @@ TextureImporter:
     second: HockeyGear_Mask
   - first:
       213: -4573432836359174611
-    second: HockeyGear_ShoulderPads
+    second: Chest
   - first:
       213: -783763517135657829
     second: HockeyGear_Kneepad_left
   - first:
       213: -85801454839792004
     second: HockeyGear_Kneepad_right
+  - first:
+      213: -4839619986339858569
+    second: R_Upper
+  - first:
+      213: -7667819497518635705
+    second: R_Lower
+  - first:
+      213: 4680364627754823987
+    second: Mid
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -153,8 +162,8 @@ TextureImporter:
         y: 263
         width: 175
         height: 103
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5022926, y: 0.9713108}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -167,15 +176,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HockeyGear_ShoulderPads
+      name: Chest
       rect:
         serializedVersion: 2
-        x: 20
-        y: 134
-        width: 222
-        height: 115
+        x: 106
+        y: 202
+        width: 108
+        height: 47
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -196,7 +205,7 @@ TextureImporter:
         width: 56
         height: 72
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -217,7 +226,7 @@ TextureImporter:
         width: 54
         height: 70
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -225,6 +234,69 @@ TextureImporter:
       bones: []
       spriteID: c8d6983980ccc594681302cad7c7c559
       internalID: -85801454839792004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: R_Upper
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 219
+        width: 57
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b157ac8c699e1ae44b684fa7168f6e1c
+      internalID: -4839619986339858569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: R_Lower
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 142
+        width: 62
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e659411daecebb43ac5e0192056b367
+      internalID: -7667819497518635705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mid
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 134
+        width: 143
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42d434105f8fef144ada19601b02d255
+      internalID: 4680364627754823987
       vertices: []
       indices: 
       edges: []

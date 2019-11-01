@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
     public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
+    private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
+    private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
     private Transform LOSCircle;
     private int animationLayerIndex = 0;
     private int attackLayerIndex = 0;
     [HideInInspector]
     public Animator anim;
-    private int weaponLayerIndex = 0;
     private float lightRadius = 1.75f;
-    public AnimationClip oneHandedMelee;
-    public AnimationClip twoHandedMelee;
-    public AnimationClip oneHandedRanged;
-    public AnimationClip twoHandedRanged;
+    public AnimationClip oneHandedMelee, oneHandedRanged, oneHandedIdle, oneHandedWalk;
+    public AnimationClip twoHandedMelee, twoHandedRanged, twoHandedIdle, twoHandedWalk;
     private AnimatorOverrideController overrider;
 
 
@@ -30,14 +28,6 @@ public class PlayerEquipment : MonoBehaviour
 
         }
         anim = transform.parent.GetComponent<Animator>();
-        for (int i = 0; i < anim.runtimeAnimatorController.animationClips.Length; i++)
-        {
-            if (anim.runtimeAnimatorController.animationClips[i].name == "BaseAttack")
-            {
-                weaponLayerIndex = i;
-                break;
-            }
-        }
         overrider = new AnimatorOverrideController();
         overrider.runtimeAnimatorController = anim.runtimeAnimatorController;
     }
@@ -46,20 +36,32 @@ public class PlayerEquipment : MonoBehaviour
         Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
         LOSCircle.transform.localScale = Vector3.one * lightRadius;
+        chestgearEquipment.Add("ChestgearEquip", transform.parent.GetFromAllChildren("ChestgearEquip").GetComponent<SpriteRenderer>());
+        chestgearEquipment.Add("Mid_SectionEquip", transform.parent.GetFromAllChildren("Mid_SectionEquip").GetComponent<SpriteRenderer>());
+        chestgearEquipment.Add("R_Upper_ArmEquip", transform.parent.GetFromAllChildren("R_Upper_ArmEquip").GetComponent<SpriteRenderer>());
+        chestgearEquipment.Add("R_Lower_ArmEquip", transform.parent.GetFromAllChildren("R_Lower_ArmEquip").GetComponent<SpriteRenderer>());
+        chestgearEquipment.Add("L_Upper_ArmEquip", transform.parent.GetFromAllChildren("L_Upper_ArmEquip").GetComponent<SpriteRenderer>());
+        chestgearEquipment.Add("L_Lower_ArmEquip", transform.parent.GetFromAllChildren("L_Lower_ArmEquip").GetComponent<SpriteRenderer>());
     }
 
     private void OnDisable()
     {
         Events.onAddPlayerEquipment -= AddEquipment;
     }
+
+
     public void AddEquipment(GameObject obj, InventoryItems item)
     {
         var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
         equip.item = item;
-        if (equip.obj != null) Destroy(equip.obj);
-        equip.obj = Instantiate(obj);
-        equip.obj.transform.SetParent(equip.trans, false);
+
+        if (item.GetType() != typeof(Chestgear))
+        {
+            if (equip.obj != null) Destroy(equip.obj);
+            equip.obj = Instantiate(obj);
+            equip.obj.transform.SetParent(equip.trans, false);
+        }
 
         if (equip.item.GetType() == typeof(Lightsource))
         {
@@ -69,15 +71,28 @@ public class PlayerEquipment : MonoBehaviour
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
+
             string defWep = temp.weaponType == WeaponType.Melee ? "Melee" : "Ranged";
 
-            AnimationClip attackClip = temp.attackAnimation == null ? DefaultClip(temp.hands + defWep) : temp.attackAnimation;
+            AnimationClip attackClip = temp.attackAnimation == null ? DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;
+            AnimationClip idleClip = DefaultIdleClip(temp.hands + defWep);
+            AnimationClip walkClip = DefaultWalkClip(temp.hands + defWep);
             overrider["BaseAttack"] = attackClip;
+            overrider["BaseIdle"] = idleClip;
+            overrider["BaseWalk"] = walkClip;
             anim.runtimeAnimatorController = overrider;
+            anim.SetLayerWeight(1, 1f);
 
             var rb = obj.GetComponent<Rigidbody2D>();
             if (rb != null)
                 References.rf.playerMovement.weaponRb = obj.GetComponent<Rigidbody2D>();
+        }
+        else if (equip.item.GetType() == typeof(Chestgear))
+        {
+            foreach (Transform trans in obj.transform)
+            {
+                chestgearEquipment[trans.name].sprite = trans.GetComponent<SpriteRenderer>().sprite;
+            }
         }
     }
     public void RemoveEquipment(Type item)
@@ -94,9 +109,16 @@ public class PlayerEquipment : MonoBehaviour
         else if (item == typeof(Weapon))
         {
         }
+        else if (item == typeof(Chestgear))
+        {
+            foreach (var obj in chestgearEquipment)
+            {
+                obj.Value.sprite = null;
+            }
+        }
     }
 
-    private AnimationClip DefaultClip(string weapon)
+    private AnimationClip DefaultAttackClip(string weapon)
     {
         switch (weapon)
         {
@@ -108,6 +130,36 @@ public class PlayerEquipment : MonoBehaviour
                 return oneHandedRanged;
             case "Two_handedRanged":
                 return twoHandedRanged;
+        }
+        return null;
+    }
+    private AnimationClip DefaultIdleClip(string weapon)
+    {
+        switch (weapon)
+        {
+            case "One_handedMelee":
+                return oneHandedIdle;
+            case "Two_handedMelee":
+                return twoHandedIdle;
+            case "One_handedRanged":
+                return oneHandedIdle;
+            case "Two_handedRanged":
+                return twoHandedIdle;
+        }
+        return null;
+    }
+    private AnimationClip DefaultWalkClip(string weapon)
+    {
+        switch (weapon)
+        {
+            case "One_handedMelee":
+                return oneHandedWalk;
+            case "Two_handedMelee":
+                return twoHandedWalk;
+            case "One_handedRanged":
+                return oneHandedWalk;
+            case "Two_handedRanged":
+                return twoHandedWalk;
         }
         return null;
     }

@@ -87,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+   
     }
 
     private void FixedUpdate()

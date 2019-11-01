@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class InteractableObject : MonoBehaviour
 {
@@ -10,8 +10,10 @@ public class InteractableObject : MonoBehaviour
 
     private void Awake()
     {
-        spriteY = GetComponent<SpriteRenderer>().sprite.bounds.size.y;  
+        spriteY = GetComponent<SpriteRenderer>().sprite.bounds.size.y;
     }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerCollider"))

@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
     public List<Inventory> filteredItems = new List<Inventory>();
     public Weapon[] weapons;
     public Headgear[] headgear;
+    public Chestgear[] chestgear;
     public Lightsource[] lightsources;
     public Consumable[] consumables;
     public Leggear[] leggear;
@@ -27,6 +28,7 @@ public class InventoryManager : MonoBehaviour
 
         weapons = Resources.LoadAll<Weapon>("Inventory/Weapons");
         headgear = Resources.LoadAll<Headgear>("Inventory/Headgear");
+        chestgear = Resources.LoadAll<Chestgear>("Inventory/Chestgear");
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
         leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
         lightsources = Resources.LoadAll<Lightsource>("Inventory/Lightsources");
@@ -38,6 +40,10 @@ public class InventoryManager : MonoBehaviour
         foreach (var head in headgear)
         {
             CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = head });
+        }
+        foreach (var chest in chestgear)
+        {
+            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = chest });
         }
         foreach (var cons in consumables)
         {

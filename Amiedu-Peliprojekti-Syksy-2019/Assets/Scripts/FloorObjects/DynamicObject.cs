@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -26,8 +27,20 @@ public class DynamicObject : MonoBehaviour
         //shadow.transform.SetParent(null);
         //shadowOffset = transform.position - shadow.position;
         spriteBoundsY = GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
+        CreateStaticCollider();
     }
 
+    private void CreateStaticCollider()
+    {
+        GameObject staticStats = new GameObject("StaticCollider");
+        staticStats.transform.SetParent(transform, false);
+        var rb = staticStats.AddComponent<Rigidbody2D>();
+        var bc = staticStats.AddComponent<BoxCollider2D>();
+        bc.size = GetComponent<BoxCollider2D>().size;
+        bc.offset = GetComponent<BoxCollider2D>().offset;
+        rb.isKinematic = true;
+        staticStats.layer = LayerMask.NameToLayer("StaticCollider");
+    }
     private void Update()
     {
         if (Time.frameCount % 5 != 0 || objectIsMoving)

@@ -2981,7 +2981,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.5833333
+  - time: 0.53333336
     functionName: ActivateAttackFrames
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 7809ce89945be0a4891e5efbb4e428b6,

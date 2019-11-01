@@ -21,10 +21,10 @@ TagManager:
   - FloorObject
   - ActionTrigger
   - MeleeWeapon
-  - 
-  - 
-  - 
-  - 
+  - StaticObject
+  - DynamicObject
+  - StaticCollider
+  - Player
   - 
   - 
   - 
