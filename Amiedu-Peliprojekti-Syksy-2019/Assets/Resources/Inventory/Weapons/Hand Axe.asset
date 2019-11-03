@@ -32,10 +32,4 @@ MonoBehaviour:
   reloadTime: 0
   criticalHitChance: 31.6
   bulletPerShot: 0
-  itemEffects:
-  - effect: 1
-    amount: 5
-    duration: 0
-  - effect: 2
-    amount: 5
-    duration: 0
+  gearEffects: []

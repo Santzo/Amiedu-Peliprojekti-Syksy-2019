@@ -24,9 +24,9 @@ MonoBehaviour:
   hands: 0
   minDamage: 0
   maxDamage: 0
-  fireRate: 1
+  fireRate: 1.4
   clipSize: 0
   reloadTime: 0
   criticalHitChance: 0
   bulletPerShot: 0
-  itemEffects: []
+  gearEffects: []

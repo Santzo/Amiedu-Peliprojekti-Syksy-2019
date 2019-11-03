@@ -57,9 +57,12 @@ public class ItemDetails : MonoBehaviour
                 details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
             }
-            for (int i = 0; i < _item.gearEffects.Length; i++)
+            if (_item.gearEffects.Length > 0)
             {
-                details[i + 6].text = GearEffectText(_item.gearEffects[i]);
+                for (int i = 0; i < _item.gearEffects.Length; i++)
+                {
+                    details[i + 6].text = GearEffectText(_item.gearEffects[i]);
+                }
             }
         }
 

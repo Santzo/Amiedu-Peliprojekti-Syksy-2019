@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
-    public GameObject meleeWeapon;
+    public MeleeWeaponHit meleeWeapon;
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (meleeWeapon != null)
             {
-                meleeWeapon.GetComponent<MeleeWeaponHit>().CheckForCollision();
+                meleeWeapon.CheckForCollision();
             }
         }
 
@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private IEnumerator WaitForAttack()
     {
-        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.1f);
+        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.02f);
         activeAttackFrames = false;
         attacking = false;
     }

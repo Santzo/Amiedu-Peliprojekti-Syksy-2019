@@ -69,8 +69,6 @@ public class PlayerEquipment : MonoBehaviour
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
-            References.rf.playerMovement.meleeWeapon = null;
-
             string defWep = temp.weaponType == WeaponType.Melee ? "Melee" : "Ranged";
 
             AnimationClip attackClip = temp.attackAnimation == null ? DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;
@@ -84,7 +82,7 @@ public class PlayerEquipment : MonoBehaviour
             anim.SetFloat("AttackSpeed", temp.fireRate);
 
             if (temp.weaponType == WeaponType.Melee)
-                References.rf.playerMovement.meleeWeapon = obj; 
+                References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>(); 
         }
         else if (equip.item.GetType() == typeof(Chestgear))
         {
@@ -107,7 +105,7 @@ public class PlayerEquipment : MonoBehaviour
         }
         else if (item == typeof(Weapon))
         {
-            References.rf.playerMovement.meleeWeapon = null;
+            //References.rf.playerMovement.meleeWeapon = null;
         }
         else if (item == typeof(Chestgear))
         {

@@ -3521,6 +3521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponRb: {fileID: 0}
+  meleeWeapon: {fileID: 0}
 --- !u!50 &810531912
 Rigidbody2D:
   serializedVersion: 4
