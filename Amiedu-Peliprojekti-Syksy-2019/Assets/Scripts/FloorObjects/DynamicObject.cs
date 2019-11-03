@@ -39,7 +39,7 @@ public class DynamicObject : MonoBehaviour
         bc.size = GetComponent<BoxCollider2D>().size;
         bc.offset = GetComponent<BoxCollider2D>().offset;
         rb.isKinematic = true;
-        staticStats.layer = LayerMask.NameToLayer("StaticCollider");
+        staticStats.layer = LayerMask.NameToLayer("MeleeCollider");
     }
     private void Update()
     {

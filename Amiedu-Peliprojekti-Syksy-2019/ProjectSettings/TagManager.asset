@@ -23,7 +23,7 @@ TagManager:
   - MeleeWeapon
   - StaticObject
   - DynamicObject
-  - StaticCollider
+  - MeleeCollider
   - Player
   - 
   - 

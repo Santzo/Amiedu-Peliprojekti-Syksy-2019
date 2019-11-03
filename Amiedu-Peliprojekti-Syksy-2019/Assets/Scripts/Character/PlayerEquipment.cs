@@ -8,8 +8,6 @@ public class PlayerEquipment : MonoBehaviour
     private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
     private Transform LOSCircle;
-    private int animationLayerIndex = 0;
-    private int attackLayerIndex = 0;
     [HideInInspector]
     public Animator anim;
     private float lightRadius = 1.75f;
@@ -71,6 +69,7 @@ public class PlayerEquipment : MonoBehaviour
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
+            References.rf.playerMovement.meleeWeapon = null;
 
             string defWep = temp.weaponType == WeaponType.Melee ? "Melee" : "Ranged";
 
@@ -82,10 +81,10 @@ public class PlayerEquipment : MonoBehaviour
             overrider["BaseWalk"] = walkClip;
             anim.runtimeAnimatorController = overrider;
             anim.SetLayerWeight(1, 1f);
+            anim.SetFloat("AttackSpeed", temp.fireRate);
 
-            var rb = obj.GetComponent<Rigidbody2D>();
-            if (rb != null)
-                References.rf.playerMovement.weaponRb = obj.GetComponent<Rigidbody2D>();
+            if (temp.weaponType == WeaponType.Melee)
+                References.rf.playerMovement.meleeWeapon = obj; 
         }
         else if (equip.item.GetType() == typeof(Chestgear))
         {
@@ -108,6 +107,7 @@ public class PlayerEquipment : MonoBehaviour
         }
         else if (item == typeof(Weapon))
         {
+            References.rf.playerMovement.meleeWeapon = null;
         }
         else if (item == typeof(Chestgear))
         {

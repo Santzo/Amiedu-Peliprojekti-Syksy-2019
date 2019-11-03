@@ -23,12 +23,19 @@ MonoBehaviour:
 
 '
   weaponType: 0
+  attackAnimation: {fileID: 0}
   hands: 1
   minDamage: 21
   maxDamage: 35
   fireRate: 1.95
   clipSize: 0
   reloadTime: 0
-  criticalHitChance: 20
+  criticalHitChance: 19.5
   bulletPerShot: 0
-  itemEffects: []
+  gearEffects:
+  - effect: 4
+    amount: 3
+  - effect: 0
+    amount: 3
+  - effect: 0
+    amount: -6

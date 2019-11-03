@@ -49,10 +49,11 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    public GameObject meleeWeapon;
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
-    private bool activeAttackFrames;
+    private bool activeAttackFrames, attacking;
     private int HandleVertical
     {
         get
@@ -87,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
-   
+
     }
 
     private void FixedUpdate()
@@ -100,6 +101,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (activeAttackFrames)
+        {
+            if (meleeWeapon != null)
+            {
+                meleeWeapon.GetComponent<MeleeWeaponHit>().CheckForCollision();
+            }
+        }
+
         HandleInput();
         if (!movementPossible)
             return;
@@ -148,8 +157,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyboardConfig.attack[0]) || Input.GetKeyDown(KeyboardConfig.attack[1]))
         {
-            anim.SetTrigger("Attack");
+            if (!attacking && CharacterStats.characterEquipment.weapon != null)
+            {
+                attacking = true;
+                StartCoroutine("WaitForAttack");
+                anim.SetTrigger("Attack");
+            }
         }
+
         if (Input.GetKey(KeyboardConfig.sprint[0]) || Input.GetKey(KeyboardConfig.sprint[1]))
         {
             if (CharacterStats.stamina <= 0f)
@@ -163,15 +178,14 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
+
     public void MeleeWeaponHit(Vector2 position)
     {
         if (!activeAttackFrames) return;
-        Debug.Log("Attack hits");
         ObjectPooler.op.Spawn("ObjectMeleeHit", position);
         activeAttackFrames = false;
-        anim.SetTrigger("StopAttack");
-        anim.ResetTrigger("Attack");
     }
+
     public void ActivateAttackFrames(int activate)
     {
         activeAttackFrames = activate == 1;
@@ -183,6 +197,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.otherCollider.name);
+    }
+    private IEnumerator WaitForAttack()
+    {
+        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.1f);
+        activeAttackFrames = false;
+        attacking = false;
     }
 }

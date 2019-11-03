@@ -13,6 +13,8 @@ public static class TextColor
                 return "<color=#FFDC00>";
             case ("defaultTitle"):
                 return "<color=#DCFF94>";
+            case ("red"):
+                return "<color=#EE2211>";
 
             default:
                 return "<color=white>";

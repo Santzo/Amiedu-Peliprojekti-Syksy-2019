@@ -49,7 +49,6 @@ public class ItemDetails : MonoBehaviour
             if (_item.weaponType == WeaponType.Melee)
             {
                 details[1].text = "Weapon swings " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
-
             }
             else
             {
@@ -57,6 +56,10 @@ public class ItemDetails : MonoBehaviour
                 details[3].text = "Clip size " + TextColor.Return("yellow") + _item.clipSize;
                 details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
+            }
+            for (int i = 0; i < _item.gearEffects.Length; i++)
+            {
+                details[i + 6].text = GearEffectText(_item.gearEffects[i]);
             }
         }
 
@@ -81,7 +84,21 @@ public class ItemDetails : MonoBehaviour
         Events.onItemDragStart -= () => gameObject.SetActive(false);
     }
 
-
+    private string GearEffectText(GearEffect effect)
+    {
+        ReturnEffectAndAttribute(effect.effect.ToString(), out string eff, out string attribute);
+        switch (effect.effect)
+        {
+            case _GearEffect.Movement_Speed:
+                return effect.amount > 0
+                ? TextColor.Return("green") + "Increases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + "%."
+                : TextColor.Return("red") + "Decreases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + Mathf.Abs(effect.amount) + TextColor.Return() + "%.";
+            default:
+                return effect.amount > 0
+                ? eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points."
+                : "Decreases" + TextColor.Return("red") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + Mathf.Abs(effect.amount) + TextColor.Return() + " points.";
+        }
+    }
     private string ItemEffectText(ItemEffect effect)
     {
         switch (effect.effect)
@@ -94,10 +111,7 @@ public class ItemDetails : MonoBehaviour
                 + TextColor.Return() + ".";
             default:
                 {
-                    string name = effect.effect.ToString();
-                    int pos = name.IndexOf("_");
-                    string eff = name.Substring(0, pos);
-                    string attribute = name.Substring(pos + 1, name.Length - pos - 1);
+                    ReturnEffectAndAttribute(effect.effect.ToString(), out string eff, out string attribute);
                     return effect.duration > 0
                     ? eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points for " +
                     TextColor.Return("yellow") + effect.duration + TextColor.Return() + " seconds."
@@ -105,6 +119,12 @@ public class ItemDetails : MonoBehaviour
                     TextColor.Return("green") + "permanently" + TextColor.Return() + ".";
                 }
         }
+    }
+    private void ReturnEffectAndAttribute(string wholeName, out string effect, out string attribute)
+    {
+        int pos = wholeName.IndexOf("_");
+        effect = wholeName.Substring(0, pos);
+        attribute = wholeName.Substring(pos + 1, wholeName.Length - pos - 1);
     }
 
 }

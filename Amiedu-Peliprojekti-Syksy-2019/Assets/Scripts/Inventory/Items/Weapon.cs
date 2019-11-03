@@ -17,7 +17,7 @@ public class Weapon : InventoryItems
     [Range(0, 100)]
     public float criticalHitChance;
     public int bulletPerShot;
-    public ItemEffect[] itemEffects;
+    public GearEffect[] gearEffects;
 
 
 }

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
-
-
 public abstract class InventoryItems : ScriptableObject
 {
     public int itemLevel;
@@ -29,6 +26,14 @@ public class ItemEffect
     [Tooltip("How long the effect lasts (Leave this at 0 if you want the effect to be immediate / permanent)")]
     public float duration;
 }
+[System.Serializable]
+public class GearEffect
+{
+    [Tooltip("Individual effect of the item")]
+    public _GearEffect effect;
+    [Tooltip("The total amount of points for the effect")]
+    public float amount;
+}
 
 public enum Hands
 {
@@ -51,5 +56,16 @@ public enum Effect
     Raises_Dexterity,
     Raises_Adaptability,
     Raises_Luck,
-
+}
+public enum _GearEffect
+{
+    Movement_Speed,
+    Light_Radius,
+    Increases_Health,
+    Increases_Stamina,
+    Increases_Strength,
+    Increases_Constitution,
+    Increases_Dexterity,
+    Increases_Adaptability,
+    Increases_Luck
 }

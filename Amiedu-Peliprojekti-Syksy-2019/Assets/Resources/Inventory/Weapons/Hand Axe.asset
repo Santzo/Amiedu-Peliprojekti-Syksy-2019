@@ -15,6 +15,7 @@ MonoBehaviour:
   itemLevel: 1
   weight: 3
   obj: {fileID: 4659233301652964338, guid: 5c5b21365bf0f71499f04bb6ffc75788, type: 3}
+  icon: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: 'A basic looking axe with a wooden handle. The axe looks like it has
@@ -22,10 +23,11 @@ MonoBehaviour:
 
 '
   weaponType: 0
+  attackAnimation: {fileID: 0}
   hands: 0
   minDamage: 6
   maxDamage: 9
-  fireRate: 1.9
+  fireRate: 1.5
   clipSize: 0
   reloadTime: 0
   criticalHitChance: 31.6
