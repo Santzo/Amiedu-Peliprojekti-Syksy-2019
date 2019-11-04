@@ -33,10 +33,7 @@ public class BaseEnemy : MonoBehaviour
         state.ChangeState(idleState);
     }
 
-    private void Start()
-    {
-        StartCoroutine(UpdatePath(testi));
-    }
+
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(direction.x, direction.y) * stats.moveSpeed;
@@ -63,42 +60,5 @@ public class BaseEnemy : MonoBehaviour
         }
 
     }
-    public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
-    {
-        if (pathSuccessful)
-        {
-            path = waypoints;
-            TurnDirection(path[0], 1);
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
-        }
-    }
-
-    protected IEnumerator UpdatePath(Transform target)
-    {
-        PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-        while (true)
-        {
-            yield return new WaitForSeconds(minPathUpdateTime);
-            PathRequestManager.RequestPath(new PathRequest(transform.position, target.position, OnPathFound));
-        }
-    }
-
-    protected IEnumerator FollowPath()
-    {
-        int pathIndex = 0;
-        while (pathIndex < path.Length)
-        {
-            if (Vector2.Distance(rb.position, path[pathIndex]) < 0.2f)
-                pathIndex++;
-
-            if (pathIndex >= path.Length)
-                direction = new Vector2(0f, 0f);
-
-            if (pathIndex < path.Length)
-                direction = (path[pathIndex] - transform.position).normalized;
-            yield return null;
-        }
-    }
-
+  
 }

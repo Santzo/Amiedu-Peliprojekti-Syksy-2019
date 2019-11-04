@@ -49,11 +49,13 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    [HideInInspector]
     public MeleeWeaponHit meleeWeapon;
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
     private bool activeAttackFrames, attacking;
+    public Transform mask;
     private int HandleVertical
     {
         get
@@ -88,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
         TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
-
     }
 
     private void FixedUpdate()
@@ -117,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         movement = pa.Sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
         pa.MoveAnim = movement != Vector2.zero ? pa.MoveAnim >= 1f ? 1f : pa.MoveAnim += 0.05f : 0f;
         sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
+        mask.transform.position = References.rf.playerEquipment.LOSCircle.position;
     }
 
     void UpdateMoveAnimation()

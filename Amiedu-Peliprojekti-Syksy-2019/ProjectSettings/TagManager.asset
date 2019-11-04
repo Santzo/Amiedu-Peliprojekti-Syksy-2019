@@ -49,6 +49,9 @@ TagManager:
   - name: MainCharacter
     uniqueID: 918335077
     locked: 0
+  - name: Enemy
+    uniqueID: 1718224277
+    locked: 0
   - name: Objects
     uniqueID: 689501021
     locked: 0

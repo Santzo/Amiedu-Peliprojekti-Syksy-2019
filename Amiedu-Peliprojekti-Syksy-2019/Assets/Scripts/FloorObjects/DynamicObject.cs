@@ -13,7 +13,6 @@ public class DynamicObject : MonoBehaviour
     protected Rigidbody2D rb;
     protected Coroutine co;
     protected SortingGroup sgroup;
-    protected Transform shadow;
     protected Vector3 shadowOffset;
     protected float spriteBoundsY;
 
@@ -23,9 +22,6 @@ public class DynamicObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sgroup = GetComponent<SortingGroup>();
-        shadow = transform.GetChild(0);
-        //shadow.transform.SetParent(null);
-        //shadowOffset = transform.position - shadow.position;
         spriteBoundsY = GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
         CreateStaticCollider();
     }

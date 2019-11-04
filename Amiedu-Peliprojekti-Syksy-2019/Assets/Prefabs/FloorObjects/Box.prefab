@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7045111279162282290}
   - component: {fileID: 7045111279162282289}
   - component: {fileID: 7045111279162282288}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ SortingGroup:
   m_GameObject: {fileID: 7045111279162282318}
   m_Enabled: 1
   m_SortingLayerID: 689501021
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
 --- !u!61 &7045111279162282290
 BoxCollider2D:

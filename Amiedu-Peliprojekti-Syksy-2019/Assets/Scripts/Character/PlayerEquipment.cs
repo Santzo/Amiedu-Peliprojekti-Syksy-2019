@@ -7,7 +7,8 @@ public class PlayerEquipment : MonoBehaviour
     public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
-    private Transform LOSCircle;
+    [HideInInspector]
+    public Transform LOSCircle;
     [HideInInspector]
     public Animator anim;
     private float lightRadius = 1.75f;
@@ -33,7 +34,11 @@ public class PlayerEquipment : MonoBehaviour
     {
         Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
+        References.rf.playerMovement.mask = transform.parent.Find("VisionMask");
+        References.rf.playerMovement.mask.SetParent(null);
+        Debug.Log(LOSCircle.transform.localPosition.y);
         LOSCircle.transform.localScale = Vector3.one * lightRadius;
+        References.rf.playerMovement.mask.localScale = References.rf.playerMovement.transform.localScale * lightRadius;
         chestgearEquipment.Add("ChestgearEquip", transform.parent.GetFromAllChildren("ChestgearEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("Mid_SectionEquip", transform.parent.GetFromAllChildren("Mid_SectionEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("R_Upper_ArmEquip", transform.parent.GetFromAllChildren("R_Upper_ArmEquip").GetComponent<SpriteRenderer>());
@@ -65,6 +70,7 @@ public class PlayerEquipment : MonoBehaviour
         {
             Lightsource temp = equip.item as Lightsource;
             LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
+            References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerMovement.transform.localScale.y * temp.lightRadius;
         }
         else if (equip.item.GetType() == typeof(Weapon))
         {
