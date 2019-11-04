@@ -450,7 +450,6 @@ public class LevelManager : MonoBehaviour
         {
             sortingGroup.sortingLayerName = "FloorObjects";
             sortingGroup.sortingOrder = wall.name != "bigCorner" ? order : 1;
-
         }
         else
         {

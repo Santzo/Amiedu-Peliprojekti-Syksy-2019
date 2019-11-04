@@ -179,10 +179,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void MeleeWeaponHit(Vector2 position)
+    public void MeleeWeaponHit(Collider2D[] collisions, Collider2D position)
     {
         if (!activeAttackFrames) return;
-        ObjectPooler.op.Spawn("ObjectMeleeHit", position);
+        Vector2? hitPosition = null;
+        foreach (var col in collisions)
+        {
+            if (col != null)
+            {
+                Vector2 colBounds = new Vector2(col.transform.position.y - col.bounds.extents.y * 3f, col.transform.position.y + 0.15f);
+                if (transform.position.y > colBounds.x && transform.position.y < colBounds.y)
+                {
+                    hitPosition = position.ClosestPoint(col.transform.position);
+                }
+            }
+        }
+        if (hitPosition == null) return;
+        ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
         activeAttackFrames = false;
     }
 

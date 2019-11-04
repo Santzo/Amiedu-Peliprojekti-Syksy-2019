@@ -13,8 +13,7 @@ public class MeleeWeaponHit : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         co2d = GetComponent<BoxCollider2D>();
-        results = new Collider2D[3];
-        results.Populate();
+        results = new Collider2D[2];
         filter = new ContactFilter2D();
         filter.useTriggers = false;
         filter.SetLayerMask(LayerMask.GetMask("StaticObject") | LayerMask.GetMask("MeleeCollider"));
@@ -25,7 +24,7 @@ public class MeleeWeaponHit : MonoBehaviour
         int a = rb.OverlapCollider(filter, results);
         if (a > 0 && results != null)
         {;
-            References.rf.playerMovement.MeleeWeaponHit(co2d.ClosestPoint(results[0].transform.position));
+            References.rf.playerMovement.MeleeWeaponHit(results, co2d);
         }
         
     }
