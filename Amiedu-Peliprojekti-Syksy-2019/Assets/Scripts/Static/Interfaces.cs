@@ -35,3 +35,9 @@ public interface IMainMenuHandler
     void OnEnter(Transform trans);
     void OnExit(Transform trans);
 }
+public interface IEnemyState
+{
+    void OnStateEnter();
+    void OnStateExecute();
+    void OnStateExit();
+}

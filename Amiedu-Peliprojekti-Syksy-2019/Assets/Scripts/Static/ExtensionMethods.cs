@@ -38,7 +38,7 @@ public static class ExtensionMethods
 
     public static T[] LoadAssets<T>(this T[] arr, string path) where T : Object
     {
-        var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, path));
+        var assetBundle = AssetBundle.LoadFromFile(System.IO.Path.Combine(Application.streamingAssetsPath, path));
         var assets = assetBundle.LoadAllAssets<T>();
         return assets;
     }

@@ -241,6 +241,7 @@ public class LevelManager : MonoBehaviour
         CreateRoomWallsAndFloors(roomStats);
         SortObjects();
         Events.onFieldInitialized(gameField);
+
     }
 
     void AdjacentRoom(Room roomStats)
