@@ -26,9 +26,9 @@ public class FogOfWar : MonoBehaviour
     {
         Vector2 gameFieldSize = obj.end - obj.start;
         Vector2 position = obj.start - new Vector2(padding * 0.5f, padding * 0.5f);
-        Vector2 pathFindingField = new Vector2(gameFieldSize.x + 2f, gameFieldSize.y + 2f);
+        Vector2 pathFindingField = new Vector2(gameFieldSize.x + 4f, gameFieldSize.y + 4f);
 
-        //FindObjectOfType<Grid>().GridStart((obj.end.x + obj.start.x) / 2f, (obj.end.y + obj.start.y) / 2f, pathFindingField.x, pathFindingField.y);
+        FindObjectOfType<Grid>().InitializeGrid((obj.end.x + obj.start.x) / 2f, (obj.end.y + obj.start.y) / 2f, pathFindingField.x, pathFindingField.y);
         fogSize.sizeDelta = gameFieldSize + new Vector2(padding, padding);
         fogSize.position = position;
         int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 7f);

@@ -348,7 +348,7 @@ public class LevelManager : MonoBehaviour
             exitSize = Random.Range(2, 6);
             var tempDoor = new Door();
             int a = Random.Range(0, 2);
-            a = 3;
+            a = 2;
             bool reserved = true;
 
             if (ori.doors.Count > 0)
@@ -414,6 +414,7 @@ public class LevelManager : MonoBehaviour
 
         GameObject wall = new GameObject();
         wall.transform.parent = ori.trans;
+        wall.layer = 14;
 
         var sr = wall.AddRenderer(material);
         sr.sortingOrder = sort;
@@ -462,6 +463,7 @@ public class LevelManager : MonoBehaviour
     void CreateRoomWall(Room ori, Sprite sprit, int sort = 1)
     {
         var wall = NewWall(ori, sprit);
+        wall.layer = 14;
         GameObject otherWall = null;
         var sr = wall.GetComponent<SpriteRenderer>();
         Vector2 size = SpriteSizeInPixels(sprit.name);
@@ -536,6 +538,7 @@ public class LevelManager : MonoBehaviour
         CreateLOSBlocker(wall, ori.maxX, ori.maxY);
         if (otherWall != null)
         {
+            otherWall.layer = 14;
             AddWallSortingGroup(otherWall);
             AddCollisionBox(otherWall);
             CreateLOSBlocker(otherWall, ori.maxX, ori.maxY);

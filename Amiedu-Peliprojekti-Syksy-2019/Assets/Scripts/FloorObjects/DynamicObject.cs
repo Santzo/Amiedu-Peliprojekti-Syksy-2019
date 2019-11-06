@@ -30,12 +30,10 @@ public class DynamicObject : MonoBehaviour
     {
         GameObject staticStats = new GameObject("StaticCollider");
         staticStats.transform.SetParent(transform, false);
-        var rb = staticStats.AddComponent<Rigidbody2D>();
         var bc = staticStats.AddComponent<BoxCollider2D>();
         bc.size = GetComponent<BoxCollider2D>().size;
         bc.offset = GetComponent<BoxCollider2D>().offset;
-        rb.isKinematic = true;
-        staticStats.layer = LayerMask.NameToLayer("MeleeCollider");
+        staticStats.layer = LayerMask.NameToLayer("StaticObject");
     }
     private void Update()
     {

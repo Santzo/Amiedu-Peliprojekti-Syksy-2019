@@ -2,52 +2,92 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Threading;
 
-public class PathRequestManager : MonoBehaviour {
+public class PathRequestManager : MonoBehaviour
+{
+    public Grid grid;
+    public static PathRequestManager instance;
+    Pathfinding pathFinding;
+    Thread pathFinderThread;
+    bool isProcessingPath;
+    List<PathRequest> pathRequests;
 
-	Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
-	PathRequest currentPathRequest;
+    void Awake()
+    {
+        instance = this;
+        grid = GetComponent<Grid>();
+        pathFinding = new Pathfinding();
+        pathRequests = new List<PathRequest>();
+        pathFinderThread = new Thread(PathFinding);
+        pathFinderThread.Start();
+        StartCoroutine(PathFoundManager());
+    }
 
-	static PathRequestManager instance;
-	Pathfinding pathfinding;
+    public static void RequestPath(PathRequest _pathRequest)
+    {
+        instance.pathRequests.Add(_pathRequest);
+    }
 
-	bool isProcessingPath;
+    private void PathFinding()
+    {
+        while (true)
+        {
+            if (pathRequests.Count > 0)
+            {
+                for (int i = 0; i < pathRequests.Count; i++)
+                {
+                    if (pathRequests[i] != null)
+                    {
+                        if (pathRequests[i].done && pathRequests[i].callbackDone)
+                        {
+                            pathRequests.Remove(pathRequests[i]);
+                        }
+                        else if (!pathRequests[i].done)
+                        {
+                            PathRequest currentPath = pathRequests[i];
+                            currentPath.path = pathFinding.StartFindPath(instance.grid, currentPath.pathStart, currentPath.pathEnd);
+                            currentPath.done = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private IEnumerator PathFoundManager()
+    {
+        while (true)
+        {
+            for (int i = 0; i < pathRequests.Count; i++)
+            {
+                if (pathRequests[i].done)
+                {
+                    PathRequest currentPath = pathRequests[i];
+                    currentPath.callback(currentPath.path, true);
+                    currentPath.callbackDone = true;
+                }
+            }
+            yield return null;
+        }
+    }
 
-	void Awake() {
-		instance = this;
-		pathfinding = GetComponent<Pathfinding>();
-	}
+}
 
-	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback) {
-		PathRequest newRequest = new PathRequest(pathStart,pathEnd,callback);
-		instance.pathRequestQueue.Enqueue(newRequest);
-		instance.TryProcessNext();
-	}
+public class PathRequest
+{
+    public Vector2 pathStart;
+    public Vector2 pathEnd;
+    public Vector2[] path;
+    public Action<Vector2[], bool> callback;
+    public bool done, callbackDone;
+    public PathRequest(bool done, Vector2 _start, Vector2 _end, Action<Vector2[], bool> _callback)
+    {
+        this.done = done;
+        callbackDone = done;
+        path = null;
+        pathStart = _start;
+        pathEnd = _end;
+        callback = _callback;
+    }
 
-	void TryProcessNext() {
-		if (!isProcessingPath && pathRequestQueue.Count > 0) {
-			currentPathRequest = pathRequestQueue.Dequeue();
-			isProcessingPath = true;
-			pathfinding.StartFindPath(currentPathRequest.pathStart, currentPathRequest.pathEnd);
-		}
-	}
-
-	public void FinishedProcessingPath(Vector3[] path, bool success) {
-		currentPathRequest.callback(path,success);
-		isProcessingPath = false;
-		TryProcessNext();
-	}
-
-	struct PathRequest {
-		public Vector3 pathStart;
-		public Vector3 pathEnd;
-		public Action<Vector3[], bool> callback;
-
-		public PathRequest(Vector3 _start, Vector3 _end, Action<Vector3[], bool> _callback) {
-			pathStart = _start;
-			pathEnd = _end;
-			callback = _callback;
-		}
-
-	}
 }

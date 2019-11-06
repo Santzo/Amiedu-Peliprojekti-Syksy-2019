@@ -36,7 +36,6 @@ public class PlayerEquipment : MonoBehaviour
         LOSCircle = transform.parent.Find("MainFogCircle");
         References.rf.playerMovement.mask = transform.parent.Find("VisionMask");
         References.rf.playerMovement.mask.SetParent(null);
-        Debug.Log(LOSCircle.transform.localPosition.y);
         LOSCircle.transform.localScale = Vector3.one * lightRadius;
         References.rf.playerMovement.mask.localScale = References.rf.playerMovement.transform.localScale * lightRadius;
         chestgearEquipment.Add("ChestgearEquip", transform.parent.GetFromAllChildren("ChestgearEquip").GetComponent<SpriteRenderer>());
