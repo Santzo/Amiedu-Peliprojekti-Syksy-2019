@@ -65,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
             return 0;
         }
     }
-
     private int HandleHorizontal
     {
         get
@@ -84,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         pa = new PlayerAnimations(this);
     }
+
     void Start()
     {
         mainCam = Camera.main;
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + movement * CharacterStats.moveSpeed * Time.deltaTime);
 
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (activeAttackFrames)
@@ -219,14 +219,13 @@ public class PlayerMovement : MonoBehaviour
     {
         activeAttackFrames = activate == 1;
     }
+
     private void ResetAnimations()
     {
         anim.speed = 1f;
         anim.SetFloat("Movement", 0f);
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-    }
+
     private IEnumerator WaitForAttack()
     {
         yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.02f);

@@ -25,7 +25,6 @@ public class Grid : MonoBehaviour
     int penaltyMax = int.MinValue;
 
 
-
     public void InitializeGrid(float x, float y, float maxX, float maxY)
     {
         nodeDiameter = nodeRadius * 2;
@@ -35,8 +34,6 @@ public class Grid : MonoBehaviour
         pos = transform.position;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
-
-
         CreateGrid();
     }
 
@@ -90,12 +87,7 @@ public class Grid : MonoBehaviour
 
             }
         }
-  
-
     }
-
-   
-
 
     public List<Node> GetNeighbours(Node node)
     {
@@ -171,7 +163,6 @@ public class Grid : MonoBehaviour
         return tempNode;
     }
 
-
     public Node NodeFromWorldPoint(Vector2 worldPosition)
     {
         float percentX = ((worldPosition.x - pos.x) + gridWorldSize.x / 2) / gridWorldSize.x;
@@ -201,6 +192,4 @@ public class Grid : MonoBehaviour
             }
         }
     }
-
-
 }

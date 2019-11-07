@@ -7921,7 +7921,7 @@ MonoBehaviour:
     m_Bits: 2
   gridWorldSize: {x: 0, y: 0}
   nodeRadius: 0.3
-  obstacleProximityPenalty: 50
+  obstacleProximityPenalty: 500
   gridSizeX: 0
   gridSizeY: 0
 --- !u!4 &1412258561

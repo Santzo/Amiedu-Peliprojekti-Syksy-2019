@@ -16,7 +16,6 @@ public class PlayerEquipment : MonoBehaviour
     public AnimationClip twoHandedMelee, twoHandedRanged, twoHandedIdle, twoHandedWalk;
     private AnimatorOverrideController overrider;
 
-
     private void Awake()
     {
         var gear = CharacterStats.characterEquipment.GetType().GetFields();
@@ -24,12 +23,12 @@ public class PlayerEquipment : MonoBehaviour
         {
             Transform trans = transform.parent.GetFromAllChildren(g.FieldType.ToString());
             equipment.Add(trans.name, new Equipped { trans = trans, item = null, obj = null });
-
         }
         anim = transform.parent.GetComponent<Animator>();
         overrider = new AnimatorOverrideController();
         overrider.runtimeAnimatorController = anim.runtimeAnimatorController;
     }
+
     private void Start()
     {
         Events.onAddPlayerEquipment += AddEquipment;
@@ -51,7 +50,6 @@ public class PlayerEquipment : MonoBehaviour
         Events.onAddPlayerEquipment -= AddEquipment;
     }
 
-
     public void AddEquipment(GameObject obj, InventoryItems item)
     {
         var equip = equipment[item.GetType().ToString()];
@@ -71,6 +69,7 @@ public class PlayerEquipment : MonoBehaviour
             LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
             References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerMovement.transform.localScale.y * temp.lightRadius;
         }
+
         else if (equip.item.GetType() == typeof(Weapon))
         {
             Weapon temp = equip.item as Weapon;
@@ -89,6 +88,7 @@ public class PlayerEquipment : MonoBehaviour
             if (temp.weaponType == WeaponType.Melee)
                 References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>(); 
         }
+
         else if (equip.item.GetType() == typeof(Chestgear))
         {
             foreach (Transform trans in obj.transform)
@@ -97,6 +97,7 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
     }
+
     public void RemoveEquipment(Type item)
     {
         var equip = equipment[item.ToString()];
@@ -166,8 +167,8 @@ public class PlayerEquipment : MonoBehaviour
         }
         return null;
     }
-
 }
+
 public class Equipped
 {
     public Transform trans;
