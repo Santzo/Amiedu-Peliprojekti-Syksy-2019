@@ -7,16 +7,13 @@ using System;
 public class Pathfinding {
 	
 	public Vector2[] StartFindPath(Grid grid, Vector2 startPos, Vector2 targetPos) {
-        Stopwatch sw = new Stopwatch();
-		sw.Start();
-		
 		Vector2[] waypoints = new Vector2[0];
 		bool pathSuccess = false;
 		
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
-        if (!targetNode.walkable)
+        if (targetNode.walkable < 2)
         {
             targetNode = grid.GetWalkableNeighbor(targetNode);
         }
@@ -24,7 +21,7 @@ public class Pathfinding {
         startNode.parent = startNode;
 		
 		
-		if (startNode.walkable && targetNode.walkable) {
+		if (startNode.walkable == 2 && targetNode.walkable == 2) {
 			Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
 			HashSet<Node> closedSet = new HashSet<Node>();
 			openSet.Add(startNode);
@@ -32,13 +29,12 @@ public class Pathfinding {
 				Node currentNode = openSet.RemoveFirst();
 				closedSet.Add(currentNode);
 				if (currentNode == targetNode) {
-					sw.Stop();
                     pathSuccess = true;
 					break;
 				}
 				
 				foreach (Node neighbour in grid.GetNeighbours(currentNode)) {
-					if (!neighbour.walkable || closedSet.Contains(neighbour)) {
+					if (neighbour.walkable < 2|| closedSet.Contains(neighbour)) {
 						continue;
 					}
 					

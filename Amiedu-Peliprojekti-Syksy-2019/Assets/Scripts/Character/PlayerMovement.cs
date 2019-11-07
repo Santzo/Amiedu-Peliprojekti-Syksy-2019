@@ -185,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!activeAttackFrames) return;
         Vector2? hitPosition = null;
+        GameObject obj = null;
         foreach (var col in collisions)
         {
             if (col != null)
@@ -193,11 +194,24 @@ public class PlayerMovement : MonoBehaviour
                 if (transform.position.y > colBounds.x && transform.position.y < colBounds.y)
                 {
                     hitPosition = position.ClosestPoint(col.transform.position);
+                    obj = col.gameObject;
+                    break;
                 }
             }
         }
         if (hitPosition == null) return;
-        ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
+        string layer = LayerMask.LayerToName(obj.layer);
+        switch (layer)
+        {
+            case "EnemyHitbox":
+                var be = obj.GetComponentInParent<BaseEnemy>();
+                be.OnGetHit(1);
+                break;
+            default:
+                ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
+                break;
+        }
+      
         activeAttackFrames = false;
     }
 

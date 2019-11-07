@@ -16,7 +16,7 @@ public class MeleeWeaponHit : MonoBehaviour
         results = new Collider2D[2];
         filter = new ContactFilter2D();
         filter.useTriggers = false;
-        filter.SetLayerMask(LayerMask.GetMask("StaticObject") | LayerMask.GetMask("MeleeCollider"));
+        filter.SetLayerMask(LayerMask.GetMask("StaticObject") | LayerMask.GetMask("MeleeCollider") | LayerMask.GetMask("EnemyHitbox"));
     }
 
     public void CheckForCollision()

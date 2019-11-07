@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private int exitSize = 6;
-    private int maxRooms = 50;
+    private int maxRooms = 3;
     private int numOfRooms = 1;
     private float pixelsPerUnit = 128f;
     private float unitsPerPixel = 100f / 128f / 100f;
@@ -65,6 +65,7 @@ public class LevelManager : MonoBehaviour
     private GameObject losBlocker;
     private Vector2 cornerPieceSize;
     private Vector2 bigCornerPieceSize;
+    private List<BoxCollider2D> floorColliders = new List<BoxCollider2D>();
 
     private List<AllRooms> allRooms = new List<AllRooms>();
     public AllRooms gameField = new AllRooms();
@@ -241,6 +242,10 @@ public class LevelManager : MonoBehaviour
         CreateRoomWallsAndFloors(roomStats);
         SortObjects();
         Events.onFieldInitialized(gameField);
+        foreach (var col in floorColliders)
+        {
+            Destroy(col);
+        }
 
     }
 
@@ -414,7 +419,7 @@ public class LevelManager : MonoBehaviour
 
         GameObject wall = new GameObject();
         wall.transform.parent = ori.trans;
-        wall.layer = 14;
+        wall.layer = 16;
 
         var sr = wall.AddRenderer(material);
         sr.sortingOrder = sort;
@@ -463,7 +468,7 @@ public class LevelManager : MonoBehaviour
     void CreateRoomWall(Room ori, Sprite sprit, int sort = 1)
     {
         var wall = NewWall(ori, sprit);
-        wall.layer = 14;
+        wall.layer = 16;
         GameObject otherWall = null;
         var sr = wall.GetComponent<SpriteRenderer>();
         Vector2 size = SpriteSizeInPixels(sprit.name);
@@ -538,7 +543,7 @@ public class LevelManager : MonoBehaviour
         CreateLOSBlocker(wall, ori.maxX, ori.maxY);
         if (otherWall != null)
         {
-            otherWall.layer = 14;
+            otherWall.layer = 16;
             AddWallSortingGroup(otherWall);
             AddCollisionBox(otherWall);
             CreateLOSBlocker(otherWall, ori.maxX, ori.maxY);
@@ -609,6 +614,7 @@ public class LevelManager : MonoBehaviour
     GameObject NewWall(Room ori, Sprite sprit, string _name = "", int sort = 1)
     {
         GameObject wall = new GameObject();
+        wall.layer = 16;
         wall.transform.parent = ori.trans;
 
         var sr = wall.AddRenderer(material);
@@ -623,6 +629,7 @@ public class LevelManager : MonoBehaviour
     void CreateCornerPiece(Room ori, float x, float y, Sprite sprit, int sort = 3, float rot = 0, float xSwap = 1f)
     {
         GameObject corner = new GameObject();
+        corner.layer = 16;
         corner.transform.parent = ori.trans;
         corner.name = sprit.name;
         var sr = corner.AddRenderer(material);
@@ -639,18 +646,23 @@ public class LevelManager : MonoBehaviour
     {
         var floor = new GameObject();
         floor.transform.parent = ori.trans;
+        floor.layer = 1;
         var fsr = floor.AddRenderer(material);
         fsr.sprite = sprit;
         fsr.drawMode = SpriteDrawMode.Tiled;
         fsr.size = new Vector2(ori.maxX + 1f, ori.maxY + 1f);
         fsr.sortingOrder = sort;
         floor.transform.localPosition = new Vector2(ori.maxX * 0.5f, ori.maxY * 0.5f);
+        var col = floor.AddComponent<BoxCollider2D>();
+        col.size = fsr.size;
+        floorColliders.Add(col);
     }
 
     Vector2 CreateFloor(Room ori, float x, float y, Sprite sprit, float distance, float width, float rot = 0f, int sort = 4)
     {
         var floor = new GameObject();
         floor.name = sprit.name;
+        floor.layer = 1;
         floor.transform.parent = ori.trans;
         var fsr = floor.AddRenderer(material);
         fsr.sprite = sprit;
@@ -659,6 +671,9 @@ public class LevelManager : MonoBehaviour
         fsr.sortingOrder = sort;
         floor.transform.localPosition = new Vector2(x, y);
         floor.transform.eulerAngles = new Vector3(0f, 0f, rot);
+        var col = floor.AddComponent<BoxCollider2D>();
+        col.size = fsr.size;
+        floorColliders.Add(col);
         return floor.transform.localPosition;
     }
 

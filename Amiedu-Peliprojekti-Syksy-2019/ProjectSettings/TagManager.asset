@@ -23,10 +23,10 @@ TagManager:
   - MeleeWeapon
   - StaticObject
   - DynamicObject
-  - Wall
+  - StaticWall
   - Player
   - Enemy
-  - 
+  - EnemyHitbox
   - 
   - 
   - 

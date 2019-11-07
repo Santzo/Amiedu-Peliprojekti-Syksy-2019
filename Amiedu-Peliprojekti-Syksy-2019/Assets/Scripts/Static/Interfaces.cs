@@ -38,6 +38,7 @@ public interface IMainMenuHandler
 public interface IEnemyState
 {
     void OnStateEnter();
-    void OnStateExecute();
+    void OnStateFixedUpdate();
+    void OnStateUpdate();
     void OnStateExit();
 }

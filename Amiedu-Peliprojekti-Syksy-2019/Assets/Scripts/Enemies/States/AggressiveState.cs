@@ -10,11 +10,15 @@ public class AggressiveState : IEnemyState
     {
     }
 
-    public virtual void OnStateExecute()
+    public void OnStateExit()
     {
     }
 
-    public void OnStateExit()
+    public void OnStateFixedUpdate()
+    {
+    }
+
+    public void OnStateUpdate()
     {
     }
 }

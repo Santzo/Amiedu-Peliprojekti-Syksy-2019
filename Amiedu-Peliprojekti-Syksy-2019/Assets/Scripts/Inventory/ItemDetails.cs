@@ -42,11 +42,11 @@ public class ItemDetails : MonoBehaviour
 
         if (item is Weapon)  // WEAPONS HERE
         {
-            Debug.Log("RAA");
             Weapon _item = item as Weapon;
             itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel;
-            details[0].text = "Damage " + TextColor.Return("yellow") + _item.minDamage + " - " + _item.maxDamage;
-            details[2].text = "Critical hit chance " + TextColor.Return("yellow") + _item.criticalHitChance + TextColor.Return() + "%";
+            details[0].text = $"Damage {TextColor.Return("yellow")}{_item.minDamage} - {_item.maxDamage}";
+            details[2].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
+
             if (_item.weaponType == WeaponType.Melee)
             {
                 details[1].text = "Weapon swings " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
@@ -58,6 +58,7 @@ public class ItemDetails : MonoBehaviour
                 details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
             }
+
             if (_item.gearEffects != null && _item.gearEffects.Length > 0)
             {
                 for (int i = 0; i < _item.gearEffects.Length; i++)

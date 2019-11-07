@@ -6,32 +6,52 @@ using UnityEngine.Rendering;
 
 public class BaseEnemy : MonoBehaviour
 {
-    protected EnemyStats stats = new EnemyStats();
+    
     protected StateMachine state = new StateMachine();
     protected IEnemyState idleState;
     protected IEnemyState patrolState;
     protected IEnemyState aggressiveState;
     protected IEnemyState attackState;
+    protected IEnemyState gotHitState;
     protected Vector2[] patrolPoints = new Vector2[3];
+    protected EnemySprite[] sprites;
     Vector2[] path;
     Vector2 destination;
     Vector3 oriScale;
-    private Transform testi;
+    private Transform sortingTransform;
     protected SortingGroup sGroup;
     private float minPathUpdateTime = 0.45f;
     protected Rigidbody2D rb;
+    private float interval = 0.15f;
     protected int targetIndex = 0;
-    
+
+    public EnemyStats stats = new EnemyStats();
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sGroup = GetComponent<SortingGroup>();
         oriScale = transform.localScale;
-        testi = GameObject.Find("Test").transform;
+        sortingTransform = transform.Find("SortingTransform");
         stats = Array.Find(EnemyStats.enemyStats, enemy => enemy.name == transform.name);
-        idleState = new IdleState(this);
+
+
+        idleState = new IdleState(this);                        // Set enemy states
         aggressiveState = new AggressiveState(this);
+        patrolState = new PatrolState(this);
+        gotHitState = new GotHitState(this);
+
+        var spritesTransform = transform.Find("Sprites");
+        sprites = new EnemySprite[spritesTransform.childCount];
+
+        for (int i = 0; i< spritesTransform.childCount; i++)
+        {
+            var _transform = spritesTransform.GetChild(i);
+            var _sprite = spritesTransform.GetChild(i).GetComponent<SpriteRenderer>();
+            var _color = _sprite.color;
+            sprites[i] = new EnemySprite(_transform, _sprite, _color);
+        }
         state.ChangeState(idleState);
     }
 
@@ -41,7 +61,7 @@ public class BaseEnemy : MonoBehaviour
         if (targetIndex < path.Length - 1 || targetIndex == path.Length - 1 && rb.position != destination)
         {
             rb.position = ReturnNextPoint();
-            sGroup.sortingOrder = Info.SortingOrder(rb.position.y);
+            sGroup.sortingOrder = Info.SortingOrder(sortingTransform.position.y);
         }
     }
 
@@ -50,10 +70,12 @@ public class BaseEnemy : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var hit = Physics2D.Raycast(pos, Vector2.zero);
-
+            var hit = Physics2D.OverlapCircleAll(pos, 0.3f);
+            foreach (var h in hit)
+            {
+                Debug.Log(h.name);
+            }
             PathRequestManager.RequestPath(new PathRequest(false, rb.position, pos, OnPathFound));
-
         }
     }
 
@@ -81,5 +103,38 @@ public class BaseEnemy : MonoBehaviour
         }
         return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
+
+    public void OnGetHit(float damage)
+    {
+        StartCoroutine(GetHit());
+    }
+
+    protected IEnumerator GetHit()
+    {
+        int loop = 0;
+        while (loop < 3)
+        {
+            while (sprites[0].sr.color.a > 0.3f)
+            {
+                foreach (var sr in sprites)
+                {
+                    sr.sr.color = new Color(sr.sr.color.r - interval, sr.sr.color.g - interval, sr.sr.color.b - interval, sr.sr.color.a - interval);
+                }
+                yield return null;
+            }
+            while (sprites[0].sr.color.a < 1f)
+            {
+                foreach (var sr in sprites)
+                {
+                    sr.sr.color = new Color(sr.sr.color.r + interval, sr.sr.color.g + interval, sr.sr.color.b + interval, sr.sr.color.a + interval);
+                }
+                yield return null;
+            }
+            loop++;
+        }
+
+        yield return null;
+    }
+
 
 }

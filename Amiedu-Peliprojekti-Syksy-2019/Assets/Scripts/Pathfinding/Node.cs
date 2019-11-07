@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class Node : IHeapItem<Node> {
-	
-	public bool walkable;
+	/// <summary>
+    /// Walkable 0 = Not part of the gamefield, 1 = Non-Walkable 2 = Walkable
+    /// </summary>
+	public int walkable;
 	public Vector3 worldPosition;
 	public int gridX;
 	public int gridY;
@@ -14,7 +16,7 @@ public class Node : IHeapItem<Node> {
 	public Node parent;
 	int heapIndex;
 	
-	public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY, int _penalty) {
+	public Node(int _walkable, Vector3 _worldPos, int _gridX, int _gridY, int _penalty) {
 		walkable = _walkable;
 		worldPosition = _worldPos;
 		gridX = _gridX;
