@@ -4825,6 +4825,11 @@ MonoBehaviour:
       type: 3}
     _parent: {fileID: 0}
     size: 5
+  - tag: BloodSplatter
+    prefab: {fileID: 7868299900882472729, guid: 31f85f6f6fa967c41969f59079ffe8b5,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 5
 --- !u!4 &1047642852
 Transform:
   m_ObjectHideFlags: 0
@@ -7649,6 +7654,7 @@ GameObject:
   - component: {fileID: 1407471130}
   - component: {fileID: 1407471133}
   - component: {fileID: 1407471134}
+  - component: {fileID: 1407471131}
   m_Layer: 18
   m_Name: Zombie
   m_TagString: Untagged
@@ -7667,6 +7673,25 @@ SortingGroup:
   m_SortingLayerID: 689501021
   m_SortingLayer: 4
   m_SortingOrder: 0
+--- !u!95 &1407471131
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407471129}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8461a82f9b133ad41b62df85334356e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &1407471132
 Transform:
   m_ObjectHideFlags: 0
@@ -10862,7 +10887,7 @@ Transform:
   m_GameObject: {fileID: 1893793012}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: -5.914008, y: 1.9986634, z: -44.221718}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 0.99999994}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 12
@@ -12920,14 +12945,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5416382353907289430}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15809971, y: -0.1831914, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.1052345, w: 0.99444747}
+  m_LocalPosition: {x: 0.2082903, y: -0.17265177, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7038826873273675586}
   m_Father: {fileID: 6202440694589148570}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -12.081}
 --- !u!4 &8097194017669509401
 Transform:
   m_ObjectHideFlags: 0
