@@ -21,6 +21,7 @@ public static class Events
     public static Action<Inventory> onEquipConsumable = delegate { };
     public static Action<LevelManager.AllRooms> onFieldInitialized = delegate { };
     public static Action<GameObject, InventoryItems> onAddPlayerEquipment = delegate { };
+    public static Action onGameFieldCreated = delegate { };
 
     public static bool onDrag = false;
     public static bool onDialogueBox = false;

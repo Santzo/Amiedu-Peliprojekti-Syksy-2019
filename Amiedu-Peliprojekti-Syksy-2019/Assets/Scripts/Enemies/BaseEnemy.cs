@@ -6,26 +6,27 @@ using UnityEngine.Rendering;
 
 public class BaseEnemy : MonoBehaviour
 {
-    
+
     protected StateMachine state = new StateMachine();
     protected IEnemyState idleState;
     protected IEnemyState patrolState;
     protected IEnemyState aggressiveState;
     protected IEnemyState attackState;
     protected IEnemyState gotHitState;
-    protected Vector2[] patrolPoints = new Vector2[3];
+    
     protected EnemySprite[] sprites;
-    Vector2[] path;
-    Vector2 destination;
     Vector3 oriScale;
-    private Transform sortingTransform;
-    protected SortingGroup sGroup;
     private float minPathUpdateTime = 0.45f;
-    protected Rigidbody2D rb;
     private float interval = 0.15f;
-    protected int targetIndex = 0;
 
+    public Vector2[] patrolPoints = new Vector2[3];
+    public Transform sortingTransform;
+    public SortingGroup sGroup;
+    public Vector2 destination;
+    public Vector2[] path;
     public EnemyStats stats = new EnemyStats();
+    public int targetIndex = 0;
+    public Rigidbody2D rb;
 
 
     private void Awake()
@@ -35,7 +36,7 @@ public class BaseEnemy : MonoBehaviour
         oriScale = transform.localScale;
         sortingTransform = transform.Find("SortingTransform");
         stats = Array.Find(EnemyStats.enemyStats, enemy => enemy.name == transform.name);
-
+        Events.onGameFieldCreated += RandomizePatrolPath;
 
         idleState = new IdleState(this);                        // Set enemy states
         aggressiveState = new AggressiveState(this);
@@ -45,41 +46,24 @@ public class BaseEnemy : MonoBehaviour
         var spritesTransform = transform.Find("Sprites");
         sprites = new EnemySprite[spritesTransform.childCount];
 
-        for (int i = 0; i< spritesTransform.childCount; i++)
+        for (int i = 0; i < spritesTransform.childCount; i++)
         {
             var _transform = spritesTransform.GetChild(i);
             var _sprite = spritesTransform.GetChild(i).GetComponent<SpriteRenderer>();
             var _color = _sprite.color;
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
-        state.ChangeState(idleState);
+
+
     }
+
 
     private void FixedUpdate()
     {
-        if (path == null) return;
-        if (targetIndex < path.Length - 1 || targetIndex == path.Length - 1 && rb.position != destination)
-        {
-            rb.position = ReturnNextPoint();
-            sGroup.sortingOrder = Info.SortingOrder(sortingTransform.position.y);
-        }
+        state.currentState.OnStateFixedUpdate();
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var hit = Physics2D.OverlapCircleAll(pos, 0.3f);
-            foreach (var h in hit)
-            {
-                Debug.Log(h.name);
-            }
-            PathRequestManager.RequestPath(new PathRequest(false, rb.position, pos, OnPathFound));
-        }
-    }
-
-    public void OnPathFound(Vector2[] newPath, bool pathSuccessful)
+    internal void OnPathFound(Vector2[] newPath, bool pathSuccessful)
     {
         if (pathSuccessful)
         {
@@ -93,7 +77,7 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
-    Vector2 ReturnNextPoint()
+    internal Vector2 ReturnNextPoint()
     {
         if (rb.position == destination && targetIndex < path.Length - 1)
         {
@@ -114,19 +98,19 @@ public class BaseEnemy : MonoBehaviour
         int loop = 0;
         while (loop < 3)
         {
-            while (sprites[0].sr.color.a > 0.3f)
+            while (sprites[0].sr.color.r > 0.3f)
             {
                 foreach (var sr in sprites)
                 {
-                    sr.sr.color = new Color(sr.sr.color.r - interval, sr.sr.color.g - interval, sr.sr.color.b - interval, sr.sr.color.a - interval);
+                    sr.sr.color = new Color(sr.sr.color.r - interval, sr.sr.color.g - interval, sr.sr.color.b - interval, sr.sr.color.a);
                 }
                 yield return null;
             }
-            while (sprites[0].sr.color.a < 1f)
+            while (sprites[0].sr.color.r < 1f)
             {
                 foreach (var sr in sprites)
                 {
-                    sr.sr.color = new Color(sr.sr.color.r + interval, sr.sr.color.g + interval, sr.sr.color.b + interval, sr.sr.color.a + interval);
+                    sr.sr.color = new Color(sr.sr.color.r + interval, sr.sr.color.g + interval, sr.sr.color.b + interval, sr.sr.color.a);
                 }
                 yield return null;
             }
@@ -134,6 +118,22 @@ public class BaseEnemy : MonoBehaviour
         }
 
         yield return null;
+    }
+    private void RandomizePatrolPath()
+    {
+        Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(1f, 15f), transform.position.y));
+        Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(1f, 15f)));
+        Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-1f, -15f), transform.position.y));
+
+        pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
+        pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
+        pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
+
+        patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
+        patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
+        patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
+
+        state.ChangeState(patrolState);
     }
 
 

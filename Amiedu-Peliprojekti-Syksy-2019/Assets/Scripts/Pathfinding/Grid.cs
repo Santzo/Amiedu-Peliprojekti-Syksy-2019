@@ -112,57 +112,37 @@ public class Grid : MonoBehaviour
 
         return neighbours;
     }
+
     public Node GetWalkableNeighbor(Node targetNode)
     {
+        if (targetNode.walkable == 2) return targetNode;
         Node tempNode = targetNode;
         int count = 0;
         while (tempNode.walkable < 2)
         {
-            if (grid[targetNode.gridX - count, targetNode.gridY].walkable == 2)
+            for (int x = -1; x < 2; x++)
             {
-                tempNode = grid[targetNode.gridX - count, targetNode.gridY];
-                break;
-            }
-            else if (grid[targetNode.gridX - count, targetNode.gridY - count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX - count, targetNode.gridY - count];
-                break;
-            }
-            else if (grid[targetNode.gridX, targetNode.gridY - count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX, targetNode.gridY - count];
-                break;
-            }
-            if (grid[targetNode.gridX + count, targetNode.gridY - count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX + count, targetNode.gridY - count];
-                break;
-            }
-            if (grid[targetNode.gridX + count, targetNode.gridY].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX + count, targetNode.gridY];
-                break;
-            }
-            if (grid[targetNode.gridX + count, targetNode.gridY + count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX + count, targetNode.gridY + count];
-                break;
-            }
-            if (grid[targetNode.gridX, targetNode.gridY + count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX, targetNode.gridY + count];
-                break;
-            }
-            if (grid[targetNode.gridX - count, targetNode.gridY + count].walkable == 2)
-            {
-                tempNode = grid[targetNode.gridX - count, targetNode.gridY + count];
-                break;
+                for (int y = -1; y < 2; y++)
+                {
+                    int posX = targetNode.gridX + (count * x);
+                    int posY = targetNode.gridY + (count * y);
+                    posX = Mathf.Clamp(posX, 0, gridSizeX);
+                    posY = Mathf.Clamp(posY, 0, gridSizeY);
+                    tempNode = grid[posX, posY];
+                    if (tempNode.walkable == 2) break;
+                }
+                if (tempNode.walkable == 2) break;
             }
             count++;
         }
         return tempNode;
     }
-
+    public Vector2 WorldPointFromNode(Node node)
+    {
+        Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
+        Vector2 position = worldBottomLeft + Vector2.right * (node.gridX * nodeDiameter + nodeRadius) + Vector2.up * (node.gridY * nodeDiameter + nodeRadius);
+        return position;
+    }
     public Node NodeFromWorldPoint(Vector2 worldPosition)
     {
         float percentX = ((worldPosition.x - pos.x) + gridWorldSize.x / 2) / gridWorldSize.x;

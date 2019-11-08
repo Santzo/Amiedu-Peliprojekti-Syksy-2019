@@ -7741,6 +7741,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45e5db08fa9f874294e89d6f78716c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPoints:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  sortingTransform: {fileID: 0}
+  sGroup: {fileID: 0}
+  destination: {x: 0, y: 0}
+  path: []
+  targetIndex: 0
+  rb: {fileID: 0}
 --- !u!1 &1408164874
 GameObject:
   m_ObjectHideFlags: 0

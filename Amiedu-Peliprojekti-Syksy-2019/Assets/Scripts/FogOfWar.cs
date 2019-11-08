@@ -52,7 +52,7 @@ public class FogOfWar : MonoBehaviour
 
         fogOfWarMainCamera.orthographicSize = fogSize.sizeDelta.y * 0.5f;
         fogOfWarSecondaryCamera.orthographicSize = fogSize.sizeDelta.y * 0.5f;
-
+        Events.onGameFieldCreated();
     }
  
 

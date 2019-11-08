@@ -10,7 +10,6 @@ public class StateMachine
     {
         if (currentState != null)
             currentState.OnStateExit();
-
         currentState = newState;
         currentState.OnStateEnter();
     }
