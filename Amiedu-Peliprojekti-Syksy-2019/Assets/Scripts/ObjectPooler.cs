@@ -45,6 +45,7 @@ public class ObjectPooler : MonoBehaviour
         GameObject obj = poolDictionary[tag].Dequeue();
         obj.SetActive(true);
         obj.transform.position = position ?? new Vector3(0f,0f,0f);
+        obj.transform.rotation = rotation ?? Quaternion.Euler(0f, 0f, 0f);
         poolDictionary[tag].Enqueue(obj);
         ISpawn spawn = obj.GetComponent<ISpawn>();
         if (!(spawn is null)) spawn.Spawn();

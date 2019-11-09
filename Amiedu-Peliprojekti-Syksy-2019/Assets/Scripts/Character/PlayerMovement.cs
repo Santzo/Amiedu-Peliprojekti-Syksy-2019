@@ -205,8 +205,8 @@ public class PlayerMovement : MonoBehaviour
         {
             case "EnemyHitbox":
                 var be = obj.GetComponentInParent<BaseEnemy>();
-                be.OnGetHit(1);
-                ObjectPooler.op.Spawn("BloodSplatter", hitPosition);
+                be.OnGetHit(Info.CalculateDamage(be.stats));
+                ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f,0f,205f));
                 break;
             default:
                 ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);

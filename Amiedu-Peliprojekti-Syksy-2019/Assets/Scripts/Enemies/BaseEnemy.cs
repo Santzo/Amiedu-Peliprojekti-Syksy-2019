@@ -21,6 +21,7 @@ public class BaseEnemy : MonoBehaviour
 
     public Vector2[] patrolPoints = new Vector2[3];
     public Transform sortingTransform;
+    public Transform top;
     public SortingGroup sGroup;
     public Vector2 destination;
     public Vector2[] path;
@@ -35,6 +36,7 @@ public class BaseEnemy : MonoBehaviour
         sGroup = GetComponent<SortingGroup>();
         oriScale = transform.localScale;
         sortingTransform = transform.Find("SortingTransform");
+        top = transform.Find("Top");
         stats = Array.Find(EnemyStats.enemyStats, enemy => enemy.name == transform.name);
         Events.onGameFieldCreated += RandomizePatrolPath;
 
@@ -88,8 +90,10 @@ public class BaseEnemy : MonoBehaviour
         return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
 
-    public void OnGetHit(float damage)
+    public void OnGetHit(int damage)
     {
+        GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
+        obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
         StartCoroutine(GetHit());
     }
 

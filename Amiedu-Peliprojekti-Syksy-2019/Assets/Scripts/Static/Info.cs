@@ -42,12 +42,11 @@ public class Info
             return Mathf.RoundToInt(dmg);
         }
     }
-    public static float CalculateDamage(EnemyStats enemyStats)
+    public static int CalculateDamage(EnemyStats enemyStats)
     {
         float dmg = Random.Range(minDamage, maxDamage);
         float defense = enemyStats.defense;
-
-        float totalDmg = dmg - defense > 1f ? dmg - defense : 1f;
+        int totalDmg = dmg - defense > 1f ? Mathf.RoundToInt(dmg - defense) : 1;
         return totalDmg;
     }
 }
