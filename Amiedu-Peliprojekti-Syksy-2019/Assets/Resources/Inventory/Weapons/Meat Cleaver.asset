@@ -22,9 +22,9 @@ MonoBehaviour:
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 0
-  minDamage: 0
-  maxDamage: 0
-  fireRate: 1.4
+  minDamage: 96
+  maxDamage: 249
+  fireRate: 8
   clipSize: 0
   reloadTime: 0
   criticalHitChance: 0

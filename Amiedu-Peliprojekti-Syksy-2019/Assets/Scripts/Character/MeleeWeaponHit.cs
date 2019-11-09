@@ -22,8 +22,9 @@ public class MeleeWeaponHit : MonoBehaviour
     public void CheckForCollision()
     {
         int a = rb.OverlapCollider(filter, results);
+        Debug.Log(a);
         if (a > 0 && results != null)
-        {;
+        {
             References.rf.playerMovement.MeleeWeaponHit(results, co2d);
         }
         

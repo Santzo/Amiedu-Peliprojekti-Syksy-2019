@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
-    private bool activeAttackFrames, attacking;
+    private bool attacking;
     public Transform mask;
     private int HandleVertical
     {
@@ -102,14 +102,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (activeAttackFrames)
+        if (attacking)
         {
-            if (meleeWeapon != null)
+
+            if (meleeWeapon != null && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > 0.7f)
             {
                 meleeWeapon.CheckForCollision();
             }
         }
-
+     
         HandleInput();
         if (!movementPossible)
             return;
@@ -162,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
             if (!attacking && CharacterStats.characterEquipment.weapon != null)
             {
                 attacking = true;
+                StopCoroutine("WaitForAttack");
                 StartCoroutine("WaitForAttack");
                 anim.SetTrigger("Attack");
             }
@@ -183,7 +185,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void MeleeWeaponHit(Collider2D[] collisions, Collider2D position)
     {
-        if (!activeAttackFrames) return;
         Vector2? hitPosition = null;
         GameObject obj = null;
         foreach (var col in collisions)
@@ -212,13 +213,8 @@ public class PlayerMovement : MonoBehaviour
                 ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
                 break;
         }
-      
-        activeAttackFrames = false;
-    }
-
-    public void ActivateAttackFrames(int activate)
-    {
-        activeAttackFrames = activate == 1;
+        StopCoroutine("WaitForAttack");
+        attacking = false;
     }
 
     private void ResetAnimations()
@@ -230,7 +226,6 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator WaitForAttack()
     {
         yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.02f);
-        activeAttackFrames = false;
         attacking = false;
     }
 }

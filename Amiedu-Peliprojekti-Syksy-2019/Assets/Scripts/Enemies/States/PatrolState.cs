@@ -41,7 +41,6 @@ public class PatrolState : IEnemyState
 
     private void UpdatePatrolPath()
     {
-        Debug.Log(index);
         enemy.path = null;
         PathRequestManager.RequestPath(new PathRequest(false, enemy.rb.position, enemy.patrolPoints[index], enemy.OnPathFound));
         index = index + 1 < enemy.patrolPoints.Length ? index + 1 : 0;   

@@ -6,7 +6,6 @@ using UnityEngine.Rendering;
 
 public class BaseEnemy : MonoBehaviour
 {
-
     protected StateMachine state = new StateMachine();
     protected IEnemyState idleState;
     protected IEnemyState patrolState;
@@ -94,12 +93,17 @@ public class BaseEnemy : MonoBehaviour
     {
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
         obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
-        StartCoroutine(GetHit());
+        StopCoroutine("GetHit");
+        StartCoroutine("GetHit");
     }
 
     protected IEnumerator GetHit()
     {
         int loop = 0;
+        foreach (var sr in sprites)
+        {
+            sr.sr.color = sr.oriColor;
+        }
         while (loop < 3)
         {
             while (sprites[0].sr.color.r > 0.3f)
