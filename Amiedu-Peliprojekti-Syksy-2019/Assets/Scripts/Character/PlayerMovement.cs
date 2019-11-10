@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
-    private bool attacking;
+    private bool attacking, activeAttackFrames;
     public Transform mask;
     private int HandleVertical
     {
@@ -102,15 +102,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (attacking)
+        if (attacking && activeAttackFrames)
         {
-
             if (meleeWeapon != null && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > 0.7f)
             {
                 meleeWeapon.CheckForCollision();
             }
         }
-     
+
         HandleInput();
         if (!movementPossible)
             return;
@@ -163,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
             if (!attacking && CharacterStats.characterEquipment.weapon != null)
             {
                 attacking = true;
+                activeAttackFrames = true;
                 StopCoroutine("WaitForAttack");
                 StartCoroutine("WaitForAttack");
                 anim.SetTrigger("Attack");
@@ -207,14 +207,13 @@ public class PlayerMovement : MonoBehaviour
             case "EnemyHitbox":
                 var be = obj.GetComponentInParent<BaseEnemy>();
                 be.OnGetHit(Info.CalculateDamage(be.stats));
-                ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f,0f,205f));
+                ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f, 0f, 205f));
                 break;
             default:
                 ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
                 break;
         }
-        StopCoroutine("WaitForAttack");
-        attacking = false;
+        activeAttackFrames = false;
     }
 
     private void ResetAnimations()
@@ -225,7 +224,9 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WaitForAttack()
     {
-        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.02f);
+        Debug.Log(1f / CharacterStats.characterEquipment.weapon.fireRate);
+        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.05f);
         attacking = false;
+        activeAttackFrames = false;
     }
 }

@@ -20,7 +20,7 @@ public class DamageText : MonoBehaviour
 
     private void OnEnable()
     {
-        speed = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(1f, 2.5f));
+        speed = new Vector2(Random.Range(-1.5f, 1.5f), Random.Range(0.5f, 0.8f));
     }
     public void DisableText()
     {

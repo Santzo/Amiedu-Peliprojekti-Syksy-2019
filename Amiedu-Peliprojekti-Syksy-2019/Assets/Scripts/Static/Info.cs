@@ -25,7 +25,7 @@ public class Info
         get
         {
             float dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.minDamage : 0;
-            float statBonus = CharacterStats.dexterity * 0.05f;
+            float statBonus = CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
             dmg += statBonus;
             minDamage = dmg;
             return Mathf.RoundToInt(dmg);
@@ -36,7 +36,7 @@ public class Info
         get
         {
             float dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.maxDamage : 0;
-            float statBonus = CharacterStats.dexterity * 0.05f;
+            float statBonus = CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
             dmg += statBonus;
             maxDamage = dmg;
             return Mathf.RoundToInt(dmg);

@@ -38,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.9059, y: 2.1509}
-  m_SizeDelta: {x: 2.1882, y: 0.4108}
+  m_AnchoredPosition: {x: -9.1111, y: 2.1875}
+  m_SizeDelta: {x: 1.7777, y: 0.3376}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4694155947058978663
 MeshRenderer:
@@ -115,7 +115,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 47637f63c639a4a4fb5b69566fd41d42, type: 2}
   m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
     type: 2}
   m_fontSharedMaterials: []
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 4694155947058978663}
   m_subTextObjects:
   - {fileID: 0}
