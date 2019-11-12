@@ -74,6 +74,12 @@ public class PlayerEquipment : MonoBehaviour
         {
             Weapon temp = equip.item as Weapon;
             string defWep = temp.weaponType == WeaponType.Melee ? "Melee" : "Ranged";
+            Equipped ls = equipment["Lightsource"];
+            if (ls.obj != null)
+            {
+                Debug.Log("Lightsource");
+                ls.obj.SetActive(temp.hands == Hands.One_handed);
+            }
 
             AnimationClip attackClip = temp.attackAnimation == null ? DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;
             AnimationClip idleClip = DefaultIdleClip(temp.hands + defWep);
@@ -84,9 +90,15 @@ public class PlayerEquipment : MonoBehaviour
             anim.runtimeAnimatorController = overrider;
             anim.SetLayerWeight(1, 1f);
             anim.SetFloat("AttackSpeed", temp.fireRate);
-
+            ParticleSystem trail = equip.obj.GetComponentInChildren<ParticleSystem>();
+            if (trail != null)
+            {
+                Debug.Log("Trail has been set");
+                References.rf.playerMovement.weaponTrailRenderer = trail;
+                trail.Stop();
+            }
             if (temp.weaponType == WeaponType.Melee)
-                References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>(); 
+                References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>();
         }
 
         else if (equip.item.GetType() == typeof(Chestgear))

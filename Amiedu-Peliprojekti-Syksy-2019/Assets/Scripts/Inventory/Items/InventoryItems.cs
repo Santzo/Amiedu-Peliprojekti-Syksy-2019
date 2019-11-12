@@ -46,7 +46,8 @@ public enum WeaponType
     Melee,
     Pistol,
     Rifle,
-    Shotgun
+    Shotgun,
+    Flamethrower
 }
 public enum Effect
 {

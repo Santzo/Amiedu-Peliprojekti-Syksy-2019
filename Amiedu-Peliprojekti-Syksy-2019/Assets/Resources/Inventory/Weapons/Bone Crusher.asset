@@ -10,24 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: Meat Cleaver
+  m_Name: Bone Crusher
   m_EditorClassIdentifier: 
-  itemLevel: 3
-  weight: 2.5
-  obj: {fileID: 4999152298579067960, guid: 6c4c5d1cf1635b04f812735d7bb175c4, type: 3}
+  itemLevel: 4
+  weight: 9.5
+  obj: {fileID: 6440022379830505789, guid: 18416db7b0df96247968272887f9b1a6, type: 3}
   icon: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
-  description: Meat cleaver.
+  description: A huge hammer capable of grinding bones to dust.
   weaponType: 0
-  attackAnimation: {fileID: 0}
-  hands: 0
-  minDamage: 96
-  maxDamage: 249
-  fireRate: 1.65
-  staminaCost: 13
+  attackAnimation: {fileID: 7400000, guid: 86e9a9d61550c864db2569ec719c04cf, type: 2}
+  hands: 1
+  minDamage: 20
+  maxDamage: 60
+  fireRate: 0.45
+  staminaCost: 36
   clipSize: 0
   reloadTime: 0
   criticalHitChance: 0
   bulletPerShot: 0
-  gearEffects: []
+  gearEffects:
+  - effect: 2
+    amount: 50
+  - effect: 4
+    amount: 5
+  - effect: 0
+    amount: -10

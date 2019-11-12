@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    public ParticleSystem weaponTrailRenderer;
     [HideInInspector]
     public MeleeWeaponHit meleeWeapon;
     SortingGroup sortingGroup;
@@ -104,8 +105,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (attacking && activeAttackFrames)
         {
-            if (meleeWeapon != null && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > 0.7f)
+            float frame = anim.GetCurrentAnimatorStateInfo(2).normalizedTime;
+            if (weaponTrailRenderer != null)
             {
+                if (!weaponTrailRenderer.isPlaying && frame > 0.4f)
+                    weaponTrailRenderer.Play();
+                if (!weaponTrailRenderer.isPlaying && frame > 0.9f)
+                    weaponTrailRenderer.Stop();
+
+            }
+            if (meleeWeapon != null && frame > 0.7f)
+            {
+              
                 meleeWeapon.CheckForCollision();
             }
         }
@@ -159,8 +170,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyboardConfig.attack[0]) || Input.GetKeyDown(KeyboardConfig.attack[1]))
         {
-            if (!attacking && CharacterStats.characterEquipment.weapon != null)
+            if (!attacking && CharacterStats.characterEquipment.weapon != null && CharacterStats.stamina > 0f)
             {
+                CharacterStats.stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
                 attacking = true;
                 activeAttackFrames = true;
                 StopCoroutine("WaitForAttack");
@@ -228,5 +240,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.05f);
         attacking = false;
         activeAttackFrames = false;
+        if (weaponTrailRenderer != null && weaponTrailRenderer.isPlaying)
+            weaponTrailRenderer.Stop();
     }
 }

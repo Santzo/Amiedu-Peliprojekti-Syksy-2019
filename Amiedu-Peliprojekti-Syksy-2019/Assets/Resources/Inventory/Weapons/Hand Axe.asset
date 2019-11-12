@@ -27,7 +27,8 @@ MonoBehaviour:
   hands: 0
   minDamage: 6
   maxDamage: 9
-  fireRate: 1.5
+  fireRate: 0.7
+  staminaCost: 11
   clipSize: 0
   reloadTime: 0
   criticalHitChance: 31.6

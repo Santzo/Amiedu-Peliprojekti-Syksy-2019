@@ -11,6 +11,7 @@ public class Weapon : InventoryItems
     public float minDamage, maxDamage;
     [Tooltip("How many shots / swings (melee) per second.")]
     public float fireRate;
+    public float staminaCost;
     public int clipSize;
     [Tooltip("Reload time in seconds")]
     public float reloadTime;

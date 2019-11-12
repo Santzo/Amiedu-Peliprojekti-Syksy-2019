@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: Meat Cleaver
+  m_Name: Flamethrower
   m_EditorClassIdentifier: 
-  itemLevel: 3
-  weight: 2.5
-  obj: {fileID: 4999152298579067960, guid: 6c4c5d1cf1635b04f812735d7bb175c4, type: 3}
+  itemLevel: 5
+  weight: 6.5
+  obj: {fileID: 5863568968154505762, guid: ea2810a4725ec6f40b938459204c59df, type: 3}
   icon: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
-  description: Meat cleaver.
-  weaponType: 0
+  description: Is it barbeque time?
+  weaponType: 4
   attackAnimation: {fileID: 0}
-  hands: 0
-  minDamage: 96
-  maxDamage: 249
-  fireRate: 1.65
-  staminaCost: 13
+  hands: 1
+  minDamage: 4
+  maxDamage: 6
+  fireRate: 0.2
+  staminaCost: 0
   clipSize: 0
   reloadTime: 0
-  criticalHitChance: 0
-  bulletPerShot: 0
+  criticalHitChance: 5
+  bulletPerShot: 1
   gearEffects: []
