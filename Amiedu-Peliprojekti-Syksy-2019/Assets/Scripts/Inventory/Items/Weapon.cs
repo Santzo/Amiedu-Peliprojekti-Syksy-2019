@@ -19,6 +19,4 @@ public class Weapon : InventoryItems
     public float criticalHitChance;
     public int bulletPerShot;
     public GearEffect[] gearEffects;
-
-
 }

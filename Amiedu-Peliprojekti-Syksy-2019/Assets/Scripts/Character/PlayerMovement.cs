@@ -236,7 +236,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WaitForAttack()
     {
-        Debug.Log(1f / CharacterStats.characterEquipment.weapon.fireRate);
         yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.05f);
         attacking = false;
         activeAttackFrames = false;

@@ -20,3 +20,8 @@ MonoBehaviour:
   iconScale: 1
   description: Marvelous hat.
   defense: 5
+  gearEffects:
+  - effect: 1
+    amount: 2
+  - effect: 0
+    amount: 55

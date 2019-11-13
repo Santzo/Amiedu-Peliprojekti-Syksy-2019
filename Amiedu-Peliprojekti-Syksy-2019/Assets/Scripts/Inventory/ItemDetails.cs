@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using System;
 
 public class ItemDetails : MonoBehaviour
 {
@@ -59,15 +60,11 @@ public class ItemDetails : MonoBehaviour
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
             }
 
-            if (_item.gearEffects != null && _item.gearEffects.Length > 0)
-            {
-                for (int i = 0; i < _item.gearEffects.Length; i++)
-                {
-                    details[i + 6].text = GearEffectText(_item.gearEffects[i]);
-                }
-            }
         }
+        else if (item is Lightsource)
+        {
 
+        }
         else if (item is Consumable) // CONSUMABLES HERE
         {
             Consumable _item = item as Consumable;
@@ -75,6 +72,27 @@ public class ItemDetails : MonoBehaviour
             {
                 details[i].text = ItemEffectText(_item.itemEffect[i]);
             }
+        }
+        else
+        {
+            var defense = item.GetType().GetField("defense").GetValue(item);
+            details[0].text = $"Defense {TextColor.Return("yellow")}{defense}";
+        }
+
+        CheckForGearEffects(item);
+        
+    }
+
+    private void CheckForGearEffects(InventoryItems item)
+    {
+        var _gearEffects = item.GetType().GetField("gearEffects");
+        if (_gearEffects == null) return;
+        var gearEffects = (GearEffect[]) _gearEffects.GetValue(item);
+        if (gearEffects == null || gearEffects.Length == 0) return;
+
+        for (int i = 0; i < gearEffects.Length; i++)
+        {
+            details[i + 6].text = GearEffectText(gearEffects[i]);
         }
     }
 
@@ -98,6 +116,11 @@ public class ItemDetails : MonoBehaviour
                 return effect.amount > 0
                 ? TextColor.Return("green") + "Increases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + "%."
                 : TextColor.Return("red") + "Decreases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + Mathf.Abs(effect.amount) + TextColor.Return() + "%.";
+            case _GearEffect.Light_Radius:
+                return effect.amount > 0
+                ? $"{TextColor.Return("green")}Increases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{effect.amount} {TextColor.Return()} points."
+                :$"{TextColor.Return("red")}Decreases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)} {TextColor.Return()} points.";
+
             default:
                 return effect.amount > 0
                 ? eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points."

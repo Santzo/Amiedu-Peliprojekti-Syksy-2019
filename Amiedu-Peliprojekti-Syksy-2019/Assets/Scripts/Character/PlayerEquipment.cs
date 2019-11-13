@@ -54,6 +54,7 @@ public class PlayerEquipment : MonoBehaviour
     {
         var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
+        if (equip.item != null) RemoveEquipment(equip.item.GetType());
         equip.item = item;
 
         if (item.GetType() != typeof(Chestgear))
@@ -66,7 +67,7 @@ public class PlayerEquipment : MonoBehaviour
         if (equip.item.GetType() == typeof(Lightsource))
         {
             Lightsource temp = equip.item as Lightsource;
-            LOSCircle.transform.localScale = Vector3.one * temp.lightRadius;
+            LOSCircle.transform.localScale += -Vector3.one * lightRadius +  Vector3.one * temp.lightRadius;
             References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerMovement.transform.localScale.y * temp.lightRadius;
         }
 
@@ -93,7 +94,6 @@ public class PlayerEquipment : MonoBehaviour
             ParticleSystem trail = equip.obj.GetComponentInChildren<ParticleSystem>();
             if (trail != null)
             {
-                Debug.Log("Trail has been set");
                 References.rf.playerMovement.weaponTrailRenderer = trail;
                 trail.Stop();
             }
@@ -108,22 +108,68 @@ public class PlayerEquipment : MonoBehaviour
                 chestgearEquipment[trans.name].sprite = trans.GetComponent<SpriteRenderer>().sprite;
             }
         }
+        ApplyGearEffects(equip.item, false);
+        
+    }
+
+    private void ApplyGearEffects(InventoryItems item, bool unequip)
+    {
+        GearEffect[] gearEffects = (GearEffect[])item.GetType().GetField("gearEffects").GetValue(item);
+        if (gearEffects == null || gearEffects.Length == 0)
+            return;
+        foreach (var effect in gearEffects)
+        {
+            switch (effect.effect)
+            {
+                case _GearEffect.Increases_Strength:
+                    CharacterStats.strength += !unequip ? (int) effect.amount : (int) -effect.amount;
+                    break;
+                case _GearEffect.Increases_Dexterity:
+                    CharacterStats.dexterity += !unequip ? (int)effect.amount : (int)-effect.amount;
+                    break;
+                case _GearEffect.Increases_Adaptability:
+                    CharacterStats.adaptability += !unequip ? (int)effect.amount : (int)-effect.amount;
+                    break;
+                case _GearEffect.Increases_Constitution:
+                    CharacterStats.constitution += !unequip ? (int)effect.amount : (int)-effect.amount;
+                    break;
+                case _GearEffect.Increases_Luck:
+                    CharacterStats.luck += !unequip ? (int)effect.amount : (int)-effect.amount;
+                    break;
+                case _GearEffect.Light_Radius:
+                    LOSCircle.transform.localScale += !unequip ? Vector3.one * effect.amount : -Vector3.one * effect.amount;
+                    break;
+                case _GearEffect.Increases_Health:
+                    CharacterStats.maxHealth += !unequip ? effect.amount : -effect.amount;
+                    CharacterStats.health += !unequip ? effect.amount : -effect.amount;
+                    References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
+                    break;
+                case _GearEffect.Increases_Stamina:
+                    CharacterStats.maxStamina += !unequip ? effect.amount : -effect.amount;
+                    CharacterStats.stamina += !unequip ? effect.amount : -effect.amount;
+                    References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+                    break;
+                case _GearEffect.Movement_Speed:
+                    CharacterStats.moveSpeed = !unequip ? CharacterStats.moveSpeed *= 1f + effect.amount / 100f : CharacterStats.moveSpeed /= 1f + effect.amount / 100f;
+                    break;
+                       
+            }
+        }
     }
 
     public void RemoveEquipment(Type item)
     {
         var equip = equipment[item.ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
-        equip.item = null;
-        if (equip.obj != null) Destroy(equip.obj);
 
         if (item == typeof(Lightsource))
         {
-            LOSCircle.transform.localScale = Vector3.one * lightRadius;
+            Lightsource temp = equip.item as Lightsource;
+            LOSCircle.transform.localScale += -Vector3.one * temp.lightRadius + Vector3.one * lightRadius;
         }
         else if (item == typeof(Weapon))
         {
-            //References.rf.playerMovement.meleeWeapon = null;
+            References.rf.playerMovement.meleeWeapon = null;
         }
         else if (item == typeof(Chestgear))
         {
@@ -132,6 +178,11 @@ public class PlayerEquipment : MonoBehaviour
                 obj.Value.sprite = null;
             }
         }
+
+        if (equip.obj != null) Destroy(equip.obj);
+
+        ApplyGearEffects(equip.item, true);
+        equip.item = null;
     }
 
     private AnimationClip DefaultAttackClip(string weapon)

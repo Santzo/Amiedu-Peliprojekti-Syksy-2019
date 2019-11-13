@@ -20,3 +20,6 @@ MonoBehaviour:
   iconScale: 1
   description: A hockey mask
   defense: 5
+  gearEffects:
+  - effect: 1
+    amount: -0.5

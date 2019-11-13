@@ -33,4 +33,6 @@ MonoBehaviour:
   reloadTime: 0
   criticalHitChance: 31.6
   bulletPerShot: 0
-  gearEffects: []
+  gearEffects:
+  - effect: 0
+    amount: 65

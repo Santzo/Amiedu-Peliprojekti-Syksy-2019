@@ -29,12 +29,6 @@ public static class ExtensionMethods
             ori[i].text = "";
         }
     }
-    public static string ReplaceUnderScore(string replace)
-    {
-        replace.Replace("_", " ");
-        return replace;
-
-    }
 
     public static T[] LoadAssets<T>(this T[] arr, string path) where T : Object
     {
@@ -49,7 +43,6 @@ public static class ExtensionMethods
         {
             if (trans.GetComponent<UIEvents>() != null)
             {
-             
                 uitem.Add(new UIItem { trans = trans, anim = trans.GetComponent<Animator>(), text = trans.GetComponentInChildren<TextMeshProUGUI>() });
                 UIEvents uievent = trans.GetComponent<UIEvents>();
                 uievent.mouseController = transform.GetComponent<IUIHandler>();

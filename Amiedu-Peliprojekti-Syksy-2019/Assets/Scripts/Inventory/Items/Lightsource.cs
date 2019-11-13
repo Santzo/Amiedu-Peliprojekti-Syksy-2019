@@ -6,6 +6,6 @@ using UnityEngine;
 public class Lightsource: InventoryItems
 {
     public float lightRadius;
-    public ItemEffect[] itemEffect;
+    public GearEffect[] gearEffects;
 
 }

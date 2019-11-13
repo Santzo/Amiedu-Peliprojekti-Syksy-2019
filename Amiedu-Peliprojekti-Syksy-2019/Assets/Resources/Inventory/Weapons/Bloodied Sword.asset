@@ -37,6 +37,4 @@ MonoBehaviour:
   - effect: 4
     amount: 3
   - effect: 0
-    amount: 3
-  - effect: 0
-    amount: -6
+    amount: -20

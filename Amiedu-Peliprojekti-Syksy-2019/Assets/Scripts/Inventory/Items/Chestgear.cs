@@ -6,5 +6,6 @@ using UnityEngine;
     public class Chestgear : InventoryItems
     {
         public float defense;
-    }
+        public GearEffect[] gearEffects;
+}
 

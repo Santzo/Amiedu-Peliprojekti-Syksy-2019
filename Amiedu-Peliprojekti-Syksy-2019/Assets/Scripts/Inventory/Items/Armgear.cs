@@ -6,4 +6,5 @@ using UnityEngine;
 public class Armgear : InventoryItems
 {
     public float defense;
+    public GearEffect[] gearEffects;
 }
