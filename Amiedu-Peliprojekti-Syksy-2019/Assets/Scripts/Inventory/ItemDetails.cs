@@ -118,8 +118,8 @@ public class ItemDetails : MonoBehaviour
                 : TextColor.Return("red") + "Decreases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + Mathf.Abs(effect.amount) + TextColor.Return() + "%.";
             case _GearEffect.Light_Radius:
                 return effect.amount > 0
-                ? $"{TextColor.Return("green")}Increases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{effect.amount} {TextColor.Return()} points."
-                :$"{TextColor.Return("red")}Decreases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)} {TextColor.Return()} points.";
+                ? $"{TextColor.Return("green")}Increases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()} points."
+                :$"{TextColor.Return("red")}Decreases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()} points.";
 
             default:
                 return effect.amount > 0

@@ -144,5 +144,9 @@ public class BaseEnemy : MonoBehaviour
         state.ChangeState(patrolState);
     }
 
+    private void OnParticleCollision(GameObject other)
+    {
+        Debug.Log("Jaa");
+    }
 
 }

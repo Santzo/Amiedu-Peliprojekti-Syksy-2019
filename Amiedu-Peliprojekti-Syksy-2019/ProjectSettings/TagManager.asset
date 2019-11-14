@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerCollider
   - MeleeWeapon
+  - BloodSplatter
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Player
   - Enemy
   - EnemyHitbox
-  - 
+  - Post-Processing
   - 
   - 
   - 

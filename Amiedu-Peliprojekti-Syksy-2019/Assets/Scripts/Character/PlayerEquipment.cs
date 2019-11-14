@@ -68,7 +68,6 @@ public class PlayerEquipment : MonoBehaviour
         {
             Lightsource temp = equip.item as Lightsource;
             LOSCircle.transform.localScale += -Vector3.one * lightRadius +  Vector3.one * temp.lightRadius;
-            References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerMovement.transform.localScale.y * temp.lightRadius;
         }
 
         else if (equip.item.GetType() == typeof(Weapon))
@@ -95,7 +94,7 @@ public class PlayerEquipment : MonoBehaviour
             if (trail != null)
             {
                 References.rf.playerMovement.weaponTrailRenderer = trail;
-                trail.Stop();
+                if (temp.weaponType == WeaponType.Melee || temp.weaponType == WeaponType.Flamethrower) trail.Stop();
             }
             if (temp.weaponType == WeaponType.Melee)
                 References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>();
@@ -109,7 +108,8 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
         ApplyGearEffects(equip.item, false);
-        
+        References.rf.playerMovement.mask.localScale = Vector3.one * LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
+
     }
 
     private void ApplyGearEffects(InventoryItems item, bool unequip)
@@ -180,8 +180,8 @@ public class PlayerEquipment : MonoBehaviour
         }
 
         if (equip.obj != null) Destroy(equip.obj);
-
         ApplyGearEffects(equip.item, true);
+        References.rf.playerMovement.mask.localScale = Vector3.one * LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
         equip.item = null;
     }
 

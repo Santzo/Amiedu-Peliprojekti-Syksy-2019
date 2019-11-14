@@ -103,24 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (attacking && activeAttackFrames)
-        {
-            float frame = anim.GetCurrentAnimatorStateInfo(2).normalizedTime;
-            if (weaponTrailRenderer != null)
-            {
-                if (!weaponTrailRenderer.isPlaying && frame > 0.4f)
-                    weaponTrailRenderer.Play();
-                if (!weaponTrailRenderer.isPlaying && frame > 0.9f)
-                    weaponTrailRenderer.Stop();
-
-            }
-            if (meleeWeapon != null && frame > 0.7f)
-            {
-              
-                meleeWeapon.CheckForCollision();
-            }
-        }
-
+        HandleAttack();
         HandleInput();
         if (!movementPossible)
             return;
@@ -132,6 +115,41 @@ public class PlayerMovement : MonoBehaviour
         mask.transform.position = References.rf.playerEquipment.LOSCircle.position;
     }
 
+    void HandleAttack()
+    {
+        if (!attacking) return;
+        switch (CharacterStats.characterEquipment.weapon.weaponType)
+        {
+            case WeaponType.Melee:
+                if (activeAttackFrames)
+                {
+                    float frame = anim.GetCurrentAnimatorStateInfo(2).normalizedTime;
+                    if (weaponTrailRenderer != null)
+                    {
+                        if (!weaponTrailRenderer.isPlaying && frame > 0.4f)
+                            weaponTrailRenderer.Play();
+                        if (!weaponTrailRenderer.isPlaying && frame > 0.9f)
+                            weaponTrailRenderer.Stop();
+
+                    }
+                    if (meleeWeapon != null && frame > 0.7f)
+                    {
+
+                        meleeWeapon.CheckForCollision();
+                    }
+                }
+                break;
+            case WeaponType.Flamethrower:
+                if (!Input.GetKey(KeyboardConfig.attack[0]) && !Input.GetKey(KeyboardConfig.attack[1]))
+                {
+                    attacking = false;
+                    activeAttackFrames = false;
+                    weaponTrailRenderer.Stop();
+                    anim.SetTrigger("StopAttack");
+                }
+                break;
+        }
+    }
     void UpdateMoveAnimation()
     {
         anim.SetFloat("Movement", pa.MoveAnim);
@@ -172,12 +190,24 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!attacking && CharacterStats.characterEquipment.weapon != null && CharacterStats.stamina > 0f)
             {
-                CharacterStats.stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
-                attacking = true;
-                activeAttackFrames = true;
-                StopCoroutine("WaitForAttack");
-                StartCoroutine("WaitForAttack");
-                anim.SetTrigger("Attack");
+                if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee)
+                {
+                    CharacterStats.stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
+                    attacking = true;
+                    activeAttackFrames = true;
+                    StopCoroutine("WaitForAttack");
+                    StartCoroutine("WaitForAttack");
+                    anim.SetTrigger("Attack");
+                    anim.SetTrigger("StopMeleeAttack");
+                }
+                else if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Flamethrower)
+                {
+                    attacking = true;
+                    activeAttackFrames = true;
+                    weaponTrailRenderer.Play();
+                   
+                    anim.SetTrigger("Attack");
+                }
             }
         }
 
@@ -242,4 +272,5 @@ public class PlayerMovement : MonoBehaviour
         if (weaponTrailRenderer != null && weaponTrailRenderer.isPlaying)
             weaponTrailRenderer.Stop();
     }
+ 
 }
