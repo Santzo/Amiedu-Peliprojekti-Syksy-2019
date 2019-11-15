@@ -10,11 +10,6 @@ public class UIEvents : MonoBehaviour, IPointerEnterHandler, IPointerClickHandle
     [HideInInspector]
     public int index;
 
-    private void Awake()
-    {
-        mouseController = GetComponentInParent<IUIHandler>();
-        index = transform.GetSiblingIndex();
-    }
     public void OnPointerClick(PointerEventData eventData)
     {
         mouseController.EntryClick(index, eventData.button);

@@ -29,6 +29,7 @@ public class BaseEnemy : MonoBehaviour
     public EnemyStats stats = new EnemyStats();
     public int targetIndex = 0;
     public Rigidbody2D rb;
+    public bool hasBeenHit;
 
 
     private void Awake()
@@ -157,6 +158,12 @@ public class BaseEnemy : MonoBehaviour
         foreach (var col in colliders)
             Info.RemoveEnemyHitbox(col);
         Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
+    }
+    public IEnumerator HasBeenHit(float time)
+    {
+        hasBeenHit = true;
+        yield return new WaitForSeconds(time);
+        hasBeenHit = false;
     }
 
 }

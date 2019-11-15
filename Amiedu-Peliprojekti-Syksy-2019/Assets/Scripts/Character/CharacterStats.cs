@@ -15,7 +15,8 @@ public static class CharacterStats
     public static Inventory[] hotbar = new Inventory[4];
 
     public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier, attackSpeed, moveSpeed;
-    public static float baseSight;
+    public static float sightBonusFromItems, sightBonusPercentage, criticalBonusFromItems, criticalBonusPercentage;
+    public static int gasAmmo, pistolAmmo, rifleAmmo;
 
 
     public static void ResetStats()
@@ -25,8 +26,8 @@ public static class CharacterStats
         strength = 10;
         constitution = 11;
         dexterity = 12;
-        perception = 10;
-        luck = 10;
+        perception = 30;
+        luck = 20;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
         health = maxHealth = 100f;
         stamina = maxStamina = 100f;
@@ -34,7 +35,7 @@ public static class CharacterStats
         movementSpeedMultiplier = 1.7f;
         attackSpeed = 1f;
         moveSpeed = 5f;
-        baseSight = 1f;
+        sightBonusFromItems = sightBonusPercentage = criticalBonusFromItems = criticalBonusPercentage = 0f;
     }
 }
 

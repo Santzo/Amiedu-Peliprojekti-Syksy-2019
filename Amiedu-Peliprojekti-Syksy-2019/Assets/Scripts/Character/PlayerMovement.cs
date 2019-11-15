@@ -83,12 +83,13 @@ public class PlayerMovement : MonoBehaviour
         sortingGroup = GetComponent<SortingGroup>();
         anim = GetComponent<Animator>();
         pa = new PlayerAnimations(this);
+
     }
 
     void Start()
     {
         mainCam = Camera.main;
-        TempStuff(); // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
+       
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
     }
@@ -103,6 +104,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (Events.onDialogueBox)
+            return;
         HandleAttack();
         HandleInput();
         if (!movementPossible)
@@ -123,6 +126,14 @@ public class PlayerMovement : MonoBehaviour
     void HandleAttack()
     {
         if (!attacking) return;
+        if (!movementPossible)
+        {
+            attacking = false;
+            activeAttackFrames = false;
+            if (weaponTrailRenderer != null)
+                weaponTrailRenderer.Stop();
+        }
+       
         switch (CharacterStats.characterEquipment.weapon.weaponType)
         {
             case WeaponType.Melee:
@@ -159,11 +170,6 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetFloat("Movement", pa.MoveAnim);
         anim.SetFloat("MovementMultiplier", pa.Sprinting ? CharacterStats.movementSpeedMultiplier : 1f);
-    }
-
-    void TempStuff() // VÄLIAIKAINEN METODI - MUISTA POISTAA KUN PELI ON VALMIS
-    {
-        CharacterStats.ResetStats();
     }
 
     void HandleInput()
@@ -277,11 +283,6 @@ public class PlayerMovement : MonoBehaviour
         if (weaponTrailRenderer != null && weaponTrailRenderer.isPlaying)
             weaponTrailRenderer.Stop();
     }
-    public IEnumerator WaitForFlameThrowerAttack()
-    {
-        activeAttackFrames = false;
-        yield return new WaitForSeconds(CharacterStats.characterEquipment.weapon.fireRate);
-        activeAttackFrames = true;
-    }
+
  
 }

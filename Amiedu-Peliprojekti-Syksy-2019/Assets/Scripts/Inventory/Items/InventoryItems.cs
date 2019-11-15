@@ -62,6 +62,7 @@ public enum _GearEffect
 {
     Movement_Speed,
     Light_Radius,
+    Increases_Critical_Hit_Chance,
     Increases_Health,
     Increases_Stamina,
     Increases_Strength,

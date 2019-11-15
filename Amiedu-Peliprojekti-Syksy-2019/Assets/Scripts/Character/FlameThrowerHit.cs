@@ -31,9 +31,7 @@ public class FlameThrowerHit : MonoBehaviour
         }
     }
     private void OnParticleTrigger()
-    {
-        if (!References.rf.playerMovement.activeAttackFrames) return;
-       
+    {      
         var hits = new List<ParticleSystem.Particle>();
         particles.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, hits);
         if (hits.Count == 0) return;
@@ -43,10 +41,10 @@ public class FlameThrowerHit : MonoBehaviour
             if (collision)
             {
                 BaseEnemy enemy = collision.GetComponentInParent<BaseEnemy>();
-                if (enemy != null)
+                if (enemy != null && !enemy.hasBeenHit)
                 {
                     enemy.OnGetHit(Info.CalculateDamage(enemy.stats));
-                    StartCoroutine(References.rf.playerMovement.WaitForFlameThrowerAttack());
+                    StartCoroutine(enemy.HasBeenHit(CharacterStats.characterEquipment.weapon.fireRate));
                     break;
                 }
             }

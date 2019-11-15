@@ -37,18 +37,30 @@ public static class ExtensionMethods
         return assets;
     }
 
-    public static void UItemInitialize(this List<UIItem> uitem, Transform transform)
+    public static void UItemInitialize(this List<UIItem> uitem, Transform _transform)
     {
-        foreach (Transform trans in transform)
+        foreach (Transform trans in _transform)
         {
             if (trans.GetComponent<UIEvents>() != null)
             {
                 uitem.Add(new UIItem { trans = trans, anim = trans.GetComponent<Animator>(), text = trans.GetComponentInChildren<TextMeshProUGUI>() });
                 UIEvents uievent = trans.GetComponent<UIEvents>();
-                uievent.mouseController = transform.GetComponent<IUIHandler>();
+                uievent.mouseController = _transform.GetComponent<IUIHandler>();
                 uievent.index = uitem.Count - 1;
             }
-
+        }
+    }
+    public static void SimpleUIHandlerInitialize(this List<Transform> uitem, Transform _transform)
+    {
+        foreach (Transform trans in _transform)
+        {
+            if (trans.GetComponent<UIEvents>() != null)
+            {
+                uitem.Add(trans);
+                UIEvents uievent = trans.GetComponent<UIEvents>();
+                uievent.mouseController = _transform.GetComponent<IUIHandler>();
+                uievent.index = uitem.Count - 1;
+            }
         }
     }
 

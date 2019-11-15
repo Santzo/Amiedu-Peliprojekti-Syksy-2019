@@ -9,9 +9,9 @@ public class PlayerEquipment : MonoBehaviour
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
     [HideInInspector]
     public Transform LOSCircle;
+    private Transform twoHandedLightSource;
     [HideInInspector]
     public Animator anim;
-    private float lightRadius = 1.75f;
     public AnimationClip oneHandedMelee, oneHandedRanged, oneHandedIdle, oneHandedWalk;
     public AnimationClip twoHandedMelee, twoHandedRanged, twoHandedIdle, twoHandedWalk;
     private AnimatorOverrideController overrider;
@@ -33,10 +33,12 @@ public class PlayerEquipment : MonoBehaviour
     {
         Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
+        twoHandedLightSource = transform.parent.GetFromAllChildren("TwoHandedLightSource");
         References.rf.playerMovement.mask = transform.parent.Find("VisionMask");
         References.rf.playerMovement.mask.SetParent(null);
-        LOSCircle.transform.localScale = Vector3.one * lightRadius;
-        References.rf.playerMovement.mask.localScale = References.rf.playerMovement.transform.localScale * lightRadius;
+        CharacterStats.ResetStats();
+        Info.CalculateSightRange();
+        Info.CalculateCriticalHitChance();
         chestgearEquipment.Add("ChestgearEquip", transform.parent.GetFromAllChildren("ChestgearEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("Mid_SectionEquip", transform.parent.GetFromAllChildren("Mid_SectionEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("R_Upper_ArmEquip", transform.parent.GetFromAllChildren("R_Upper_ArmEquip").GetComponent<SpriteRenderer>());
@@ -44,6 +46,8 @@ public class PlayerEquipment : MonoBehaviour
         chestgearEquipment.Add("L_Upper_ArmEquip", transform.parent.GetFromAllChildren("L_Upper_ArmEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("L_Lower_ArmEquip", transform.parent.GetFromAllChildren("L_Lower_ArmEquip").GetComponent<SpriteRenderer>());
     }
+
+ 
 
     private void OnDisable()
     {
@@ -67,7 +71,7 @@ public class PlayerEquipment : MonoBehaviour
         if (equip.item.GetType() == typeof(Lightsource))
         {
             Lightsource temp = equip.item as Lightsource;
-            LOSCircle.transform.localScale += -Vector3.one * lightRadius +  Vector3.one * temp.lightRadius;
+            CharacterStats.sightBonusFromItems += temp.lightRadius;
         }
 
         else if (equip.item.GetType() == typeof(Weapon))
@@ -108,8 +112,8 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
         ApplyGearEffects(equip.item, false);
-        References.rf.playerMovement.mask.localScale = Vector3.one * LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
-
+        Info.CalculateSightRange();
+        Info.CalculateCriticalHitChance();
     }
 
     private void ApplyGearEffects(InventoryItems item, bool unequip)
@@ -137,7 +141,7 @@ public class PlayerEquipment : MonoBehaviour
                     CharacterStats.luck += !unequip ? (int)effect.amount : (int)-effect.amount;
                     break;
                 case _GearEffect.Light_Radius:
-                    LOSCircle.transform.localScale += !unequip ? Vector3.one * effect.amount : -Vector3.one * effect.amount;
+                    CharacterStats.sightBonusPercentage += !unequip ? effect.amount : -effect.amount;
                     break;
                 case _GearEffect.Increases_Health:
                     CharacterStats.maxHealth += !unequip ? effect.amount : -effect.amount;
@@ -152,7 +156,10 @@ public class PlayerEquipment : MonoBehaviour
                 case _GearEffect.Movement_Speed:
                     CharacterStats.moveSpeed = !unequip ? CharacterStats.moveSpeed *= 1f + effect.amount / 100f : CharacterStats.moveSpeed /= 1f + effect.amount / 100f;
                     break;
-                       
+                case _GearEffect.Increases_Critical_Hit_Chance:
+                    CharacterStats.criticalBonusPercentage += !unequip ? effect.amount : -effect.amount;
+                    break;
+
             }
         }
     }
@@ -165,7 +172,7 @@ public class PlayerEquipment : MonoBehaviour
         if (item == typeof(Lightsource))
         {
             Lightsource temp = equip.item as Lightsource;
-            LOSCircle.transform.localScale += -Vector3.one * temp.lightRadius + Vector3.one * lightRadius;
+            CharacterStats.sightBonusFromItems -= temp.lightRadius;
         }
         else if (item == typeof(Weapon))
         {
@@ -181,9 +188,12 @@ public class PlayerEquipment : MonoBehaviour
 
         if (equip.obj != null) Destroy(equip.obj);
         ApplyGearEffects(equip.item, true);
-        References.rf.playerMovement.mask.localScale = Vector3.one * LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
+        Info.CalculateSightRange();
+        Info.CalculateCriticalHitChance();
         equip.item = null;
     }
+
+
 
     private AnimationClip DefaultAttackClip(string weapon)
     {

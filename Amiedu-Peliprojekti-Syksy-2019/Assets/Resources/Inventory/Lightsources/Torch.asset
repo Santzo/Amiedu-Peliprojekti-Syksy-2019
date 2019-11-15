@@ -19,5 +19,5 @@ MonoBehaviour:
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: 
-  lightRadius: 4
-  itemEffect: []
+  lightRadius: 2.2
+  gearEffects: []

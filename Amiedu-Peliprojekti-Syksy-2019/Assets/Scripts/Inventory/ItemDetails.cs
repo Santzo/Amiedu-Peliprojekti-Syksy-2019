@@ -46,15 +46,10 @@ public class ItemDetails : MonoBehaviour
             Weapon _item = item as Weapon;
             itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel;
             details[0].text = $"Damage {TextColor.Return("yellow")}{_item.minDamage} - {_item.maxDamage}";
-            details[2].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
-
-            if (_item.weaponType == WeaponType.Melee)
+            details[1].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
+            details[2].text = $"Attack speed {TextColor.Return("yellow")}{_item.fireRate}{TextColor.Return()} times per second";
+            if (_item.weaponType != WeaponType.Melee)
             {
-                details[1].text = "Weapon swings " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
-            }
-            else
-            {
-                details[1].text = "Weapon fires " + TextColor.Return("yellow") + _item.fireRate + TextColor.Return() + " times per second";
                 details[3].text = "Clip size " + TextColor.Return("yellow") + _item.clipSize;
                 details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
                 details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
@@ -76,7 +71,11 @@ public class ItemDetails : MonoBehaviour
         else
         {
             var defense = item.GetType().GetField("defense").GetValue(item);
-            details[0].text = $"Defense {TextColor.Return("yellow")}{defense}";
+            var spectralDefense = item.GetType().GetField("spectralDefense").GetValue(item);
+            var fireDefense = item.GetType().GetField("fireDefense").GetValue(item);
+            details[0].text = $"Physical Defense {TextColor.Return("yellow")}{defense}";
+            details[1].text = $"Spectral Defense {TextColor.Return("yellow")}{spectralDefense}";
+            details[2].text = $"Fire Defense {TextColor.Return("yellow")}{fireDefense}";
         }
 
         CheckForGearEffects(item);
@@ -118,9 +117,12 @@ public class ItemDetails : MonoBehaviour
                 : TextColor.Return("red") + "Decreases " + TextColor.Return() + "movement speed by " + TextColor.Return("yellow") + Mathf.Abs(effect.amount) + TextColor.Return() + "%.";
             case _GearEffect.Light_Radius:
                 return effect.amount > 0
-                ? $"{TextColor.Return("green")}Increases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()} points."
-                :$"{TextColor.Return("red")}Decreases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()} points.";
-
+                ? $"{TextColor.Return("green")}Increases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}%."
+                :$"{TextColor.Return("red")}Decreases {TextColor.Return()}sight radius by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}%.";
+            case _GearEffect.Increases_Critical_Hit_Chance:
+                return effect.amount > 0
+              ? $"{TextColor.Return("green")}Increases {TextColor.Return()}critical hit chance by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}%."
+              : $"{TextColor.Return("red")}Decreases {TextColor.Return()}critical hit chance by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}%.";
             default:
                 return effect.amount > 0
                 ? eff + TextColor.Return("green") + " " + attribute + TextColor.Return() + " by " + TextColor.Return("yellow") + effect.amount + TextColor.Return() + " points."

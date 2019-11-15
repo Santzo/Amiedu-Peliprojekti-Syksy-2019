@@ -10,11 +10,12 @@ public class StatsDetails : MonoBehaviour, IUIHandler
     private TextMeshProUGUI[] details;
     private Image[] images;
     private GameObject obj;
-
+    private List<Transform> uitems = new List<Transform>();
     private void Awake()
     {
         details = GetComponentsInChildren<TextMeshProUGUI>();
         images = GetComponentsInChildren<Image>();
+        uitems.SimpleUIHandlerInitialize(transform);
         UpdateStats(); 
     }
 
@@ -37,7 +38,8 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[i].text = "";
         }
         details[0].text = "No weapon equipped";
-        details[6].text = $"Movement Speed: {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
+        details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
+        details[6].text = $"Movement Speed {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
         details[7].text = $"Strength {TextColor.Return("green")}{CharacterStats.strength}";
         details[8].text = $"Dexterity {TextColor.Return("green")}{CharacterStats.dexterity}";
         details[9].text = $"Constitution {TextColor.Return("green")}{CharacterStats.constitution}";
@@ -47,7 +49,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
         {
             details[0].text = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
             details[0].text += TextColor.Return("green") + Info.StatsMinDamage + TextColor.Return() + " - " + TextColor.Return("green") + Info.StatsMaxDamage;
-            //details[1].text = curWep.weaponType == WeaponType.Melee ? ""
+            details[1].text = $"Total critical hit chance {TextColor.Return("green")}{Mathf.Round(Info.totalCriticalHitChance * 10f) / 10f}{TextColor.Return()}%.";
         }
         
     }
@@ -76,14 +78,17 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             case 0:
                 _text.UpdateText("Total Damage", "Total damage describes how much total damage you will deal with a single swing or a shot of your weapon. This number includes all bonuses from your attributes and items.");
                 break;
+            case 1:
+                _text.UpdateText("Total Critical Hit Chance", "Total critical hit chance of your attacks. This number includes all positive and negative effects from your items and attributes.");
+                break;
             case 6:
-                _text.UpdateText("Movement Speed", "Movement speed tells you the current movement speed of your character. This number includes all positive and negative effects from your items.");
+                _text.UpdateText("Movement Speed", "Movement speed tells you the current movement speed of your character. This number includes all positive and negative effects from your items and attributes.");
                 break;
             case 7:
                 _text.UpdateText("Strength", $"Strength affects how much damage you deal with {TextColor.Return("green")}melee{TextColor.Return()} weapons. Strength also {TextColor.Return("green")}increases{TextColor.Return()} your carrying capacity. It also {TextColor.Return("yellow")}slightly increases{TextColor.Return()} your maximum health and stamina.");
                 break;
             case 8:
-                _text.UpdateText("Dexterity", $"Dexterity affects how much damage you deal with {TextColor.Return("green")}ranged{TextColor.Return()} weapons. Dexterity also {TextColor.Return("green")}increases{TextColor.Return()} your attack speed with all weapons. It also {TextColor.Return("yellow")}very slightly increases{TextColor.Return()} your critical hit chances.");
+                _text.UpdateText("Dexterity", $"Dexterity affects how much damage you deal with {TextColor.Return("green")}ranged{TextColor.Return()} weapons. Dexterity also {TextColor.Return("green")}increases{TextColor.Return()} your attack speed with all weapons.");
                 break;
             case 9:
                 _text.UpdateText("Constitution", $"Constitution {TextColor.Return("green")}heavily increases{TextColor.Return()} both your maximum health and stamina. It also {TextColor.Return("yellow")}slightly increases{TextColor.Return()} your carrying capacity."); 

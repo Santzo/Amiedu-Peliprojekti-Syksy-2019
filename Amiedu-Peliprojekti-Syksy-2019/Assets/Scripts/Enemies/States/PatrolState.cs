@@ -10,10 +10,8 @@ public class PatrolState : IEnemyState
 
     public void OnStateEnter()
     {
-        Debug.Log("Patrol State");
         index = 0;
         UpdatePatrolPath();
-       
     }
 
     public void OnStateExit()
@@ -22,8 +20,10 @@ public class PatrolState : IEnemyState
 
     public void OnStateFixedUpdate()
     {
- 
-        if (enemy.path == null) return;
+        if (enemy.path == null) {
+            Debug.Log("Path not found");
+            return;
+        }
 
         if (enemy.targetIndex < enemy.path.Length - 1 || enemy.targetIndex == enemy.path.Length - 1 && enemy.rb.position != enemy.destination)
         {

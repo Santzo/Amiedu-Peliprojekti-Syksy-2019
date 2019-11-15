@@ -12,8 +12,6 @@ public class EquipConsumable : MonoBehaviour, IUIHandler, IPointerClickHandler
     Inventory currentItem;
     TextMeshProUGUI text;
     Image[] icon;
-
-
     public void Awake()
     {
         uitem.UItemInitialize(transform);
