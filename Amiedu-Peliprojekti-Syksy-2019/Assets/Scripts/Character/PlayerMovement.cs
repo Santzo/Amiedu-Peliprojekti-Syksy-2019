@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
-    private bool attacking, activeAttackFrames;
+    public bool attacking, activeAttackFrames;
     public Transform mask;
     private int HandleVertical
     {
@@ -110,6 +110,11 @@ public class PlayerMovement : MonoBehaviour
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         movement = pa.Sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
+        HandleMovement();
+    }
+
+    private void HandleMovement()
+    {
         pa.MoveAnim = movement != Vector2.zero ? pa.MoveAnim >= 1f ? 1f : pa.MoveAnim += 0.05f : 0f;
         sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
         mask.transform.position = References.rf.playerEquipment.LOSCircle.position;
@@ -195,8 +200,8 @@ public class PlayerMovement : MonoBehaviour
                     CharacterStats.stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
                     attacking = true;
                     activeAttackFrames = true;
-                    StopCoroutine("WaitForAttack");
-                    StartCoroutine("WaitForAttack");
+                    StopCoroutine("WaitForMeleeAttack");
+                    StartCoroutine("WaitForMeleeAttack");
                     anim.SetTrigger("Attack");
                     anim.SetTrigger("StopMeleeAttack");
                 }
@@ -264,13 +269,19 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("Movement", 0f);
     }
 
-    private IEnumerator WaitForAttack()
+    private IEnumerator WaitForMeleeAttack()
     {
         yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.05f);
         attacking = false;
         activeAttackFrames = false;
         if (weaponTrailRenderer != null && weaponTrailRenderer.isPlaying)
             weaponTrailRenderer.Stop();
+    }
+    public IEnumerator WaitForFlameThrowerAttack()
+    {
+        activeAttackFrames = false;
+        yield return new WaitForSeconds(CharacterStats.characterEquipment.weapon.fireRate);
+        activeAttackFrames = true;
     }
  
 }

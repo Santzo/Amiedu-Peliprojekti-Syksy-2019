@@ -12,6 +12,7 @@ public class Info
     public static PlayerEquipment playerEquipment = GameObject.Find("PlayerEquipment").GetComponent<PlayerEquipment>();
     public static float minDamage { get; private set; }
     public static float maxDamage { get; private set; }
+    public static List<Collider2D> enemyHitboxes = new List<Collider2D>();
 
 
     public static int SortingOrder(float yPos)
@@ -19,6 +20,17 @@ public class Info
         yPos *= 100;
         return Mathf.RoundToInt(-yPos);
     }
+
+    public static void AddEnemyHitbox(Collider2D hitbox)
+    {
+        enemyHitboxes.Add(hitbox);
+    }
+    public static void RemoveEnemyHitbox(Collider2D hitbox)
+    {
+        enemyHitboxes.Remove(hitbox);
+
+    }
+
 
     public static int StatsMinDamage
     {

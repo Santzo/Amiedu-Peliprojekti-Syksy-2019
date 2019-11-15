@@ -41,7 +41,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
         details[7].text = $"Strength {TextColor.Return("green")}{CharacterStats.strength}";
         details[8].text = $"Dexterity {TextColor.Return("green")}{CharacterStats.dexterity}";
         details[9].text = $"Constitution {TextColor.Return("green")}{CharacterStats.constitution}";
-        details[10].text = $"Adaptability {TextColor.Return("green")}{CharacterStats.adaptability}";
+        details[10].text = $"Perception {TextColor.Return("green")}{CharacterStats.perception}";
         details[11].text = $"Luck {TextColor.Return("green")}{CharacterStats.luck}";
         if (curWep != null)
         {
@@ -87,6 +87,12 @@ public class StatsDetails : MonoBehaviour, IUIHandler
                 break;
             case 9:
                 _text.UpdateText("Constitution", $"Constitution {TextColor.Return("green")}heavily increases{TextColor.Return()} both your maximum health and stamina. It also {TextColor.Return("yellow")}slightly increases{TextColor.Return()} your carrying capacity."); 
+                break;
+            case 10:
+                _text.UpdateText("Perception", $"Perception {TextColor.Return("green")}heavily increases{TextColor.Return()} your chances of scoring a critical hit with any weapon. It also {TextColor.Return("yellow")}slightly increases{TextColor.Return()} your sight range.");
+                break;
+            case 11:
+                _text.UpdateText("Luck", $"Luck {TextColor.Return("green")}increases{TextColor.Return()} your chances of finding weapons, armor and other items. It also {TextColor.Return("yellow")}very slightly increases{TextColor.Return()} your damage and critical hit chance.");
                 break;
             default:
                 _text.UpdateText("Blaa", "Blaa");

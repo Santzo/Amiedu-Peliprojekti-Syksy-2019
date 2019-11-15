@@ -17,10 +17,12 @@ public class BaseEnemy : MonoBehaviour
     Vector3 oriScale;
     private float minPathUpdateTime = 0.45f;
     private float interval = 0.15f;
+    private Collider2D[] colliders;
 
     public Vector2[] patrolPoints = new Vector2[3];
     public Transform sortingTransform;
     public Transform top;
+    
     public SortingGroup sGroup;
     public Vector2 destination;
     public Vector2[] path;
@@ -45,6 +47,7 @@ public class BaseEnemy : MonoBehaviour
         gotHitState = new GotHitState(this);
 
         var spritesTransform = transform.Find("Sprites");
+        colliders = spritesTransform.GetComponentsInChildren<Collider2D>();
         sprites = new EnemySprite[spritesTransform.childCount];
 
         for (int i = 0; i < spritesTransform.childCount; i++)
@@ -54,8 +57,7 @@ public class BaseEnemy : MonoBehaviour
             var _color = _sprite.color;
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
-
-
+        AddToEnemyHitBoxList();
     }
 
 
@@ -144,9 +146,17 @@ public class BaseEnemy : MonoBehaviour
         state.ChangeState(patrolState);
     }
 
-    private void OnParticleCollision(GameObject other)
+    void AddToEnemyHitBoxList()
     {
-        Debug.Log("Jaa");
+        foreach (var col in colliders)
+            Info.AddEnemyHitbox(col);
+        Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
+    }
+    void RemoveFromEnemyHitBoxList()
+    {
+        foreach (var col in colliders)
+            Info.RemoveEnemyHitbox(col);
+        Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
     }
 
 }

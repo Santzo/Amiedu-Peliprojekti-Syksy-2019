@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
-    public static Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
+    public Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
     [HideInInspector]
@@ -127,8 +127,8 @@ public class PlayerEquipment : MonoBehaviour
                 case _GearEffect.Increases_Dexterity:
                     CharacterStats.dexterity += !unequip ? (int)effect.amount : (int)-effect.amount;
                     break;
-                case _GearEffect.Increases_Adaptability:
-                    CharacterStats.adaptability += !unequip ? (int)effect.amount : (int)-effect.amount;
+                case _GearEffect.Increases_Perception:
+                    CharacterStats.perception += !unequip ? (int)effect.amount : (int)-effect.amount;
                     break;
                 case _GearEffect.Increases_Constitution:
                     CharacterStats.constitution += !unequip ? (int)effect.amount : (int)-effect.amount;

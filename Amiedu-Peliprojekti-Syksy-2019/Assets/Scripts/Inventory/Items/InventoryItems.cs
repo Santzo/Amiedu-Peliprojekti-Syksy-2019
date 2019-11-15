@@ -55,7 +55,7 @@ public enum Effect
     Raises_Strength,
     Raises_Constitution,
     Raises_Dexterity,
-    Raises_Adaptability,
+    Raises_Perception,
     Raises_Luck,
 }
 public enum _GearEffect
@@ -67,6 +67,6 @@ public enum _GearEffect
     Increases_Strength,
     Increases_Constitution,
     Increases_Dexterity,
-    Increases_Adaptability,
+    Increases_Perception,
     Increases_Luck
 }
