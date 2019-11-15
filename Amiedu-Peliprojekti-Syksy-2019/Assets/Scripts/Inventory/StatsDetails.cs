@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -50,9 +49,10 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[0].text = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
             details[0].text += TextColor.Return("green") + Info.StatsMinDamage + TextColor.Return() + " - " + TextColor.Return("green") + Info.StatsMaxDamage;
             details[1].text = $"Total critical hit chance {TextColor.Return("green")}{Mathf.Round(Info.totalCriticalHitChance * 10f) / 10f}{TextColor.Return()}%.";
+            details[2].text = $"Attack speed {TextColor.Return("green")}{Mathf.Round(Info.totalAttackSpeed * 100f) / 100f}{TextColor.Return()} times per second.";
         }
-        
     }
+
     string MovementSpeedDesc(float speed)
     {
         if (speed > 10f) return "Sonic speed";

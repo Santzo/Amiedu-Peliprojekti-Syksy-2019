@@ -13,6 +13,7 @@ public class Info
     public static float minDamage { get; private set; }
     public static float maxDamage { get; private set; }
     public static float totalCriticalHitChance { get; private set; }
+    public static float totalAttackSpeed { get; private set; }
     public static List<Collider2D> enemyHitboxes = new List<Collider2D>();
 
 
@@ -51,27 +52,43 @@ public class Info
     {
         get
         {
-            int tempPerception = CharacterStats.perception;
+            int temp = CharacterStats.perception;
             float _value = 0f;
-            for (int i = 50; tempPerception > 10; i -= 10)
+            for (int i = 50; temp > 10; i -= 10)
             {
-                int add = tempPerception >= 10 ? 10 : tempPerception;
+                int add = temp >= 10 ? 10 : temp;
                 float addValue = Mathf.Clamp(i * 0.02f, 0.2f, 1f);
                 _value += addValue * add;
-                tempPerception -= 10;
+                temp -= 10;
             }
-            tempPerception = CharacterStats.luck;
-            for (int i = 50; tempPerception > 10; i -= 10)
+            temp = CharacterStats.luck;
+            for (int i = 50; temp > 10; i -= 10)
             {
-                int add = tempPerception >= 10 ? 10 : tempPerception;
+                int add = temp >= 10 ? 10 : temp;
                 float addValue = Mathf.Clamp(i * 0.005f, 0.05f, 1f);
                 _value += addValue * add;
-                tempPerception -= 10;
+                temp -= 10;
             }
             return _value;
         }
     }
-
+    public static float BaseAttackSpeed
+    {
+        get
+        {
+            int temp = CharacterStats.dexterity;
+            float _value = 0f;
+            for (int i = 50; temp > 10; i -= 10)
+            {
+                int add = temp >= 10 ? 10 : temp;
+                float addValue = Mathf.Clamp(i * 0.00025f, 0.002f, 1f);
+                _value += addValue * add;
+                temp -= 10;
+            }
+            Debug.Log(1f + _value);
+            return 1f + _value;
+        }
+    }
     public static int StatsMinDamage
     {
         get
@@ -83,6 +100,7 @@ public class Info
             return Mathf.RoundToInt(dmg);
         }
     }
+
     public static int StatsMaxDamage
     {
         get
@@ -94,6 +112,7 @@ public class Info
             return Mathf.RoundToInt(dmg);
         }
     }
+
     public static int CalculateDamage(EnemyStats enemyStats)
     {
         float dmg = Random.Range(minDamage, maxDamage);
@@ -107,6 +126,12 @@ public class Info
         float weaponCrit = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.criticalHitChance : 0f;
         float percent = 1f + (CharacterStats.criticalBonusPercentage / 100f);
         totalCriticalHitChance = (weaponCrit + BaseCritical) * percent;
+    }
+
+    public static void CalculateAttackSpeed()
+    {
+        float weaponSpeed = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.fireRate : 0f;
+        totalAttackSpeed = weaponSpeed * BaseAttackSpeed;
     }
 
     public static void CalculateSightRange()

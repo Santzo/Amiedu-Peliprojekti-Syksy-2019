@@ -37,8 +37,7 @@ public class PlayerEquipment : MonoBehaviour
         References.rf.playerMovement.mask = transform.parent.Find("VisionMask");
         References.rf.playerMovement.mask.SetParent(null);
         CharacterStats.ResetStats();
-        Info.CalculateSightRange();
-        Info.CalculateCriticalHitChance();
+        CalculateStats();
         chestgearEquipment.Add("ChestgearEquip", transform.parent.GetFromAllChildren("ChestgearEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("Mid_SectionEquip", transform.parent.GetFromAllChildren("Mid_SectionEquip").GetComponent<SpriteRenderer>());
         chestgearEquipment.Add("R_Upper_ArmEquip", transform.parent.GetFromAllChildren("R_Upper_ArmEquip").GetComponent<SpriteRenderer>());
@@ -48,7 +47,12 @@ public class PlayerEquipment : MonoBehaviour
     }
 
  
-
+    void CalculateStats()
+    {
+        Info.CalculateSightRange();
+        Info.CalculateCriticalHitChance();
+        Info.CalculateAttackSpeed();
+    }
     private void OnDisable()
     {
         Events.onAddPlayerEquipment -= AddEquipment;
@@ -112,8 +116,7 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
         ApplyGearEffects(equip.item, false);
-        Info.CalculateSightRange();
-        Info.CalculateCriticalHitChance();
+        CalculateStats();
     }
 
     private void ApplyGearEffects(InventoryItems item, bool unequip)
@@ -188,8 +191,7 @@ public class PlayerEquipment : MonoBehaviour
 
         if (equip.obj != null) Destroy(equip.obj);
         ApplyGearEffects(equip.item, true);
-        Info.CalculateSightRange();
-        Info.CalculateCriticalHitChance();
+        CalculateStats();
         equip.item = null;
     }
 

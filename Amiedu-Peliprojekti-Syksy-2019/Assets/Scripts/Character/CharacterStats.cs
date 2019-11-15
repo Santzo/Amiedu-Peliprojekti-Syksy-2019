@@ -25,7 +25,7 @@ public static class CharacterStats
         hotbar[0] = new Inventory{ amount = 1, item = InventoryManager.im.consumables[0] };
         strength = 10;
         constitution = 11;
-        dexterity = 12;
+        dexterity = 80;
         perception = 30;
         luck = 20;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
