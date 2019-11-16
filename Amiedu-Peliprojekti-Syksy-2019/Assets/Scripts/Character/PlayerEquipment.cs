@@ -215,9 +215,9 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
         if (equip.obj != null) Destroy(equip.obj);
+        ApplyGearEffects(equip.item, true);
         if (!willEquip)
         {
-            ApplyGearEffects(equip.item, true);
             CalculateStats();
             StartCoroutine("UpdateInventoryGear");
         }

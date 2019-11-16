@@ -21,7 +21,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
     private void OnEnable()
     {
         foreach (var image in images)
-            image.enabled = false;
+             image.enabled = false;
         UpdateStats();
     }
     void OnDisable()
@@ -48,10 +48,9 @@ public class StatsDetails : MonoBehaviour, IUIHandler
         
         if (curWep != null)
         {
-            details[0].text = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
-            details[0].text += TextColor.Return("green") + Info.StatsMinDamage + TextColor.Return() + " - " + TextColor.Return("green") + Info.StatsMaxDamage;
+            details[0].text = $"Total damage {TextColor.Return("green")}{Info.StatsMinDamage}{TextColor.Return()}-{TextColor.Return("green")}{Info.StatsMaxDamage}";
             details[1].text = $"Total critical hit chance {TextColor.Return("green")}{Mathf.Round(Info.totalCriticalHitChance * 10f) / 10f}{TextColor.Return()}%.";
-            details[2].text = $"Attack speed {TextColor.Return("green")}{Mathf.Round(Info.totalAttackSpeed * 100f) / 100f}{TextColor.Return()} times per second.";
+            details[2].text = $"Atk speed {TextColor.Return("green")}{Mathf.Round(Info.totalAttackSpeed * 100f) / 100f}{TextColor.Return()} times per second.";
         }
     }
 
@@ -80,6 +79,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
 
     public void EntryEnter(int index)
     {
+        if (CharacterStats.characterEquipment.weapon == null && index < 4) return;
         images[index].enabled = true;
         Vector2 pos = transform.GetChild(index).position;
         obj = ObjectPooler.op.SpawnUI("StatDescription", new Vector2(pos.x, pos.y + 3.5f), transform.parent.parent);
