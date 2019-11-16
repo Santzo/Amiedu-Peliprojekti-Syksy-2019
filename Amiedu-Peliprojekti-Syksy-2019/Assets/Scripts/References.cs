@@ -18,6 +18,10 @@ public class References : MonoBehaviour
     public Transform uiUnderLay;
     [HideInInspector]
     public PlayerMovement playerMovement;
+    [HideInInspector]
+    public WeaponSlot weaponSlot;
+    [HideInInspector]
+    public InventoryScreenCharacter inventoryScreenCharacter;
 
     public static References rf;
     private void Awake()
@@ -43,6 +47,8 @@ public class References : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement>();
         statsDetails = FindObjectOfType<StatsDetails>();
         mainInventory = FindObjectOfType<MainInventory>();
+        weaponSlot = FindObjectOfType<WeaponSlot>();
+        inventoryScreenCharacter = FindObjectOfType<InventoryScreenCharacter>();
         mainInventory.gameObject.SetActive(false);
     }
 

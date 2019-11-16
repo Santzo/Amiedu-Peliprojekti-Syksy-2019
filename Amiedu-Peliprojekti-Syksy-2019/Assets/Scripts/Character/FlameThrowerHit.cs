@@ -44,7 +44,7 @@ public class FlameThrowerHit : MonoBehaviour
                 if (enemy != null && !enemy.hasBeenHit)
                 {
                     enemy.OnGetHit(Info.CalculateDamage(enemy.stats));
-                    StartCoroutine(enemy.HasBeenHit(1f / Info.totalAttackSpeed));
+                    StartCoroutine(enemy.HasBeenHit(Info.attackInterval));
                     break;
                 }
             }

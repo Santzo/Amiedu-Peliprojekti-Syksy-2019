@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main;
-       
+
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
     }
@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
             if (weaponTrailRenderer != null)
                 weaponTrailRenderer.Stop();
         }
-       
+
         switch (CharacterStats.characterEquipment.weapon.weaponType)
         {
             case WeaponType.Melee:
@@ -156,12 +156,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case WeaponType.Flamethrower:
-                if (!Input.GetKey(KeyboardConfig.attack[0]) && !Input.GetKey(KeyboardConfig.attack[1]))
+                if (!Input.GetKey(KeyboardConfig.attack[0]) && !Input.GetKey(KeyboardConfig.attack[1]) || CharacterStats.gasAmmo <= 0)
                 {
                     attacking = false;
                     activeAttackFrames = false;
                     weaponTrailRenderer.Stop();
                     anim.SetTrigger("StopAttack");
+                    StopCoroutine("CalculateGasAmmo");
                 }
                 break;
         }
@@ -176,23 +177,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
         {
+            activeAttackFrames = false;
+            attacking = false;
             ResetAnimations();
             Events.inventoryKey();
             movementPossible = !movementPossible;
         }
 
-        if (!movementPossible) return;
-
+        if (!movementPossible)
+        {
+            RegenerateStamina();
+            return;
+        }
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
         {
             pa.Sprinting = false;
-            if (CharacterStats.stamina < CharacterStats.maxStamina)
-            {
-                CharacterStats.stamina += 0.1f;
-                if (CharacterStats.stamina > CharacterStats.maxStamina)
-                    CharacterStats.stamina = CharacterStats.maxStamina;
-                References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
-            }
+            RegenerateStamina();
         }
 
         if (!Input.anyKey) return;
@@ -211,13 +211,13 @@ public class PlayerMovement : MonoBehaviour
                     anim.SetTrigger("Attack");
                     anim.SetTrigger("StopMeleeAttack");
                 }
-                else if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Flamethrower)
+                else if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Flamethrower && CharacterStats.gasAmmo > 0)
                 {
                     attacking = true;
                     activeAttackFrames = true;
                     weaponTrailRenderer.Play();
-                   
                     anim.SetTrigger("Attack");
+                    StartCoroutine("CalculateGasAmmo");
                 }
             }
         }
@@ -236,6 +236,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void RegenerateStamina()
+    {
+        if (CharacterStats.stamina >= CharacterStats.maxStamina) return;
+        CharacterStats.stamina += CharacterStats.staminaRegenerationRate;
+        if (CharacterStats.stamina > CharacterStats.maxStamina)
+            CharacterStats.stamina = CharacterStats.maxStamina;
+        References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
+
+    }
     public void MeleeWeaponHit(Collider2D[] collisions, Collider2D position)
     {
         Vector2? hitPosition = null;
@@ -277,12 +286,21 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WaitForMeleeAttack()
     {
-        yield return new WaitForSeconds(1f / CharacterStats.characterEquipment.weapon.fireRate + 0.05f);
+        Debug.Log(anim.GetFloat("AttackSpeed"));
+        yield return new WaitForSeconds(Info.attackInterval + 0.05f);
         attacking = false;
         activeAttackFrames = false;
         if (weaponTrailRenderer != null && weaponTrailRenderer.isPlaying)
             weaponTrailRenderer.Stop();
     }
-
- 
+    private IEnumerator CalculateGasAmmo()
+    {
+        while (true)
+        {
+            CharacterStats.gasAmmo -= 1;
+            References.rf.weaponSlot.UpdateAmmoText();
+            yield return new WaitForSeconds(Info.attackInterval);
+            if (CharacterStats.gasAmmo < 0) CharacterStats.gasAmmo = 0;
+        }
+    }
 }

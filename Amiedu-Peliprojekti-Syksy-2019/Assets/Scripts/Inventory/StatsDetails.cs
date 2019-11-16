@@ -37,13 +37,15 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[i].text = "";
         }
         details[0].text = "No weapon equipped";
-        details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
+        details[4].text = $"Total Defense {TextColor.Return("yellow")}";
+        details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{SightRadiusDesc(Info.SightRadius)}{TextColor.Return()})";
         details[6].text = $"Movement Speed {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
         details[7].text = $"Strength {TextColor.Return("green")}{CharacterStats.strength}";
         details[8].text = $"Dexterity {TextColor.Return("green")}{CharacterStats.dexterity}";
         details[9].text = $"Constitution {TextColor.Return("green")}{CharacterStats.constitution}";
         details[10].text = $"Perception {TextColor.Return("green")}{CharacterStats.perception}";
         details[11].text = $"Luck {TextColor.Return("green")}{CharacterStats.luck}";
+        
         if (curWep != null)
         {
             details[0].text = curWep.weaponType == WeaponType.Melee ? "Total damage per swing " : "Total damage per shot ";
@@ -53,6 +55,15 @@ public class StatsDetails : MonoBehaviour, IUIHandler
         }
     }
 
+    string SightRadiusDesc(float speed)
+    {
+        if (speed > 5.5f) return "Great";
+        if (speed > 4.5f) return "Good";
+        if (speed > 3f) return "Pretty Good";
+        if (speed > 2f) return "Normal";
+        if (speed > 1f) return "Limited";
+        return "Pitch Black";
+    }
     string MovementSpeedDesc(float speed)
     {
         if (speed > 10f) return "Sonic speed";

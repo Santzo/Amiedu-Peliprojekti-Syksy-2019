@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,7 @@ public class PlayerEquipment : MonoBehaviour
     public Animator anim;
     public AnimationClip oneHandedMelee, oneHandedRanged, oneHandedIdle, oneHandedWalk;
     public AnimationClip twoHandedMelee, twoHandedRanged, twoHandedIdle, twoHandedWalk;
-    private AnimatorOverrideController overrider;
-
+    public AnimatorOverrideController overrider;
     private void Awake()
     {
         var gear = CharacterStats.characterEquipment.GetType().GetFields();
@@ -46,12 +46,31 @@ public class PlayerEquipment : MonoBehaviour
         chestgearEquipment.Add("L_Lower_ArmEquip", transform.parent.GetFromAllChildren("L_Lower_ArmEquip").GetComponent<SpriteRenderer>());
     }
 
+    private IEnumerator UpdateInventoryGear()
+    {
+        yield return null;
+        References.rf.inventoryScreenCharacter.UpdateEquipment(transform.parent.Find("Chestgear").gameObject);
+    }
  
+
     void CalculateStats()
     {
         Info.CalculateSightRange();
         Info.CalculateCriticalHitChance();
         Info.CalculateAttackSpeed();
+        if (CharacterStats.characterEquipment.weapon != null)
+        {
+            switch (CharacterStats.characterEquipment.weapon.weaponType)
+            {
+                case WeaponType.Flamethrower:
+                    anim.SetFloat("AttackSpeed", 1f);
+                    break;
+                default:
+                    anim.SetFloat("AttackSpeed", Info.totalAttackSpeed);
+                    break;
+            }
+        }
+        References.rf.weaponSlot.UpdateWeaponSlot();
     }
     private void OnDisable()
     {
@@ -62,7 +81,7 @@ public class PlayerEquipment : MonoBehaviour
     {
         var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
-        if (equip.item != null) RemoveEquipment(equip.item.GetType());
+        if (equip.item != null) RemoveEquipment(equip.item.GetType(), true);
         equip.item = item;
 
         if (item.GetType() != typeof(Chestgear))
@@ -97,7 +116,6 @@ public class PlayerEquipment : MonoBehaviour
             overrider["BaseWalk"] = walkClip;
             anim.runtimeAnimatorController = overrider;
             anim.SetLayerWeight(1, 1f);
-            anim.SetFloat("AttackSpeed", temp.fireRate);
             ParticleSystem trail = equip.obj.GetComponentInChildren<ParticleSystem>();
             if (trail != null)
             {
@@ -117,6 +135,8 @@ public class PlayerEquipment : MonoBehaviour
         }
         ApplyGearEffects(equip.item, false);
         CalculateStats();
+        StartCoroutine("UpdateInventoryGear");
+
     }
 
     private void ApplyGearEffects(InventoryItems item, bool unequip)
@@ -167,7 +187,7 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
-    public void RemoveEquipment(Type item)
+    public void RemoveEquipment(Type item, bool willEquip = false)
     {
         var equip = equipment[item.ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
@@ -180,6 +200,12 @@ public class PlayerEquipment : MonoBehaviour
         else if (item == typeof(Weapon))
         {
             References.rf.playerMovement.meleeWeapon = null;
+            AnimationClip idleClip = DefaultIdleClip("One_handedMelee");
+            AnimationClip walkClip = DefaultWalkClip("One_handedMelee");
+            overrider["BaseIdle"] = idleClip;
+            overrider["BaseWalk"] = walkClip;
+            anim.runtimeAnimatorController = overrider;
+            anim.SetLayerWeight(1, 1f);
         }
         else if (item == typeof(Chestgear))
         {
@@ -188,13 +214,16 @@ public class PlayerEquipment : MonoBehaviour
                 obj.Value.sprite = null;
             }
         }
-
         if (equip.obj != null) Destroy(equip.obj);
-        ApplyGearEffects(equip.item, true);
-        CalculateStats();
+        if (!willEquip)
+        {
+            ApplyGearEffects(equip.item, true);
+            CalculateStats();
+            StartCoroutine("UpdateInventoryGear");
+        }
         equip.item = null;
     }
-
+  
 
 
     private AnimationClip DefaultAttackClip(string weapon)
@@ -242,6 +271,7 @@ public class PlayerEquipment : MonoBehaviour
         }
         return null;
     }
+ 
 }
 
 public class Equipped

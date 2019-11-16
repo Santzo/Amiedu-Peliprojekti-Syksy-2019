@@ -28,7 +28,7 @@ MonoBehaviour:
   staminaCost: 36
   clipSize: 0
   reloadTime: 0
-  criticalHitChance: 0
+  criticalHitChance: 5
   bulletPerShot: 0
   gearEffects:
   - effect: 2

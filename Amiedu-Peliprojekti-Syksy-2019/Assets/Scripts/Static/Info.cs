@@ -14,6 +14,7 @@ public class Info
     public static float maxDamage { get; private set; }
     public static float totalCriticalHitChance { get; private set; }
     public static float totalAttackSpeed { get; private set; }
+    public static float attackInterval { get; private set; }
     public static List<Collider2D> enemyHitboxes = new List<Collider2D>();
 
 
@@ -31,6 +32,31 @@ public class Info
     {
         enemyHitboxes.Remove(hitbox);
 
+    }
+
+    public static float BaseHealth
+    {
+        get
+        {
+            int temp = CharacterStats.constitution;
+            float _value = 0f;
+            for (int i = 50; temp > 0; i -= 5)
+            {
+                int add = temp >= 10 ? 10 : temp;
+                float addValue = Mathf.Clamp(i * 0.2f, 2f, 10f);
+                _value += addValue * add;
+                temp -= 10;
+            }
+            temp = CharacterStats.strength;
+            for (int i = 50; temp > 10; i -= 10)
+            {
+                int add = temp >= 10 ? 10 : temp;
+                float addValue = Mathf.Clamp(i * 0.05f, 0.05f, 5f);
+                _value += addValue * add;
+                temp -= 10;
+            }
+            return _value;
+        }
     }
 
     public static float BaseSight
@@ -132,6 +158,8 @@ public class Info
     {
         float weaponSpeed = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.fireRate : 0f;
         totalAttackSpeed = weaponSpeed * BaseAttackSpeed;
+
+        attackInterval = totalAttackSpeed > 0f ? 1f / totalAttackSpeed : 0f;
     }
 
     public static void CalculateSightRange()
@@ -140,5 +168,9 @@ public class Info
         float sight = (BaseSight + CharacterStats.sightBonusFromItems) * percent;
         References.rf.playerEquipment.LOSCircle.transform.localScale = Vector3.one * sight;
         References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerEquipment.LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
+    }
+    public static void CalculateHealth()
+    {
+        CharacterStats.maxHealth = BaseHealth + CharacterStats.healthBonusFromItems + CharacterStats.healthBonusPercentage;
     }
 }
