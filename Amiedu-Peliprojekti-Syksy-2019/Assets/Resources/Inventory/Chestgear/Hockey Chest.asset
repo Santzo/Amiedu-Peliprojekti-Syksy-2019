@@ -20,3 +20,8 @@ MonoBehaviour:
   iconScale: 1
   description: 
   defense: 0
+  spectralDefense: 0
+  fireDefense: 0
+  gearEffects:
+  - effect: 3
+    amount: 50

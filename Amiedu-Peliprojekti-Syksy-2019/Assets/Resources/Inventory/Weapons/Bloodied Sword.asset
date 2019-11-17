@@ -34,7 +34,7 @@ MonoBehaviour:
   criticalHitChance: 19.5
   bulletPerShot: 0
   gearEffects:
-  - effect: 4
-    amount: 3
+  - effect: 6
+    amount: 15
   - effect: 0
     amount: -20

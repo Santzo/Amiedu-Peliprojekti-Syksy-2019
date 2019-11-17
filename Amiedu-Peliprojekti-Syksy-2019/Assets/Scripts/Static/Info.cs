@@ -58,6 +58,30 @@ public class Info
             return _value;
         }
     }
+    public static float BaseStamina
+    {
+        get
+        {
+            int temp = CharacterStats.constitution;
+            float _value = 0f;
+            for (int i = 50; temp > 0; i -= 5)
+            {
+                int add = temp >= 10 ? 10 : temp;
+                float addValue = Mathf.Clamp(i * 0.175f, 1.75f, 10f);
+                _value += addValue * add;
+                temp -= 10;
+            }
+            temp = CharacterStats.strength;
+            for (int i = 50; temp > 10; i -= 10)
+            {
+                int add = temp >= 10 ? 10 : temp;
+                float addValue = Mathf.Clamp(i * 0.03f, 0.03f, 5f);
+                _value += addValue * add;
+                temp -= 10;
+            }
+            return _value;
+        }
+    }
 
     public static float BaseSight
     {
@@ -111,7 +135,6 @@ public class Info
                 _value += addValue * add;
                 temp -= 10;
             }
-            Debug.Log(1f + _value);
             return 1f + _value;
         }
     }
@@ -169,8 +192,13 @@ public class Info
         References.rf.playerEquipment.LOSCircle.transform.localScale = Vector3.one * sight;
         References.rf.playerMovement.mask.localScale = Vector3.one * References.rf.playerEquipment.LOSCircle.transform.localScale.x * References.rf.playerMovement.transform.localScale.y;
     }
-    public static void CalculateHealth()
+    public static void CalculateHealthAndStamina()
     {
-        CharacterStats.maxHealth = BaseHealth + CharacterStats.healthBonusFromItems + CharacterStats.healthBonusPercentage;
+        CharacterStats.maxHealth = Mathf.Ceil(BaseHealth + CharacterStats.healthBonusFromItems + CharacterStats.healthBonusPercentage);
+        CharacterStats.maxStamina = Mathf.Ceil(12.5f + BaseStamina + CharacterStats.staminaBonusFromItems + CharacterStats.staminaBonusPercentage);
+        if (CharacterStats.health > CharacterStats.maxHealth) CharacterStats.health = CharacterStats.maxHealth;
+        if (CharacterStats.stamina > CharacterStats.maxStamina) CharacterStats.stamina = CharacterStats.maxStamina;
+        References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
+        References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
     }
 }

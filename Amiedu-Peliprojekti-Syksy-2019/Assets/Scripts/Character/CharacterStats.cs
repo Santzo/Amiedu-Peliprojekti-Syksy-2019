@@ -30,9 +30,9 @@ public static class CharacterStats
         perception = 10;
         luck = 10;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
-        Info.CalculateHealth();
+        Info.CalculateHealthAndStamina();
         health = maxHealth;
-        stamina = maxStamina = 100f;
+        stamina = maxStamina;
         staminaRegenerationRate = 0.1f;
         movementSpeedMultiplier = 1.7f;
         attackSpeed = 1f;

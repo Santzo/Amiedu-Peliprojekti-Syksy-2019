@@ -23,7 +23,7 @@ MonoBehaviour:
   spectralDefense: 0
   fireDefense: 0
   gearEffects:
-  - effect: 1
-    amount: -10
+  - effect: 6
+    amount: 15
   - effect: 2
     amount: -20

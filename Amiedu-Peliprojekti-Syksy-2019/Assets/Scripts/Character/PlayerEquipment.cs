@@ -58,6 +58,7 @@ public class PlayerEquipment : MonoBehaviour
         Info.CalculateSightRange();
         Info.CalculateCriticalHitChance();
         Info.CalculateAttackSpeed();
+        Info.CalculateHealthAndStamina();
         if (CharacterStats.characterEquipment.weapon != null)
         {
             switch (CharacterStats.characterEquipment.weapon.weaponType)
@@ -167,14 +168,10 @@ public class PlayerEquipment : MonoBehaviour
                     CharacterStats.sightBonusPercentage += !unequip ? effect.amount : -effect.amount;
                     break;
                 case _GearEffect.Increases_Health:
-                    CharacterStats.maxHealth += !unequip ? effect.amount : -effect.amount;
-                    CharacterStats.health += !unequip ? effect.amount : -effect.amount;
-                    References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
+                    CharacterStats.healthBonusFromItems += !unequip ? effect.amount : -effect.amount;
                     break;
                 case _GearEffect.Increases_Stamina:
-                    CharacterStats.maxStamina += !unequip ? effect.amount : -effect.amount;
-                    CharacterStats.stamina += !unequip ? effect.amount : -effect.amount;
-                    References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+                    CharacterStats.staminaBonusFromItems += !unequip ? effect.amount : -effect.amount;
                     break;
                 case _GearEffect.Movement_Speed:
                     CharacterStats.moveSpeed = !unequip ? CharacterStats.moveSpeed *= 1f + effect.amount / 100f : CharacterStats.moveSpeed /= 1f + effect.amount / 100f;
