@@ -19,9 +19,9 @@ MonoBehaviour:
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: A hockey mask
-  defense: 5
+  defense: 8
   spectralDefense: 0
-  fireDefense: 0
+  fireDefense: 3
   gearEffects:
   - effect: 6
     amount: 15

@@ -16,6 +16,7 @@ public abstract class InventoryItems : ScriptableObject
     public string description;
 }
 
+
 [System.Serializable]
 public class ItemEffect
 {

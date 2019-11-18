@@ -6,6 +6,7 @@ using System.Threading;
 
 public class PathRequestManager : MonoBehaviour
 {
+    [HideInInspector]
     public Grid grid;
     public static PathRequestManager instance;
     Pathfinding pathFinding;

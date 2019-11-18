@@ -70,12 +70,10 @@ public class ItemDetails : MonoBehaviour
         }
         else
         {
-            var defense = item.GetType().GetField("defense").GetValue(item);
-            var spectralDefense = item.GetType().GetField("spectralDefense").GetValue(item);
-            var fireDefense = item.GetType().GetField("fireDefense").GetValue(item);
-            details[0].text = $"Physical Defense {TextColor.Return("yellow")}{defense}";
-            details[1].text = $"Spectral Defense {TextColor.Return("yellow")}{spectralDefense}";
-            details[2].text = $"Fire Defense {TextColor.Return("yellow")}{fireDefense}";
+            Armor armor = item as Armor;
+            details[0].text = $"Physical Defense {TextColor.Return("yellow")}{armor.defense}";
+            details[1].text = $"Spectral Defense {TextColor.Return("purple")}{armor.spectralDefense}";
+            details[2].text = $"Fire Defense {TextColor.Return("red")}{armor.fireDefense}";
         }
 
         CheckForGearEffects(item);

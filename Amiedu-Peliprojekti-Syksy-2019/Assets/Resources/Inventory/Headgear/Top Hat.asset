@@ -19,7 +19,9 @@ MonoBehaviour:
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: Marvelous hat.
-  defense: 5
+  defense: 0
+  spectralDefense: 20
+  fireDefense: 0
   gearEffects:
   - effect: 1
     amount: 10

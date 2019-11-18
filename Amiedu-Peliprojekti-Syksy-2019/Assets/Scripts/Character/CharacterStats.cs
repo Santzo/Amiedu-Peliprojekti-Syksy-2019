@@ -18,6 +18,10 @@ public static class CharacterStats
     public static float sightBonusFromItems, sightBonusPercentage, criticalBonusFromItems, criticalBonusPercentage;
     public static float healthBonusFromItems, healthBonusPercentage, staminaBonusFromItems, staminaBonusPercentage;
     public static int gasAmmo, pistolAmmo, rifleAmmo;
+    public static float totalPhysicalDefense, physicalDefenseFromItems, physicalDefensePercentage;
+    public static float totalSpectralDefense, spectralDefenseFromItems, spectralDefensePercentage;
+    public static float totalFireDefense, fireDefenseFromItems, fireDefensePercentage;
+
 
 
     public static void ResetStats()

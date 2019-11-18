@@ -37,7 +37,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[i].text = "";
         }
         details[0].text = "No weapon equipped";
-        details[4].text = $"Total Defense {TextColor.Return("yellow")}";
+        details[4].text = $"Total Defense {TextColor.Return("yellow")}{CharacterStats.totalPhysicalDefense}{TextColor.Return()} / {TextColor.Return("purple")}{CharacterStats.totalSpectralDefense}{TextColor.Return()} / {TextColor.Return("red")}{CharacterStats.totalFireDefense}";
         details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{SightRadiusDesc(Info.SightRadius)}{TextColor.Return()})";
         details[6].text = $"Movement Speed {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
         details[7].text = $"Strength {TextColor.Return("green")}{CharacterStats.strength}";
@@ -91,6 +91,12 @@ public class StatsDetails : MonoBehaviour, IUIHandler
                 break;
             case 1:
                 _text.UpdateText("Total Critical Hit Chance", "Total critical hit chance of your attacks. This number includes all positive and negative effects from your items and attributes.");
+                break;
+            case 2:
+                _text.UpdateText("Total Attack Speed", "The amount of times your attack can deal damage per second. This number includes all positive and negative effects from your items and attributes.");
+                break;
+            case 4:
+                _text.UpdateText("Total Defense", $"Total combined defense value from all your gear and items. \n\n{TextColor.Return("yellow")}Physical Defense {CharacterStats.totalPhysicalDefense}\n{TextColor.Return("purple")}Spectral Defense {CharacterStats.totalSpectralDefense}\n{TextColor.Return("red")}Fire Defense {CharacterStats.totalFireDefense}");
                 break;
             case 6:
                 _text.UpdateText("Movement Speed", "Movement speed tells you the current movement speed of your character. This number includes all positive and negative effects from your items and attributes.");

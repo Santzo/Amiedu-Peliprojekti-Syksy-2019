@@ -59,7 +59,7 @@ public class Grid : MonoBehaviour
                 int walkable = 0;
                 foreach (var item in results)
                 {
-                    if (item.gameObject.layer > 13 && item.gameObject.layer < 17)
+                    if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
                     {
                         walkable = 1;
                         break;

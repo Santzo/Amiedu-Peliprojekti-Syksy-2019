@@ -64,7 +64,7 @@ public class Equipment : MonoBehaviour
 
     }
 
-    private void UnEquipItem(Type itemType, int index)
+    private void UnEquipItem(InventoryItems item, int index)
     {
         equipment[index].placeHolder.enabled = true;
         equipment[index].item = null;
@@ -72,9 +72,10 @@ public class Equipment : MonoBehaviour
         info.SetValue(CharacterStats.characterEquipment, null);
         equipment[index].itemIcon.sprite = null;
         equipment[index].itemIcon.color = placeholderColor;
-        References.rf.playerEquipment.RemoveEquipment(itemType);
+        References.rf.playerEquipment.RemoveEquipment(item);
         References.rf.statsDetails.UpdateStats();
     }
+
     private void EquipmentPress(int obj)
     {
         var info = typeof(CharacterEquipment).GetField(types[obj]);

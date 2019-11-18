@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Headgear")]
-public class Headgear : InventoryItems
+public class Headgear : Armor
 {
-    public float defense;
-    public float spectralDefense;
-    public float fireDefense;
-    public GearEffect[] gearEffects;
 }

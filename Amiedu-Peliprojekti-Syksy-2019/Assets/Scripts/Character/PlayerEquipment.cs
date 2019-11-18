@@ -13,9 +13,9 @@ public class PlayerEquipment : MonoBehaviour
     private Transform twoHandedLightSource;
     [HideInInspector]
     public Animator anim;
-    public AnimationClip oneHandedMelee, oneHandedRanged, oneHandedIdle, oneHandedWalk;
-    public AnimationClip twoHandedMelee, twoHandedRanged, twoHandedIdle, twoHandedWalk;
     public AnimatorOverrideController overrider;
+    private Animations animations;
+
     private void Awake()
     {
         var gear = CharacterStats.characterEquipment.GetType().GetFields();
@@ -25,6 +25,7 @@ public class PlayerEquipment : MonoBehaviour
             equipment.Add(trans.name, new Equipped { trans = trans, item = null, obj = null });
         }
         anim = transform.parent.GetComponent<Animator>();
+        animations = transform.parent.GetComponent<Animations>();
         overrider = new AnimatorOverrideController();
         overrider.runtimeAnimatorController = anim.runtimeAnimatorController;
     }
@@ -51,7 +52,6 @@ public class PlayerEquipment : MonoBehaviour
         yield return null;
         References.rf.inventoryScreenCharacter.UpdateEquipment(transform.parent.Find("Chestgear").gameObject);
     }
- 
 
     void CalculateStats()
     {
@@ -59,6 +59,7 @@ public class PlayerEquipment : MonoBehaviour
         Info.CalculateCriticalHitChance();
         Info.CalculateAttackSpeed();
         Info.CalculateHealthAndStamina();
+        Info.CalculateDefenses();
         if (CharacterStats.characterEquipment.weapon != null)
         {
             switch (CharacterStats.characterEquipment.weapon.weaponType)
@@ -73,6 +74,7 @@ public class PlayerEquipment : MonoBehaviour
         }
         References.rf.weaponSlot.UpdateWeaponSlot();
     }
+
     private void OnDisable()
     {
         Events.onAddPlayerEquipment -= AddEquipment;
@@ -82,7 +84,7 @@ public class PlayerEquipment : MonoBehaviour
     {
         var equip = equipment[item.GetType().ToString()];
         if (equip.item != null && equip.item.Equals(item)) return;
-        if (equip.item != null) RemoveEquipment(equip.item.GetType(), true);
+        if (equip.item != null) RemoveEquipment(equip.item, true);
         equip.item = item;
 
         if (item.GetType() != typeof(Chestgear))
@@ -109,9 +111,9 @@ public class PlayerEquipment : MonoBehaviour
                 ls.obj.SetActive(temp.hands == Hands.One_handed);
             }
 
-            AnimationClip attackClip = temp.attackAnimation == null ? DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;
-            AnimationClip idleClip = DefaultIdleClip(temp.hands + defWep);
-            AnimationClip walkClip = DefaultWalkClip(temp.hands + defWep);
+            AnimationClip attackClip = temp.attackAnimation == null ? animations.DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;
+            AnimationClip idleClip = animations.DefaultIdleClip(temp.hands + defWep);
+            AnimationClip walkClip = animations.DefaultWalkClip(temp.hands + defWep);
             overrider["BaseAttack"] = attackClip;
             overrider["BaseIdle"] = idleClip;
             overrider["BaseWalk"] = walkClip;
@@ -127,13 +129,19 @@ public class PlayerEquipment : MonoBehaviour
                 References.rf.playerMovement.meleeWeapon = equip.obj.GetComponent<MeleeWeaponHit>();
         }
 
-        else if (equip.item.GetType() == typeof(Chestgear))
+        else
         {
-            foreach (Transform trans in obj.transform)
+            Armor armor = equip.item as Armor;
+            if (equip.item.GetType() == typeof(Chestgear))
             {
-                chestgearEquipment[trans.name].sprite = trans.GetComponent<SpriteRenderer>().sprite;
+                foreach (Transform trans in obj.transform)
+                {
+                    chestgearEquipment[trans.name].sprite = trans.GetComponent<SpriteRenderer>().sprite;
+                }
             }
+            Info.AddDefenses(armor);
         }
+
         ApplyGearEffects(equip.item, false);
         CalculateStats();
         StartCoroutine("UpdateInventoryGear");
@@ -150,7 +158,7 @@ public class PlayerEquipment : MonoBehaviour
             switch (effect.effect)
             {
                 case _GearEffect.Increases_Strength:
-                    CharacterStats.strength += !unequip ? (int) effect.amount : (int) -effect.amount;
+                    CharacterStats.strength += !unequip ? (int)effect.amount : (int)-effect.amount;
                     break;
                 case _GearEffect.Increases_Dexterity:
                     CharacterStats.dexterity += !unequip ? (int)effect.amount : (int)-effect.amount;
@@ -184,32 +192,36 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
-    public void RemoveEquipment(Type item, bool willEquip = false)
+    public void RemoveEquipment(InventoryItems item, bool willEquip = false)
     {
-        var equip = equipment[item.ToString()];
-        if (equip.item != null && equip.item.Equals(item)) return;
-
-        if (item == typeof(Lightsource))
+        var equip = equipment[item.GetType().ToString()];
+        if (equip == null) return;
+        if (item.GetType() == typeof(Lightsource))
         {
             Lightsource temp = equip.item as Lightsource;
             CharacterStats.sightBonusFromItems -= temp.lightRadius;
         }
-        else if (item == typeof(Weapon))
+        else if (item.GetType() == typeof(Weapon))
         {
             References.rf.playerMovement.meleeWeapon = null;
-            AnimationClip idleClip = DefaultIdleClip("One_handedMelee");
-            AnimationClip walkClip = DefaultWalkClip("One_handedMelee");
+            AnimationClip idleClip = animations.DefaultIdleClip("One_handedMelee");
+            AnimationClip walkClip = animations.DefaultWalkClip("One_handedMelee");
             overrider["BaseIdle"] = idleClip;
             overrider["BaseWalk"] = walkClip;
             anim.runtimeAnimatorController = overrider;
             anim.SetLayerWeight(1, 1f);
         }
-        else if (item == typeof(Chestgear))
+        else
         {
-            foreach (var obj in chestgearEquipment)
+            Armor armor = item as Armor;
+            if (item.GetType() == typeof(Chestgear))
             {
-                obj.Value.sprite = null;
+                foreach (var obj in chestgearEquipment)
+                {
+                    obj.Value.sprite = null;
+                }
             }
+            Info.AddDefenses(armor, true);
         }
         if (equip.obj != null) Destroy(equip.obj);
         ApplyGearEffects(equip.item, true);
@@ -220,55 +232,6 @@ public class PlayerEquipment : MonoBehaviour
         }
         equip.item = null;
     }
-  
-
-
-    private AnimationClip DefaultAttackClip(string weapon)
-    {
-        switch (weapon)
-        {
-            case "One_handedMelee":
-                return oneHandedMelee;
-            case "Two_handedMelee":
-                return twoHandedMelee;
-            case "One_handedRanged":
-                return oneHandedRanged;
-            case "Two_handedRanged":
-                return twoHandedRanged;
-        }
-        return null;
-    }
-    private AnimationClip DefaultIdleClip(string weapon)
-    {
-        switch (weapon)
-        {
-            case "One_handedMelee":
-                return oneHandedIdle;
-            case "Two_handedMelee":
-                return twoHandedIdle;
-            case "One_handedRanged":
-                return oneHandedIdle;
-            case "Two_handedRanged":
-                return twoHandedIdle;
-        }
-        return null;
-    }
-    private AnimationClip DefaultWalkClip(string weapon)
-    {
-        switch (weapon)
-        {
-            case "One_handedMelee":
-                return oneHandedWalk;
-            case "Two_handedMelee":
-                return twoHandedWalk;
-            case "One_handedRanged":
-                return oneHandedWalk;
-            case "Two_handedRanged":
-                return twoHandedWalk;
-        }
-        return null;
-    }
- 
 }
 
 public class Equipped

@@ -20,7 +20,7 @@ MonoBehaviour:
   iconScale: 1
   description: A hockey mask
   defense: 5
-  spectralDefense: 0
+  spectralDefense: 10
   fireDefense: 0
   gearEffects:
   - effect: 7

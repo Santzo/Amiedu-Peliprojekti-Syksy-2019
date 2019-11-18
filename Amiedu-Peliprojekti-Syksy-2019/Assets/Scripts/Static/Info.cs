@@ -98,6 +98,13 @@ public class Info
         }
     }
 
+    public static void CalculateDefenses()
+    {
+        CharacterStats.totalPhysicalDefense = CharacterStats.physicalDefenseFromItems + CharacterStats.physicalDefensePercentage;
+        CharacterStats.totalFireDefense = CharacterStats.fireDefenseFromItems + CharacterStats.fireDefensePercentage;
+        CharacterStats.totalSpectralDefense = CharacterStats.spectralDefenseFromItems + CharacterStats.spectralDefensePercentage;
+    }
+
     public static float BaseCritical
     {
         get
@@ -168,6 +175,13 @@ public class Info
         float defense = enemyStats.defense;
         int totalDmg = dmg - defense > 1f ? Mathf.RoundToInt(dmg - defense) : 1;
         return totalDmg;
+    }
+
+    internal static void AddDefenses(Armor armor, bool unEquip = false)
+    {
+        CharacterStats.physicalDefenseFromItems += !unEquip ? armor.defense : -armor.defense;
+        CharacterStats.fireDefenseFromItems += !unEquip ? armor.fireDefense : -armor.fireDefense;
+        CharacterStats.spectralDefenseFromItems += !unEquip ? armor.spectralDefense : -armor.spectralDefense;
     }
 
     public static void CalculateCriticalHitChance()

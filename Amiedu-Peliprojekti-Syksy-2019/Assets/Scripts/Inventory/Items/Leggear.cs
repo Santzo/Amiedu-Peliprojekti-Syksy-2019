@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Leggear")]
-public class Leggear : InventoryItems
+public class Leggear : Armor
 {
-    public float defense;
-    public float spectralDefense;
-    public float fireDefense;
-    public GearEffect[] gearEffects;
+
 }

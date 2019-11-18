@@ -19,9 +19,9 @@ MonoBehaviour:
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: 
-  defense: 0
-  spectralDefense: 0
-  fireDefense: 0
+  defense: 6
+  spectralDefense: 2
+  fireDefense: 3
   gearEffects:
   - effect: 3
     amount: 50
