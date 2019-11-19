@@ -170,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
     void UpdateMoveAnimation()
     {
         anim.SetFloat("Movement", pa.MoveAnim);
-        anim.SetFloat("MovementMultiplier", pa.Sprinting ? CharacterStats.movementSpeedMultiplier : 1f);
+        anim.SetFloat("MovementMultiplier", pa.Sprinting ? CharacterStats.animationSprintMoveSpeed : CharacterStats.animationBaseMoveSpeed);
     }
 
     void HandleInput()
@@ -286,7 +286,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WaitForMeleeAttack()
     {
-        Debug.Log(anim.GetFloat("AttackSpeed"));
         yield return new WaitForSeconds(Info.attackInterval + 0.05f);
         attacking = false;
         activeAttackFrames = false;

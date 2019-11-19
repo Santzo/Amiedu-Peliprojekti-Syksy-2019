@@ -101,10 +101,8 @@ public class LevelManager : MonoBehaviour
 
         foreach (var door in ori.doors)
         {
-
             if (door.corridorDone)
                 continue;
-
 
             if (door.exit == Exits.right)
             {
@@ -120,7 +118,6 @@ public class LevelManager : MonoBehaviour
                 CreateCornerPiece(ori, door.location.x + 0.5f - (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0, -1);
                 CreateCornerPiece(ori, door.location.x + corridorLength + 0.5f + (bigCornerPieceSize.x / pixelsPerUnit), door.location.y + door.size * 0.5f - (bigCornerPieceSize.y / pixelsPerUnit), Piece(current, "bigCorner"), 5, 0);
                 CreateWallShadow(ori.trans, loc, new Vector2(corridorLength - 0.67f, 0f));
-
             }
             if (door.exit == Exits.left)
             {
@@ -175,6 +172,8 @@ public class LevelManager : MonoBehaviour
 
     void CreateRoomWallsAndFloors(Room roomStats)
     {
+        allRooms.Add(new AllRooms { room = roomStats, start = new Vector2(roomStats.trans.position.x, roomStats.trans.position.y), end = new Vector2(roomStats.trans.position.x + roomStats.maxX, roomStats.trans.position.y + roomStats.maxY) });
+
         if (numOfRooms < maxRooms)
         {
             CreateDoors(roomStats, roomStats.maxX, roomStats.maxY, 0);                  // Arvotaan ja luodaan huoneelle ovet
@@ -194,8 +193,7 @@ public class LevelManager : MonoBehaviour
         // Luodaan huoneen lattia
         CreateRoomFloor(roomStats, Piece(current, "middle"));
 
-        allRooms.Add(new AllRooms { room = roomStats, start = new Vector2(roomStats.trans.position.x, roomStats.trans.position.y), end = new Vector2(roomStats.trans.position.x + roomStats.maxX, roomStats.trans.position.y + roomStats.maxY) });
-
+     
         CheckGameFieldSize(roomStats);
 
     }
@@ -285,8 +283,6 @@ public class LevelManager : MonoBehaviour
             int roomX = Random.Range(12, 26);
             int roomY = Random.Range(12, 26);
 
-
-
             tempdoor.worldLocation = door.worldLocation;
 
             if (door.exit == Exits.top)
@@ -373,8 +369,6 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-
-
             float lX = Mathf.Abs(locationX);
             float lY = Mathf.Abs(locationY);
             switch ((Exits)a)
@@ -409,6 +403,11 @@ public class LevelManager : MonoBehaviour
             tempDoor.exit = (Exits)a;
             tempDoor.size = exitSize;
             tempDoor.worldLocation = ori.trans.TransformPoint(tempDoor.location);
+
+            int _roomX = Random.Range(12, 26);
+            int _roomY = Random.Range(12, 26);
+            int corridorLength = Random.Range(4, 12);
+            Debug.Log(tempDoor.worldLocation);
             ori.doors.Add(tempDoor);
         }
     }
@@ -778,5 +777,11 @@ public class LevelManager : MonoBehaviour
         lsr.drawMode = SpriteDrawMode.Tiled;
         lsrSort.sortingLayerName = "LOSBlocker";
         Destroy(losBlocker);
+    }
+
+    Room CreateRandomRoom()
+    {
+        var tempRoom = new Room();
+        return tempRoom;
     }
 }

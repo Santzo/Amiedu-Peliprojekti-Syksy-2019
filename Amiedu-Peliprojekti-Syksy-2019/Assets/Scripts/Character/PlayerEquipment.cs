@@ -8,6 +8,7 @@ public class PlayerEquipment : MonoBehaviour
     public Dictionary<string, Equipped> equipment = new Dictionary<string, Equipped>();
     private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
+    private Material defaultMat;
     [HideInInspector]
     public Transform LOSCircle;
     private Transform twoHandedLightSource;
@@ -27,6 +28,7 @@ public class PlayerEquipment : MonoBehaviour
         anim = transform.parent.GetComponent<Animator>();
         animations = transform.parent.GetComponent<Animations>();
         overrider = new AnimatorOverrideController();
+        defaultMat = new Material(Shader.Find("Sprites/Default"));
         overrider.runtimeAnimatorController = anim.runtimeAnimatorController;
     }
 
@@ -73,6 +75,7 @@ public class PlayerEquipment : MonoBehaviour
             }
         }
         References.rf.weaponSlot.UpdateWeaponSlot();
+        Info.CalculateAnimationSpeeds();
     }
 
     private void OnDisable()
@@ -86,9 +89,14 @@ public class PlayerEquipment : MonoBehaviour
         if (equip.item != null && equip.item.Equals(item)) return;
         if (equip.item != null) RemoveEquipment(equip.item, true);
         equip.item = item;
-
+      
         if (item.GetType() != typeof(Chestgear))
         {
+            var srs = obj.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var sr in srs)
+            {
+                sr.material = item.material == null ? defaultMat : item.material;
+            }
             if (equip.obj != null) Destroy(equip.obj);
             equip.obj = Instantiate(obj);
             equip.obj.transform.SetParent(equip.trans, false);
@@ -107,7 +115,6 @@ public class PlayerEquipment : MonoBehaviour
             Equipped ls = equipment["Lightsource"];
             if (ls.obj != null)
             {
-                Debug.Log("Lightsource");
                 ls.obj.SetActive(temp.hands == Hands.One_handed);
             }
 
@@ -137,6 +144,7 @@ public class PlayerEquipment : MonoBehaviour
                 foreach (Transform trans in obj.transform)
                 {
                     chestgearEquipment[trans.name].sprite = trans.GetComponent<SpriteRenderer>().sprite;
+                    chestgearEquipment[trans.name].material = item.material == null ? defaultMat : item.material;
                 }
             }
             Info.AddDefenses(armor);

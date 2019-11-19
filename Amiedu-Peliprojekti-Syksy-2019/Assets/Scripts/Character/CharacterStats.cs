@@ -14,7 +14,7 @@ public static class CharacterStats
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
     public static Inventory[] hotbar = new Inventory[4];
 
-    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier, attackSpeed, moveSpeed;
+    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier, attackSpeed, moveSpeed, animationBaseMoveSpeed, animationSprintMoveSpeed;
     public static float sightBonusFromItems, sightBonusPercentage, criticalBonusFromItems, criticalBonusPercentage;
     public static float healthBonusFromItems, healthBonusPercentage, staminaBonusFromItems, staminaBonusPercentage;
     public static int gasAmmo, pistolAmmo, rifleAmmo;
@@ -41,6 +41,7 @@ public static class CharacterStats
         movementSpeedMultiplier = 1.7f;
         attackSpeed = 1f;
         moveSpeed = 5f;
+        Info.CalculateAnimationSpeeds();
         sightBonusFromItems = sightBonusPercentage = criticalBonusFromItems = criticalBonusPercentage = 0f;
         healthBonusFromItems = healthBonusPercentage = staminaBonusFromItems = staminaBonusPercentage = 0f;
         staminaRegenerationRate = 0.1f;

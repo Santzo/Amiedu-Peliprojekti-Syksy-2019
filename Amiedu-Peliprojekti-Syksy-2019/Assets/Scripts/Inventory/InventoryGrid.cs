@@ -90,6 +90,7 @@ public class InventoryGrid : MonoBehaviour
 
             Image itemImage = itemsIcons[i].transform.GetChild(0).GetComponent<Image>();
             itemImage.sprite = items[i].item.icon == null ? items[i].item.obj.GetComponent<SpriteRenderer>().sprite : items[i].item.icon;
+            itemImage.material = items[i].item.material == null ? null : items[i].item.material;
             itemImage.transform.localScale = Vector3.one * InventoryManager.im.filteredItems[i].item.iconScale;
         }
         content.localPosition = new Vector2(0f, 0f);

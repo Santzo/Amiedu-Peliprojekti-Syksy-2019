@@ -149,7 +149,7 @@ public class Info
     {
         get
         {
-            float dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.minDamage : 0;
+            float dmg = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.minDamage : 0;
             float statBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (dmg * 0.1f) : CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
             dmg += statBonus;
             minDamage = dmg;
@@ -161,7 +161,7 @@ public class Info
     {
         get
         {
-            float dmg = CharacterStats.characterEquipment.weapon != null ? (int)CharacterStats.characterEquipment.weapon.maxDamage : 0;
+            float dmg = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.maxDamage : 0;
             float statBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (dmg * 0.1f) : CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
             dmg += statBonus;
             maxDamage = dmg;
@@ -214,5 +214,10 @@ public class Info
         if (CharacterStats.stamina > CharacterStats.maxStamina) CharacterStats.stamina = CharacterStats.maxStamina;
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+    }
+    public static void CalculateAnimationSpeeds()
+    {
+        CharacterStats.animationBaseMoveSpeed = CharacterStats.moveSpeed / 5f;
+        CharacterStats.animationSprintMoveSpeed = CharacterStats.animationBaseMoveSpeed * CharacterStats.movementSpeedMultiplier;
     }
 }
