@@ -63,7 +63,6 @@ public class Grid : MonoBehaviour
                 {
                     if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
                     {
-                        
                         walkable = 1;
                         break;
                     }

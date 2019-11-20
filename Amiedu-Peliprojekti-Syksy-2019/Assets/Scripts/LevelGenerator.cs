@@ -61,9 +61,9 @@ public class LevelGenerator : MonoBehaviour
 
     IEnumerator CreateFogOfWar()
     {
-        yield return null;
         Events.onFieldInitialized(new Vector2(worldStartX, worldStartY), new Vector2(worldEndX, worldEndY));
         Events.onGameFieldCreated();
+        yield return null;
     }
     private void CreateCorridors()
     {

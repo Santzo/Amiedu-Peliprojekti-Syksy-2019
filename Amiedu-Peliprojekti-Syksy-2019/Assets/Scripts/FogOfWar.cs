@@ -27,8 +27,7 @@ public class FogOfWar : MonoBehaviour
         Vector2 gameFieldSize = end - start;
         Vector2 position = start;
         Vector2 pathFindingField = gameFieldSize;
-
-        FindObjectOfType<Grid>().InitializeGrid((end.x + start.x) / 2f, (end.y + start.y) / 2f, pathFindingField.x, pathFindingField.y);
+       
         fogSize.sizeDelta = gameFieldSize;
         fogSize.position = position;
         int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 7f);
@@ -58,6 +57,7 @@ public class FogOfWar : MonoBehaviour
         {
             if (col.gameObject.layer == 21) Destroy(col.gameObject);
         }
+        StartCoroutine(CreateGrid(start, end, pathFindingField));
     }
  
 
@@ -66,5 +66,9 @@ public class FogOfWar : MonoBehaviour
         Events.onFieldInitialized -= GameFieldInitialized;
 
     }
-
+    IEnumerator CreateGrid(Vector2 start, Vector2 end, Vector2 pathFindingField)
+    {
+        yield return null;
+        FindObjectOfType<Grid>().InitializeGrid((end.x + start.x) / 2f, (end.y + start.y) / 2f, pathFindingField.x, pathFindingField.y);
+    }
 }

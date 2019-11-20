@@ -5995,7 +5995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &696484442
 Animator:
   serializedVersion: 3
@@ -11680,7 +11680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!210 &1407471130
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -12084,8 +12084,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   gridWorldSize: {x: 0, y: 0}
-  nodeRadius: 0.5
-  obstacleProximityPenalty: 10
+  nodeRadius: 0.25
+  obstacleProximityPenalty: 0
   gridSizeX: 0
   gridSizeY: 0
 --- !u!4 &1412258561
@@ -16409,7 +16409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &2118642436
 Animator:
   serializedVersion: 3
