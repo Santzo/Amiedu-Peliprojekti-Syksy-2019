@@ -36,7 +36,6 @@ public class Grid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
-        Destroy(GameObject.Find("FloorTilemap").GetComponent<TilemapCollider2D>());
     }
 
     public int MaxSize
@@ -51,40 +50,44 @@ public class Grid : MonoBehaviour
     {
         grid = new Node[gridSizeX, gridSizeY];
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
-
+        RoomGrid[,] rooms = References.rf.levelGenerator.roomGrid;
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
+
+                //var results = Physics2D.OverlapCircleAll(worldPoint, nodeRadius,unwalkableMask | walkableMask);
+
+                //foreach (var item in results)
+                //{
+                //    if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
+                //    {
+                //        walkable = 1;
+                //        break;
+                //    }
+                //    if (item.gameObject.layer == 11)
+                //    {
+                //        walkable = 2;
+                //    }
+                //}
+
+
+                //var _ray = Physics2D.Raycast(worldPoint, Vector2.zero, unwalkableMask);
+                //if (_ray)
+                //{
+                //    walkableRegionsDictionary.TryGetValue(_ray.collider.gameObject.layer, out movementPenalty);
+                //}
+
+                //if (walkable == 1)
+                //{
+                //    movementPenalty += obstacleProximityPenalty;
+                //}
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                var results = Physics2D.OverlapCircleAll(worldPoint, nodeRadius,unwalkableMask | walkableMask);
-                int walkable = 0;
-                foreach (var item in results)
-                {
-                    if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
-                    {
-                        walkable = 1;
-                        break;
-                    }
-                    if (item.gameObject.layer == 11)
-                    {
-                        walkable = 2;
-                    }
-                }
-
                 int movementPenalty = 0;
-                var _ray = Physics2D.Raycast(worldPoint, Vector2.zero, unwalkableMask);
-                if (_ray)
-                {
-                    walkableRegionsDictionary.TryGetValue(_ray.collider.gameObject.layer, out movementPenalty);
-                }
-
-                if (walkable == 1)
-                {
-                    movementPenalty += obstacleProximityPenalty;
-                }
-
-
+                int walkable = 0;
+                if (rooms[x, y].tileType == TileType.Middle) walkable = 2;
+                else if (rooms[x, y].tileType == TileType.Nothing) walkable = 0;
+                else walkable = 1;
                 grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenalty);
 
             }
@@ -142,7 +145,7 @@ public class Grid : MonoBehaviour
     public Vector2 WorldPointFromNode(Node node)
     {
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
-        Vector2 position = worldBottomLeft + Vector2.right * (node.gridX * nodeDiameter + nodeRadius) + Vector2.up * (node.gridY * nodeDiameter + nodeRadius);
+        Vector2 position = worldBottomLeft + Vector2.right * (node.gridX * nodeDiameter) + Vector2.up * (node.gridY * nodeDiameter);
         return position;
     }
     public Node NodeFromWorldPoint(Vector2 worldPosition)
@@ -152,8 +155,8 @@ public class Grid : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        int x = Mathf.RoundToInt(gridSizeX  * percentX);
+        int y = Mathf.RoundToInt(gridSizeY  * percentY);
 
         return grid[x, y];
     }

@@ -71,6 +71,7 @@ public class BaseEnemy : MonoBehaviour
     {
         if (pathSuccessful)
         {
+            if (newPath.Length == 0) RandomizePatrolPath();
             if (newPath.Length > 0)
             {
                 path = newPath;
@@ -132,17 +133,18 @@ public class BaseEnemy : MonoBehaviour
     }
     private void RandomizePatrolPath()
     {
-        Node spawnPoint = PathRequestManager.instance.grid.NodeFromWorldPoint(transform.position);
+        Node spawnPoint = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);
+        spawnPoint = PathRequestManager.instance.grid.GetWalkableNeighbor(spawnPoint);
+        rb.position = PathRequestManager.instance.grid.WorldPointFromNode(spawnPoint);
+
         Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(1f, 15f), transform.position.y));
         Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(1f, 15f)));
         Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-1f, -15f), transform.position.y));
-
-        spawnPoint = PathRequestManager.instance.grid.GetWalkableNeighbor(spawnPoint);
+       
         pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
         pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
         pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
 
-        transform.position = PathRequestManager.instance.grid.WorldPointFromNode(spawnPoint);
         patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
         patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
         patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);

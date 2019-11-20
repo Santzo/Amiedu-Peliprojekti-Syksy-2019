@@ -18,10 +18,10 @@ public class LevelGenerator : MonoBehaviour
     int worldSizeX, worldSizeY;
     int worldStartX, worldStartY, worldEndX, worldEndY;
     int maxRoomSizeX, maxRoomSizeY;
-    int maxAttempts = 8;
+    int maxAttempts = 20;
     float pixelsPerUnit = 1f;
-    List<AllRooms> allRooms = new List<AllRooms>();
-    RoomGrid[,] roomGrid;
+    public List<AllRooms> allRooms = new List<AllRooms>();
+    public RoomGrid[,] roomGrid;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class LevelGenerator : MonoBehaviour
         foregroundTilemap = GameObject.Find("ForegroundTilemap").GetComponent<Tilemap>();
         foregroundCorners = GameObject.Find("ForegroundCorners").GetComponent<Tilemap>();
         floorTilemap = GameObject.Find("FloorTilemap").GetComponent<Tilemap>();
-        worldSizeX = worldSizeY = 100;
+        worldSizeX = worldSizeY = 120;
         backgroundTilemap.size = foregroundTilemap.size = backgroundTilemap.size = backgroundCorners.size = new Vector3Int(worldSizeX, worldSizeY, 0);
         worldStartX = 0 - worldSizeX / 2;
         worldStartY = 0 - worldSizeY / 2;
@@ -54,17 +54,12 @@ public class LevelGenerator : MonoBehaviour
         CreateCorridors();
         DrawRooms();
     }
+
     private void Start()
     {
-        StartCoroutine(CreateFogOfWar());
+        Events.onFieldInitialized(new Vector2(worldStartX, worldStartY), new Vector2(worldEndX, worldEndY));
     }
 
-    IEnumerator CreateFogOfWar()
-    {
-        Events.onFieldInitialized(new Vector2(worldStartX, worldStartY), new Vector2(worldEndX, worldEndY));
-        Events.onGameFieldCreated();
-        yield return null;
-    }
     private void CreateCorridors()
     {
         AllRooms[] closestRoom = new AllRooms[allRooms.Count];
@@ -295,8 +290,8 @@ public class LevelGenerator : MonoBehaviour
             {
                 int startX = Random.Range(worldStartX + 2, worldEndX - maxRoomSizeX - 3);
                 int startY = Random.Range(worldStartY + 2, worldEndY - maxRoomSizeY - 3);
-                int roomSizeX = Random.Range(8, maxRoomSizeX + 1);
-                int roomSizeY = Random.Range(8, maxRoomSizeY + 1);
+                int roomSizeX = Random.Range(7, maxRoomSizeX + 1);
+                int roomSizeY = Random.Range(7, maxRoomSizeY + 1);
                 if (CheckIfRoomFits(startX, startY, startX + roomSizeX, startY + roomSizeY))
                 {
                     i++;

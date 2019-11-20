@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 26914141}
   - component: {fileID: 26914143}
   - component: {fileID: 26914142}
-  - component: {fileID: 26914144}
   m_Layer: 11
   m_Name: FloorTilemap
   m_TagString: Untagged
@@ -236,22 +235,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!19719996 &26914144
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26914140}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0.00001
 --- !u!1 &37033448
 GameObject:
   m_ObjectHideFlags: 0
@@ -4347,7 +4330,7 @@ Camera:
   m_HDR: 0
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
+  m_ForceIntoRT: 1
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -5995,7 +5978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &696484442
 Animator:
   serializedVersion: 3
@@ -11498,6 +11481,7 @@ MonoBehaviour:
   playerMovement: {fileID: 0}
   weaponSlot: {fileID: 0}
   inventoryScreenCharacter: {fileID: 0}
+  levelGenerator: {fileID: 748168823}
 --- !u!4 &1371687730
 Transform:
   m_ObjectHideFlags: 0
@@ -11680,7 +11664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!210 &1407471130
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -12084,7 +12068,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   gridWorldSize: {x: 0, y: 0}
-  nodeRadius: 0.25
+  nodeRadius: 0.5
   obstacleProximityPenalty: 0
   gridSizeX: 0
   gridSizeY: 0
@@ -16409,7 +16393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &2118642436
 Animator:
   serializedVersion: 3

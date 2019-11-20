@@ -22,6 +22,7 @@ public class References : MonoBehaviour
     public WeaponSlot weaponSlot;
     [HideInInspector]
     public InventoryScreenCharacter inventoryScreenCharacter;
+    public LevelGenerator levelGenerator;
 
     public static References rf;
     private void Awake()

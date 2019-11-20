@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+using Debug = UnityEngine.Debug;
 
 public class Pathfinding {
 	
@@ -13,11 +14,14 @@ public class Pathfinding {
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
+        if (startNode.walkable < 2)
+        {
+            startNode = grid.GetWalkableNeighbor(startNode);
+        }
         if (targetNode.walkable < 2)
         {
             targetNode = grid.GetWalkableNeighbor(targetNode);
         }
-
         startNode.parent = startNode;
 		
 		

@@ -83,13 +83,29 @@ public class PlayerMovement : MonoBehaviour
         sortingGroup = GetComponent<SortingGroup>();
         anim = GetComponent<Animator>();
         pa = new PlayerAnimations(this);
+        Events.onGameFieldCreated += RandomizePlayerPosition;
+    }
 
+    private void RandomizePlayerPosition()
+    {
+        var rooms = References.rf.levelGenerator.allRooms.ToArray();
+        int x = 1000; int y = 1000;
+        AllRooms startRoom = null;
+        foreach (var room in rooms)
+        {
+            if (room.startX + room.startY < x + y)
+            {
+                startRoom = room;
+                x = room.startX;
+                y = room.startY;
+            }
+        }
+        transform.position = new Vector2(x + 2, y + 2);
     }
 
     void Start()
     {
         mainCam = Camera.main;
-
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
     }
@@ -113,15 +129,6 @@ public class PlayerMovement : MonoBehaviour
         if (!movementPossible)
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        if (Input.GetMouseButton(0))
-        {
-            var ray = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero);
-            var circle = Physics2D.OverlapCircleAll(new Vector2(mousePos.x, mousePos.y), 0.5f);
-            if (circle.Length > 0)
-            {
-                Debug.Log(circle[0].gameObject.layer);
-            }
-        }
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         movement = pa.Sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
         HandleMovement();
