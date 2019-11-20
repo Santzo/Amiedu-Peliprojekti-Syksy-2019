@@ -19,7 +19,7 @@ TagManager:
   - FogOfWarMain
   - FogOfWarSecondary
   - ObjectCollider
-  - FloorObject
+  - Floor
   - ActionTrigger
   - MeleeWeapon
   - StaticObject
@@ -44,6 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackgroundTiles
+    uniqueID: 1503360197
+    locked: 0
   - name: FloorObjects
     uniqueID: 400957895
     locked: 0
@@ -55,6 +58,9 @@ TagManager:
     locked: 0
   - name: Objects
     uniqueID: 689501021
+    locked: 0
+  - name: ForegroundTiles
+    uniqueID: 3459311375
     locked: 0
   - name: Wall
     uniqueID: 2453385979

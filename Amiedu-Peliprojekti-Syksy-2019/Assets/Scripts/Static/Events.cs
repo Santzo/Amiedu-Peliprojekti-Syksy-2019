@@ -19,7 +19,7 @@ public static class Events
     public static Action onInventoryChange = delegate { };
     public static Action<InventoryItems, int> onUnEquip = delegate { };
     public static Action<Inventory> onEquipConsumable = delegate { };
-    public static Action<LevelManager.AllRooms> onFieldInitialized = delegate { };
+    public static Action<Vector2, Vector2> onFieldInitialized = delegate { };
     public static Action<GameObject, InventoryItems> onAddPlayerEquipment = delegate { };
     public static Action onGameFieldCreated = delegate { };
     public static Action<List<Collider2D>> onEnemyHitboxesUpdated = delegate { };

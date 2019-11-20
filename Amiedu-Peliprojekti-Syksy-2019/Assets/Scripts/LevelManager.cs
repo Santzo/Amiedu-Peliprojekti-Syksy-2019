@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private int exitSize = 6;
-    private int maxRooms = 3;
+    private int maxRooms = 20;
     private int numOfRooms = 1;
     private float pixelsPerUnit = 128f;
     private float unitsPerPixel = 100f / 128f / 100f;
@@ -239,7 +239,6 @@ public class LevelManager : MonoBehaviour
 
         CreateRoomWallsAndFloors(roomStats);
         SortObjects();
-        Events.onFieldInitialized(gameField);
         foreach (var col in floorColliders)
         {
             Destroy(col);

@@ -22,14 +22,14 @@ public class FogOfWar : MonoBehaviour
         Events.onFieldInitialized += GameFieldInitialized;
     }
 
-    private void GameFieldInitialized(LevelManager.AllRooms obj)
+    private void GameFieldInitialized(Vector2 start, Vector2 end)
     {
-        Vector2 gameFieldSize = obj.end - obj.start;
-        Vector2 position = obj.start - new Vector2(padding * 0.5f, padding * 0.5f);
-        Vector2 pathFindingField = new Vector2(gameFieldSize.x + 4f, gameFieldSize.y + 4f);
+        Vector2 gameFieldSize = end - start;
+        Vector2 position = start;
+        Vector2 pathFindingField = gameFieldSize;
 
-        FindObjectOfType<Grid>().InitializeGrid((obj.end.x + obj.start.x) / 2f, (obj.end.y + obj.start.y) / 2f, pathFindingField.x, pathFindingField.y);
-        fogSize.sizeDelta = gameFieldSize + new Vector2(padding, padding);
+        FindObjectOfType<Grid>().InitializeGrid((end.x + start.x) / 2f, (end.y + start.y) / 2f, pathFindingField.x, pathFindingField.y);
+        fogSize.sizeDelta = gameFieldSize;
         fogSize.position = position;
         int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 7f);
         int y = Mathf.RoundToInt(fogSize.sizeDelta.y * 7f);

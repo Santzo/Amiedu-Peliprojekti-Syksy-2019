@@ -106,11 +106,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Events.onDialogueBox)
             return;
+      
+
         HandleAttack();
         HandleInput();
         if (!movementPossible)
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetMouseButton(0))
+        {
+            var ray = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero);
+            var circle = Physics2D.OverlapCircleAll(new Vector2(mousePos.x, mousePos.y), 0.5f);
+            if (circle.Length > 0)
+            {
+                Debug.Log(circle[0].gameObject.layer);
+            }
+        }
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         movement = pa.Sprinting ? new Vector2(HandleHorizontal, HandleVertical) * CharacterStats.movementSpeedMultiplier : new Vector2(HandleHorizontal, HandleVertical);
         HandleMovement();

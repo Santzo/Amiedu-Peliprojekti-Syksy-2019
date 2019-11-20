@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Tilemaps;
 
 public class Grid : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class Grid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
+        Destroy(GameObject.Find("FloorTilemap").GetComponent<TilemapCollider2D>());
     }
 
     public int MaxSize
@@ -55,16 +57,17 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                var results = Physics2D.OverlapCircleAll(worldPoint, nodeRadius, unwalkableMask | walkableMask);
+                var results = Physics2D.OverlapCircleAll(worldPoint, nodeRadius,unwalkableMask | walkableMask);
                 int walkable = 0;
                 foreach (var item in results)
                 {
                     if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
                     {
+                        
                         walkable = 1;
                         break;
                     }
-                    if (item.gameObject.layer == 1)
+                    if (item.gameObject.layer == 11)
                     {
                         walkable = 2;
                     }

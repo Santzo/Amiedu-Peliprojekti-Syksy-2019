@@ -35,10 +35,7 @@ public class References : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-       
     }
-
     void Start()
     {
         healthBar = GameObject.Find("HealthBar").GetComponent<Bar>();
