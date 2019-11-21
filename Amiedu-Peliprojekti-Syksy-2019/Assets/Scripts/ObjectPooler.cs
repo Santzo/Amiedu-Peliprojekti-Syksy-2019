@@ -63,6 +63,18 @@ public class ObjectPooler : MonoBehaviour
         if (!(spawn is null)) spawn.Spawn();
         return obj;
     }
+    public GameObject SpawnDialogueBox(params Dialogue[] dialogue)
+    {
+        Events.onDialogueBox = true;
+        GameObject obj = poolDictionary["DialogueBox"].Dequeue();
+        obj.SetActive(true);
+        obj.transform.SetParent(References.rf.uiOverlay, false);
+        poolDictionary["DialogueBox"].Enqueue(obj);
+        DialogueBox db = obj.GetComponent<DialogueBox>();
+        References.rf.currentDialogueBox = db;
+        db.currentDialogue = dialogue;
+        return obj;
+    }
 
     public GameObject DeSpawn(GameObject obj)
     {

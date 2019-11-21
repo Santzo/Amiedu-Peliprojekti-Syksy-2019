@@ -13,13 +13,13 @@ public class EquipmentIcon : MonoBehaviour, IUIObject
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (Events.onDrag || Events.onDialogueBox) return;
+        if (Events.onDrag || Events.onDiscard) return;
         Events.onEquipmentIconHover(transform.GetSiblingIndex());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (Events.onDrag || Events.onDialogueBox) return;
+        if (Events.onDrag || Events.onDiscard) return;
         Events.onEquipmentIconHoverLeave(transform.GetSiblingIndex());
 
     }

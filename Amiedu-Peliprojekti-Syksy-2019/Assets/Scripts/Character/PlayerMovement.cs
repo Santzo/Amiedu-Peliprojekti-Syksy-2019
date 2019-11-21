@@ -108,6 +108,8 @@ public class PlayerMovement : MonoBehaviour
         mainCam = Camera.main;
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+        ObjectPooler.op.SpawnDialogueBox(new Dialogue {talker =  "Testi", text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+                                         new Dialogue {talker = "Testi 1", text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }
 
     private void FixedUpdate()
@@ -120,13 +122,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (Events.onDialogueBox)
+        if (Events.onDiscard)
             return;
-      
 
         HandleAttack();
         HandleInput();
-        if (!movementPossible)
+        if (!movementPossible || Events.onDialogueBox)
             return;
         Vector2 mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         transform.localScale = mousePos.x > transform.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
@@ -143,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleAttack()
     {
-        if (!attacking) return;
+        if (!attacking || Events.onDialogueBox) return;
         if (!movementPossible)
         {
             attacking = false;
@@ -193,6 +194,17 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleInput()
     {
+        if (Events.onDialogueBox)
+        {
+            if (Input.GetKeyDown(KeyboardConfig.action[0]) || Input.GetKeyDown(KeyboardConfig.action[1]) || Input.GetKeyDown(KeyCode.Return))
+            {
+                References.rf.currentDialogueBox.SkipDialogue();
+            }
+            RegenerateStamina();
+            return;
+        }
+     
+
         if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
         {
             activeAttackFrames = false;
@@ -207,6 +219,7 @@ public class PlayerMovement : MonoBehaviour
             RegenerateStamina();
             return;
         }
+
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
         {
             pa.Sprinting = false;

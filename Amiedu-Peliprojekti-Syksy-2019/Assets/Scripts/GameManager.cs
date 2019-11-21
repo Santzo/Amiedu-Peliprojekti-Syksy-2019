@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
         wsH = Camera.main.orthographicSize * 2;
         wsW = wsH / Screen.height * Screen.width;
         Debug.Log(Screen.height + ", " + Screen.width);

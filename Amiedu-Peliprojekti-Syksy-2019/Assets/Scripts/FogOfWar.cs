@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class FogOfWar : MonoBehaviour
 {
-
     public RenderTexture fogOfWarMain;
-
     public RenderTexture fogOfWarSecondary;
     public RectTransform fogSize;
     public Material image;
@@ -30,8 +28,8 @@ public class FogOfWar : MonoBehaviour
         FindObjectOfType<Grid>().InitializeGrid((end.x + start.x) / 2f, (end.y + start.y) / 2f, pathFindingField.x, pathFindingField.y);
         fogSize.sizeDelta = gameFieldSize;
         fogSize.position = position;
-        int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 7f);
-        int y = Mathf.RoundToInt(fogSize.sizeDelta.y * 7f);
+        int x = Mathf.RoundToInt(fogSize.sizeDelta.x * 6f);
+        int y = Mathf.RoundToInt(fogSize.sizeDelta.y * 6f);
         fogOfWarMain = new RenderTexture(x, y, 0, RenderTextureFormat.Default);
         fogOfWarSecondary = new RenderTexture(x, y, 0, RenderTextureFormat.Default);
         Vector2 cameraPos = position + fogSize.sizeDelta * 0.5f;

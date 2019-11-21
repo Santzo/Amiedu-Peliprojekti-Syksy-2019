@@ -79,7 +79,7 @@ public class DiscardItems : MonoBehaviour, IUIHandler,  IPointerClickHandler
 
     private void Close()
     {
-        Events.onDialogueBox = false;
+        Events.onDiscard = false;
         ObjectPooler.op.DeSpawn(gameObject);
     }
 

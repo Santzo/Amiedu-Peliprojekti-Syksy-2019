@@ -22,7 +22,11 @@ public class References : MonoBehaviour
     public WeaponSlot weaponSlot;
     [HideInInspector]
     public InventoryScreenCharacter inventoryScreenCharacter;
+    [HideInInspector]
+    public DialogueBox currentDialogueBox;
     public LevelGenerator levelGenerator;
+    public Transform uiOverlay;
+
 
     public static References rf;
     private void Awake()

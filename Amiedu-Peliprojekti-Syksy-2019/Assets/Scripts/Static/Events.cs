@@ -25,6 +25,6 @@ public static class Events
     public static Action<List<Collider2D>> onEnemyHitboxesUpdated = delegate { };
 
     public static bool onDrag = false;
-    public static bool onDialogueBox = false;
-   
+    public static bool onDiscard = false;
+    public static bool onDialogueBox = false;   
 }

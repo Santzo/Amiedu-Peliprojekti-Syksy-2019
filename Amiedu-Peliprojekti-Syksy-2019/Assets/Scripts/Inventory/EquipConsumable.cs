@@ -48,7 +48,7 @@ public class EquipConsumable : MonoBehaviour, IUIHandler, IPointerClickHandler
         {
             CharacterStats.hotbar[index] = currentItem;
         }
-        Events.onDialogueBox = false;
+        Events.onDiscard = false;
         ObjectPooler.op.DeSpawn(gameObject);
     }
 
@@ -103,7 +103,7 @@ public class EquipConsumable : MonoBehaviour, IUIHandler, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            Events.onDialogueBox = false;
+            Events.onDiscard = false;
             ObjectPooler.op.DeSpawn(gameObject);
         }
     }

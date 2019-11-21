@@ -34,7 +34,7 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
                     if (item.item.GetType() == typeof(Consumable))
                     {
                         SpawnDialogue("EquipConsumable");
-                        Events.onDialogueBox = true;
+                        Events.onDiscard = true;
                         Events.onEquipConsumable(item);
                      
                     }
@@ -50,7 +50,7 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
                     unEquip = null;
                     break;
                 case "Discard":
-                    Events.onDialogueBox = true;
+                    Events.onDiscard = true;
                     SpawnDialogue("DiscardItem");
 
                     break;
