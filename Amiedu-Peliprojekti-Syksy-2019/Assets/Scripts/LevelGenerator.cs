@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -13,6 +14,7 @@ public class LevelGenerator : MonoBehaviour
     Tilemap floorTilemap;
     Tilemap foregroundCorners;
     Tile[] cellarTiles;
+    GameObject[] floorObjects;
     Tile black;
     int numberOfRooms;
     int worldSizeX, worldSizeY;
@@ -28,15 +30,17 @@ public class LevelGenerator : MonoBehaviour
         numberOfRooms = 30;
         cellarTiles = Resources.LoadAll<Tile>("Cellar/Tiles");
         black = Resources.Load<Tile>("Cellar/Tiles/Black");
+        floorObjects = Resources.LoadAll<GameObject>("FloorObjects");
         backgroundTilemap = GameObject.Find("BackgroundTilemap").GetComponent<Tilemap>();
         backgroundCorners = GameObject.Find("BackgroundCorners").GetComponent<Tilemap>();
         foregroundTilemap = GameObject.Find("ForegroundTilemap").GetComponent<Tilemap>();
         foregroundCorners = GameObject.Find("ForegroundCorners").GetComponent<Tilemap>();
         floorTilemap = GameObject.Find("FloorTilemap").GetComponent<Tilemap>();
         worldSizeX = worldSizeY = 120;
-        backgroundTilemap.size = foregroundTilemap.size = backgroundTilemap.size = backgroundCorners.size = new Vector3Int(worldSizeX, worldSizeY, 0);
+        backgroundTilemap.size = foregroundTilemap.size = foregroundCorners.size = backgroundCorners.size = floorTilemap.size = new Vector3Int(worldSizeX, worldSizeY, 0);
+        
         worldStartX = 0 - worldSizeX / 2;
-        worldStartY = 0 - worldSizeY / 2;
+                worldStartY = 0 - worldSizeY / 2;
         worldEndX = worldSizeX / 2;
         worldEndY = worldSizeY / 2;
         maxRoomSizeX = maxRoomSizeY = 20;
@@ -1409,6 +1413,16 @@ public class LevelGenerator : MonoBehaviour
         {
             roomGrid[x, y].tileType = TileType.Bottom;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
+        }
+    }
+    public void SpawnFloorObject(string oname, int x, int y)
+    {
+        GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
+        if (obj != null)
+        {
+            var spawnedObj = Instantiate(obj);
+            spawnedObj.transform.position = PathRequestManager.instance.grid.WorldPointFromNode(x, y);
+            spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }
 }

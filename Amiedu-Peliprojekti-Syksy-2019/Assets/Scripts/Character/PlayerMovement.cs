@@ -105,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         }
         transform.position = new Vector2(x + 2, y + 2);
         mainCam.transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
+        References.rf.levelGenerator.SpawnFloorObject("Treasure Chest", x + 4, y + 4);
     }
 
     void Start()

@@ -148,6 +148,12 @@ public class Grid : MonoBehaviour
         Vector2 position = worldBottomLeft + Vector2.right * (node.gridX * nodeDiameter) + Vector2.up * (node.gridY * nodeDiameter);
         return position;
     }
+    public Vector2 WorldPointFromNode(int x, int y)
+    {
+        Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
+        Vector2 position = worldBottomLeft + Vector2.right * (x * nodeDiameter) + Vector2.up * (y * nodeDiameter);
+        return position;
+    }
     public Node NodeFromWorldPoint(Vector2 worldPosition)
     {
         float percentX = ((worldPosition.x - pos.x) + gridWorldSize.x / 2) / gridWorldSize.x;
