@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    GameObject head;
     public ParticleSystem weaponTrailRenderer;
     [HideInInspector]
     public MeleeWeaponHit meleeWeapon;
@@ -82,8 +83,10 @@ public class PlayerMovement : MonoBehaviour
         oriScale = transform.localScale;
         sortingGroup = GetComponent<SortingGroup>();
         anim = GetComponent<Animator>();
+        head = transform.GetFromAllChildren("Head").gameObject;
         pa = new PlayerAnimations(this);
         Events.onGameFieldCreated += RandomizePlayerPosition;
+        mainCam = Camera.main;
     }
 
     private void RandomizePlayerPosition()
@@ -101,15 +104,16 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         transform.position = new Vector2(x + 2, y + 2);
+        mainCam.transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
     }
 
     void Start()
     {
-        mainCam = Camera.main;
+       
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
-        ObjectPooler.op.SpawnDialogueBox(new Dialogue {talker =  "Testi", text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
-                                         new Dialogue {talker = "Testi 1", text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
+        ObjectPooler.op.SpawnDialogueBox(head, new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+                                         new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }
 
     private void FixedUpdate()
@@ -218,6 +222,12 @@ public class PlayerMovement : MonoBehaviour
         {
             RegenerateStamina();
             return;
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+              ObjectPooler.op.SpawnDialogueBox(head, new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+                                         new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
+  
         }
 
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))

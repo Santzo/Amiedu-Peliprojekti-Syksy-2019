@@ -63,7 +63,7 @@ public class ObjectPooler : MonoBehaviour
         if (!(spawn is null)) spawn.Spawn();
         return obj;
     }
-    public GameObject SpawnDialogueBox(params Dialogue[] dialogue)
+    public GameObject SpawnDialogueBox(GameObject head, params Dialogue[] dialogue)
     {
         Events.onDialogueBox = true;
         GameObject obj = poolDictionary["DialogueBox"].Dequeue();
@@ -73,6 +73,15 @@ public class ObjectPooler : MonoBehaviour
         DialogueBox db = obj.GetComponent<DialogueBox>();
         References.rf.currentDialogueBox = db;
         db.currentDialogue = dialogue;
+        var newHead = Instantiate(head, db.head.transform.parent);
+        newHead.transform.position = db.head.transform.position;
+        newHead.transform.localScale = db.head.transform.localScale;
+        var sr = newHead.GetComponentsInChildren<SpriteRenderer>();
+        foreach (var s in sr)
+            s.sortingLayerName = "UI";
+        newHead.name = "Head";
+        Destroy(db.head);
+        db.head = newHead;
         return obj;
     }
 

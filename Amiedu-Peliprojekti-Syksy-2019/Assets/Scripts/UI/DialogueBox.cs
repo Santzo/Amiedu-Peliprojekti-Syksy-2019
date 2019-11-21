@@ -9,11 +9,13 @@ public class DialogueBox : MonoBehaviour, IUIHandler
     List<UIItem> items = new List<UIItem>();
     TextMeshProUGUI text;
     TextMeshProUGUI talkerName;
+    public GameObject head;
     string currentText, textToShow;
     public Dialogue[] currentDialogue;
     Animator anim;
     int dialogueIndex;
     private float speed = 0.02f;
+    bool textActivated;
 
     public void EntryClick(int index, PointerEventData.InputButton button)
     {
@@ -38,10 +40,12 @@ public class DialogueBox : MonoBehaviour, IUIHandler
         items.UItemInitialize(transform);
         talkerName.text = "";
         text.text = "";
+        head = transform.GetFromAllChildren("Head").gameObject;
     }
 
     public void StartDialogue()
     {
+        textActivated = true;
         dialogueIndex = 0;
         items[0].text.text = "Skip";
         text.text = "";
@@ -70,6 +74,7 @@ public class DialogueBox : MonoBehaviour, IUIHandler
         {
             Events.onDialogueBox = false;
             anim.SetTrigger("Disable");
+            textActivated = false;
             return;
         }
         items[0].text.text = "Skip";
@@ -86,6 +91,7 @@ public class DialogueBox : MonoBehaviour, IUIHandler
     }
     public void SkipDialogue()
     {
+        if (!textActivated) return;
         if (items[0].text.text == "Skip")
         {
             StopCoroutine("ShowText");
@@ -100,6 +106,7 @@ public class DialogueBox : MonoBehaviour, IUIHandler
 }
 public struct Dialogue
 {
+    public GameObject head;
     public string talker;
     public string text;
 }

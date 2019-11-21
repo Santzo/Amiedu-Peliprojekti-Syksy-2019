@@ -71,6 +71,7 @@ public class Equipment : MonoBehaviour
         var info = typeof(CharacterEquipment).GetField(types[index]);
         info.SetValue(CharacterStats.characterEquipment, null);
         equipment[index].itemIcon.sprite = null;
+        equipment[index].itemIcon.material = null;
         equipment[index].itemIcon.color = placeholderColor;
         References.rf.playerEquipment.RemoveEquipment(item);
         References.rf.statsDetails.UpdateStats();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class CharacterStats
 {
+    public static string name = "Player";
     public static int strength;
     public static int constitution;
     public static int dexterity;
