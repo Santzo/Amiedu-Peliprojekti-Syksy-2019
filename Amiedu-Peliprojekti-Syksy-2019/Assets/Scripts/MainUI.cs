@@ -34,6 +34,7 @@ public class MainUI : MonoBehaviour
 
     private void ActivateInventory()
     {
+        References.rf.statsDetails.UpdateStats();
         underlay.SetActive(!underlay.activeSelf);
         inventory.SetActive(!inventory.activeSelf);
     }

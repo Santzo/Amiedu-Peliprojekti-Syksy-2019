@@ -15,7 +15,7 @@ public class LevelGenerator : MonoBehaviour
     Tilemap foregroundCorners;
     Tile[] cellarTiles;
     GameObject[] floorObjects;
-    Tile black;
+    Tile wallShade, black, smallWallShade;
     int numberOfRooms;
     int worldSizeX, worldSizeY;
     int worldStartX, worldStartY, worldEndX, worldEndY;
@@ -29,7 +29,9 @@ public class LevelGenerator : MonoBehaviour
     {
         numberOfRooms = 30;
         cellarTiles = Resources.LoadAll<Tile>("Cellar/Tiles");
-        black = Resources.Load<Tile>("Cellar/Tiles/Black");
+        black = Resources.Load<Tile>("GenericTiles/Black");
+        wallShade = Resources.Load<Tile>("GenericTiles/WallShade");
+        smallWallShade = Resources.Load<Tile>("GenericTiles/SmallWallShade");
         floorObjects = Resources.LoadAll<GameObject>("FloorObjects");
         backgroundTilemap = GameObject.Find("BackgroundTilemap").GetComponent<Tilemap>();
         backgroundCorners = GameObject.Find("BackgroundCorners").GetComponent<Tilemap>();
@@ -57,6 +59,8 @@ public class LevelGenerator : MonoBehaviour
         CreateRooms();
         CreateCorridors();
         DrawRooms();
+        DrawWallShades();
+        RandomizePlayerPosition();
     }
 
     private void Start()
@@ -64,6 +68,52 @@ public class LevelGenerator : MonoBehaviour
         Events.onFieldInitialized(new Vector2(worldStartX, worldStartY), new Vector2(worldEndX, worldEndY));
     }
 
+    private void RandomizePlayerPosition()
+    {
+        var rooms = References.rf.levelGenerator.allRooms.ToArray();
+        int x = 1000; int y = 1000;
+        AllRooms startRoom = null;
+        foreach (var room in rooms)
+        {
+            if (room.startX + room.startY < x + y)
+            {
+                startRoom = room;
+                x = room.startX;
+                y = room.startY;
+            }
+        }
+        References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
+        References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
+        SpawnFloorObjectFromWorldPosition("Treasure Chest", x + 4, y + 4);
+    }
+
+    private void DrawWallShades()
+    {
+        Tile bg = Array.Find(cellarTiles, ct => ct.name == "BigCornerBottom");
+        for (int x = 0; x < worldSizeX; x++)
+        {
+            for (int y = 0; y < worldSizeY; y++)
+            {
+                if (roomGrid[x, y].tileType == TileType.TopLeftTwo || roomGrid[x, y].tileType == TileType.TopTwo || roomGrid[x, y].tileType == TileType.TopRightTwo)
+                {
+                    backgroundTilemap.SetTile(new Vector3Int(x + worldStartX, y + worldStartY - 1, 0), wallShade);
+                }
+                if (backgroundCorners.GetTile(new Vector3Int(x + worldStartX, y + worldStartY,0)) == bg)
+                {
+                    var info = backgroundCorners.GetTransformMatrix(new Vector3Int(x + worldStartX, y + worldStartY, 0));
+                    if (info.lossyScale.x == 1)
+                    {
+                        backgroundTilemap.SetTile(new Vector3Int(x + worldStartX, y + worldStartY - 1, 0), smallWallShade);
+                    }
+                    else
+                    {
+                        backgroundTilemap.SetTile(new Vector3Int(x + worldStartX, y + worldStartY - 1, 0), smallWallShade);
+                        backgroundTilemap.SetTransformMatrix(new Vector3Int(x + worldStartX, y + worldStartY - 1, 0), info);
+                    }
+                }
+            }
+        }
+    }
     private void CreateCorridors()
     {
         AllRooms[] closestRoom = new AllRooms[allRooms.Count];
@@ -1415,13 +1465,16 @@ public class LevelGenerator : MonoBehaviour
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
         }
     }
-    public void SpawnFloorObject(string oname, int x, int y)
+    
+    public void SpawnFloorObjectFromWorldPosition(string oname, int x, int y)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
+        Vector2 node = new Vector2Int(x + Mathf.Abs(worldStartX), y + Mathf.Abs(worldStartY));
         if (obj != null)
         {
             var spawnedObj = Instantiate(obj);
-            spawnedObj.transform.position = PathRequestManager.instance.grid.WorldPointFromNode(x, y);
+            spawnedObj.transform.position = new Vector2(x, y);
+            spawnedObj.name = oname;
             spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }

@@ -24,11 +24,16 @@ public class References : MonoBehaviour
     public InventoryScreenCharacter inventoryScreenCharacter;
     [HideInInspector]
     public DialogueBox currentDialogueBox;
+    [HideInInspector]
+    public Camera mainCamera;
+    [HideInInspector]
+    public InteractableObject currentInteractableObject;
     public LevelGenerator levelGenerator;
     public Transform uiOverlay;
 
 
     public static References rf;
+
     private void Awake()
     {
         if (rf == null)
@@ -40,9 +45,6 @@ public class References : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    void Start()
-    {
         healthBar = GameObject.Find("HealthBar").GetComponent<Bar>();
         staminaBar = GameObject.Find("StaminaBar").GetComponent<Bar>();
         playerEquipment = FindObjectOfType<PlayerEquipment>();
@@ -52,6 +54,8 @@ public class References : MonoBehaviour
         weaponSlot = FindObjectOfType<WeaponSlot>();
         inventoryScreenCharacter = FindObjectOfType<InventoryScreenCharacter>();
         mainInventory.gameObject.SetActive(false);
+        mainCamera = Camera.main;
     }
+ 
 
 }

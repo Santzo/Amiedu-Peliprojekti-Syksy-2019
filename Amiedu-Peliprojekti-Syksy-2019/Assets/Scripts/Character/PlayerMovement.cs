@@ -58,6 +58,9 @@ public class PlayerMovement : MonoBehaviour
     PlayerAnimations pa;
     public bool attacking, activeAttackFrames;
     public Transform mask;
+
+    int _attack, _stopMeleeAttack, _movement, _movementMultiplier, _stopAttack;
+
     private int HandleVertical
     {
         get
@@ -85,36 +88,21 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         head = transform.GetFromAllChildren("Head").gameObject;
         pa = new PlayerAnimations(this);
-        Events.onGameFieldCreated += RandomizePlayerPosition;
         mainCam = Camera.main;
-    }
 
-    private void RandomizePlayerPosition()
-    {
-        var rooms = References.rf.levelGenerator.allRooms.ToArray();
-        int x = 1000; int y = 1000;
-        AllRooms startRoom = null;
-        foreach (var room in rooms)
-        {
-            if (room.startX + room.startY < x + y)
-            {
-                startRoom = room;
-                x = room.startX;
-                y = room.startY;
-            }
-        }
-        transform.position = new Vector2(x + 2, y + 2);
-        mainCam.transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
-        References.rf.levelGenerator.SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        _attack = Animator.StringToHash("Attack");
+        _movement = Animator.StringToHash("Movement");
+        _movementMultiplier = Animator.StringToHash("MovementMultiplier");
+        _stopMeleeAttack = Animator.StringToHash("StopMeleeAttack");
+        _stopAttack = Animator.StringToHash("StopAttack");
     }
 
     void Start()
     {
-       
         References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
         References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
-        ObjectPooler.op.SpawnDialogueBox(head, new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
-                                         new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
+        ObjectPooler.op.SpawnDialogueBox(head, new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+                                         new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }
 
     private void FixedUpdate()
@@ -185,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
                     attacking = false;
                     activeAttackFrames = false;
                     weaponTrailRenderer.Stop();
-                    anim.SetTrigger("StopAttack");
+                    anim.SetTrigger(_stopAttack);
                     StopCoroutine("CalculateGasAmmo");
                 }
                 break;
@@ -193,8 +181,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void UpdateMoveAnimation()
     {
-        anim.SetFloat("Movement", pa.MoveAnim);
-        anim.SetFloat("MovementMultiplier", pa.Sprinting ? CharacterStats.animationSprintMoveSpeed : CharacterStats.animationBaseMoveSpeed);
+        anim.SetFloat(_movement, pa.MoveAnim);
+        anim.SetFloat(_movementMultiplier, pa.Sprinting ? CharacterStats.animationSprintMoveSpeed : CharacterStats.animationBaseMoveSpeed);
     }
 
     void HandleInput()
@@ -208,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
             RegenerateStamina();
             return;
         }
-     
+
 
         if (Input.GetKeyDown(KeyboardConfig.inventory[0]) || Input.GetKeyDown(KeyboardConfig.inventory[1]))
         {
@@ -226,10 +214,11 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-              ObjectPooler.op.SpawnDialogueBox(head, new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
-                                         new Dialogue {talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
-  
+            ObjectPooler.op.SpawnDialogueBox(head, new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+                                       new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
+
         }
+
 
         if (!Input.GetKey(KeyboardConfig.sprint[0]) && !Input.GetKey(KeyboardConfig.sprint[1]))
         {
@@ -238,6 +227,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (!Input.anyKey) return;
+
+        if (Input.GetKeyDown(KeyboardConfig.action[0]) || Input.GetKeyDown(KeyboardConfig.action[1]))
+        {
+            if (References.rf.currentInteractableObject == null) return;
+            References.rf.currentInteractableObject.Interact();
+        }
 
         if (Input.GetKeyDown(KeyboardConfig.attack[0]) || Input.GetKeyDown(KeyboardConfig.attack[1]))
         {
@@ -250,15 +245,15 @@ public class PlayerMovement : MonoBehaviour
                     activeAttackFrames = true;
                     StopCoroutine("WaitForMeleeAttack");
                     StartCoroutine("WaitForMeleeAttack");
-                    anim.SetTrigger("Attack");
-                    anim.SetTrigger("StopMeleeAttack");
+                    anim.SetTrigger(_attack);
+                    anim.SetTrigger(_stopMeleeAttack);
                 }
                 else if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Flamethrower && CharacterStats.gasAmmo > 0)
                 {
                     attacking = true;
                     activeAttackFrames = true;
                     weaponTrailRenderer.Play();
-                    anim.SetTrigger("Attack");
+                    anim.SetTrigger(_attack);
                     StartCoroutine("CalculateGasAmmo");
                 }
             }
@@ -323,7 +318,7 @@ public class PlayerMovement : MonoBehaviour
     private void ResetAnimations()
     {
         anim.speed = 1f;
-        anim.SetFloat("Movement", 0f);
+        anim.SetFloat(_movement, 0f);
     }
 
     private IEnumerator WaitForMeleeAttack()

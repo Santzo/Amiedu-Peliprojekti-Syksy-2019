@@ -15,14 +15,14 @@ public class StatsDetails : MonoBehaviour, IUIHandler
         details = GetComponentsInChildren<TextMeshProUGUI>();
         images = GetComponentsInChildren<Image>();
         uitems.SimpleUIHandlerInitialize(transform);
-        UpdateStats(); 
     }
 
+    void Start() => UpdateStats();
+    
     private void OnEnable()
     {
         foreach (var image in images)
              image.enabled = false;
-        UpdateStats();
     }
     void OnDisable()
     {

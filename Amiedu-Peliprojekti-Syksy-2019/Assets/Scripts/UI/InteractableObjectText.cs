@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class InteractableObjectText : MonoBehaviour
 {
+    [HideInInspector]
     public TextMeshPro text;
     private float increment = 0.025f;
 
     private void Awake()
     {
-        text = GetComponent<TextMeshPro>();
+        text = GetComponentInChildren<TextMeshPro>();
     }
     
     public void ToggleTextActive(bool activate)

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3996069529743154355}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.4500004, y: 0.14899963, z: 0}
+  m_LocalPosition: {x: 1.09, y: 0.129, z: 0}
   m_LocalScale: {x: 1.9842188, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3996069530581404638}
@@ -124,7 +124,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0008659363, y: -0.04636967}
+  m_Offset: {x: -1.102528, y: -0.8024037}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -135,7 +135,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9.243757, y: 6.288063}
+  m_Size: {x: 7.7316923, y: 5.0620627}
   m_EdgeRadius: 0
 --- !u!1 &3996069530581404627
 GameObject:
@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 3996069530581404639}
   - component: {fileID: 3996069530581404636}
   - component: {fileID: 3996069530581404637}
+  - component: {fileID: 8774431079247993107}
   m_Layer: 14
   m_Name: Treasure Chest
   m_TagString: Untagged
@@ -167,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 3996069530581404627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.3, y: 5.46, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 3996069529743154352}
   - {fileID: 3996069530716041774}
@@ -249,18 +250,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.4734838, y: 0.5109321}
+  m_Offset: {x: 1.1202184, y: 0.5109321}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
-    oldSize: {x: 2.91, y: 1.92}
+    oldSize: {x: 2.2734375, y: 1.5}
     newSize: {x: 2.91, y: 1.92}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.7402196, y: 0.9529802}
+  m_Size: {x: 2.299513, y: 0.9529803}
   m_EdgeRadius: 0
 --- !u!114 &3996069530581404636
 MonoBehaviour:
@@ -295,6 +296,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &8774431079247993107
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996069530581404627}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 422445b245a28e14fad98561f97fe853, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3996069530716041761
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +359,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02978921, y: -0.959194}
+  m_Offset: {x: -0.34444627, y: -1.1115874}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -350,5 +370,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.738387, y: 1.1815766}
+  m_Size: {x: 2.6754339, y: 1.4863632}
   m_EdgeRadius: 0
