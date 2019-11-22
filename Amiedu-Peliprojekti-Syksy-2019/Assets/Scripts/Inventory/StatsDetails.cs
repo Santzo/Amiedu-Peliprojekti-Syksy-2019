@@ -37,6 +37,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[i].text = "";
         }
         details[0].text = "No weapon equipped";
+        details[3].text = details[7].text = $"Ammo {TextColor.Return("yellow")}Pistol {TextColor.Return("green")}{CharacterStats.pistolAmmo} {TextColor.Return("yellow")} - Rifle {TextColor.Return("green")}{CharacterStats.rifleAmmo}{TextColor.Return("yellow")} - Gas {TextColor.Return("green")}{CharacterStats.gasAmmo}";
         details[4].text = $"Total Defense {TextColor.Return("yellow")}{CharacterStats.totalPhysicalDefense}{TextColor.Return()} / {TextColor.Return("purple")}{CharacterStats.totalSpectralDefense}{TextColor.Return()} / {TextColor.Return("red")}{CharacterStats.totalFireDefense}";
         details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{SightRadiusDesc(Info.SightRadius)}{TextColor.Return()})";
         details[6].text = $"Movement Speed {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";

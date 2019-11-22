@@ -546,8 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd066955767d8a0468cc624869402a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showItemsEntry: {fileID: 5505490702053499554, guid: 5fcc1be7b06d30748b3ece44fdf3f832,
-    type: 3}
+  showItemsEntry: {fileID: 0}
 --- !u!1 &62581125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7283,8 +7282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc568ae095cac694791e8ed5911d4542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fogOfWarMain: {fileID: 8400000, guid: 08813edaf904c954cbecd9fe86d9bc4d, type: 2}
-  fogOfWarSecondary: {fileID: 8400000, guid: 6562e64213d03714fad7f7d41693c386, type: 2}
+  fogOfWarMain: {fileID: 0}
+  fogOfWarSecondary: {fileID: 0}
   fogSize: {fileID: 439659467}
   image: {fileID: 2100000, guid: 8fc10f93f2b68914f9a766c02382b18a, type: 2}
   fogOfWarMainCamera: {fileID: 1190230232}
@@ -8043,48 +8042,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
+  - tag: InteractableObjectText
+    prefab: {fileID: 1708337730520795836, guid: e15aad07e916103478e0022bed4ea642,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 3
   - tag: ShowItemsEntry
     prefab: {fileID: 5505490702053499554, guid: 5fcc1be7b06d30748b3ece44fdf3f832,
       type: 3}
     _parent: {fileID: 0}
     size: 10
-  - tag: InventoryItem
-    prefab: {fileID: 5887314187418309023, guid: 26e0a6a4675578d40a32c08dcf0855fd,
-      type: 3}
-    _parent: {fileID: 0}
-    size: 150
-  - tag: ItemDetails
-    prefab: {fileID: 6431961192165138694, guid: 34fe5b41c880ed3438f37768dd5bf451,
-      type: 3}
-    _parent: {fileID: 0}
-    size: 2
   - tag: RightClick
     prefab: {fileID: 1368130870778595151, guid: cceea995403d38748b57cdb5f2c76d85,
       type: 3}
     _parent: {fileID: 0}
-    size: 2
-  - tag: DiscardItem
-    prefab: {fileID: 3963911099211902366, guid: 7f97e592c1b03ce4d8d6ba04a414ab88,
-      type: 3}
-    _parent: {fileID: 0}
-    size: 2
-  - tag: EquipConsumable
-    prefab: {fileID: 6839408116153098172, guid: 31bb088b586e8db48abd592fc8df7ad3,
-      type: 3}
-    _parent: {fileID: 0}
-    size: 2
-  - tag: InteractableObjectText
-    prefab: {fileID: 1708337730520795836, guid: e15aad07e916103478e0022bed4ea642,
-      type: 3}
-    _parent: {fileID: 0}
     size: 5
-  - tag: ObjectMeleeHit
-    prefab: {fileID: 5605735126437045447, guid: f08c01a84d81b914b9ffadf88b8c2627,
-      type: 3}
-    _parent: {fileID: 0}
-    size: 5
-  - tag: BloodSplatter
-    prefab: {fileID: 7868299900882472729, guid: 31f85f6f6fa967c41969f59079ffe8b5,
+  - tag: StatDescription
+    prefab: {fileID: 6431961192165138694, guid: f6ae350aed451d14b90f6fd83df07af2,
       type: 3}
     _parent: {fileID: 0}
     size: 5
@@ -8092,17 +8066,37 @@ MonoBehaviour:
     prefab: {fileID: 4694155947058978667, guid: cc780a1509f340e4f943e046babe2551,
       type: 3}
     _parent: {fileID: 0}
-    size: 20
-  - tag: StatDescription
-    prefab: {fileID: 6431961192165138694, guid: f6ae350aed451d14b90f6fd83df07af2,
+    size: 15
+  - tag: EquipConsumable
+    prefab: {fileID: 6839408116153098172, guid: 31bb088b586e8db48abd592fc8df7ad3,
       type: 3}
     _parent: {fileID: 0}
     size: 2
+  - tag: InventoryItem
+    prefab: {fileID: 5887314187418309023, guid: 26e0a6a4675578d40a32c08dcf0855fd,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 100
+  - tag: ItemDetails
+    prefab: {fileID: 6431961192165138694, guid: 34fe5b41c880ed3438f37768dd5bf451,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 5
+  - tag: BloodSplatter
+    prefab: {fileID: 7868299900882472729, guid: 31f85f6f6fa967c41969f59079ffe8b5,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 15
+  - tag: ObjectMeleeHit
+    prefab: {fileID: 5605735126437045447, guid: f08c01a84d81b914b9ffadf88b8c2627,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 5
   - tag: DialogueBox
     prefab: {fileID: 7284318539933677789, guid: 243ff0cec30610842bf3ccc4d34cfd88,
       type: 3}
     _parent: {fileID: 0}
-    size: 3
+    size: 5
 --- !u!4 &1047642852
 Transform:
   m_ObjectHideFlags: 0
@@ -9229,8 +9223,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -148.14, y: 222.4899}
-  m_SizeDelta: {x: 432.99, y: 166.84}
+  m_AnchoredPosition: {x: -148.14, y: 218.94}
+  m_SizeDelta: {x: 432.99, y: 173.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1147181680
 MonoBehaviour:
@@ -11476,8 +11470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc2a8c6bd335d64e9d78a5338c5b30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBar: {fileID: 1150537402}
-  staminaBar: {fileID: 1748920600}
+  healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
   playerEquipment: {fileID: 0}
   statsDetails: {fileID: 0}
   mainInventory: {fileID: 0}
@@ -12074,10 +12068,10 @@ MonoBehaviour:
     m_Bits: 2162688
   walkableMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 1
   gridWorldSize: {x: 0, y: 0}
   nodeRadius: 0.5
-  obstacleProximityPenalty: 0
+  obstacleProximityPenalty: 10
   gridSizeX: 0
   gridSizeY: 0
 --- !u!4 &1412258561

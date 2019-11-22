@@ -16,8 +16,8 @@ public class InteractableObject : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         var sr = GetComponent<SpriteRenderer>();
-        spriteY = sr.sprite.bounds.size.y;
-        spriteX = sr.sprite.bounds.extents.x;
+        spriteY = sr.sprite.bounds.size.y * 1.5f * transform.localScale.x;
+        spriteX = sr.sprite.bounds.extents.x * transform.localScale.x;
         triggerId = Animator.StringToHash("Action");
         actionTrigger = transform.Find("ActionTrigger");
     }
