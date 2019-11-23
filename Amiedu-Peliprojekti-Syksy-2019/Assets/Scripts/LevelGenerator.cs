@@ -6,16 +6,19 @@ using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
-public class LevelGenerator : MonoBehaviour
+public class LevelGenerator: MonoBehaviour
 {
     Tilemap backgroundTilemap;
-    Tilemap backgroundCorners;
+    [HideInInspector]
+    public Tilemap backgroundCorners;
     Tilemap foregroundTilemap;
     Tilemap floorTilemap;
     Tilemap foregroundCorners;
     Tile[] cellarTiles;
     GameObject[] floorObjects;
     Tile wallShade, black, smallWallShade;
+    [HideInInspector]
+    public Tile cornerTop;
     int numberOfRooms;
     int worldSizeX, worldSizeY;
     int worldStartX, worldStartY, worldEndX, worldEndY;
@@ -30,6 +33,7 @@ public class LevelGenerator : MonoBehaviour
         numberOfRooms = 30;
         cellarTiles = Resources.LoadAll<Tile>("Cellar/Tiles");
         black = Resources.Load<Tile>("GenericTiles/Black");
+        cornerTop = Array.Find(cellarTiles, _tile => _tile.name == "BigCornerTop");
         wallShade = Resources.Load<Tile>("GenericTiles/WallShade");
         smallWallShade = Resources.Load<Tile>("GenericTiles/SmallWallShade");
         floorObjects = Resources.LoadAll<GameObject>("FloorObjects");
@@ -42,7 +46,7 @@ public class LevelGenerator : MonoBehaviour
         backgroundTilemap.size = foregroundTilemap.size = foregroundCorners.size = backgroundCorners.size = floorTilemap.size = new Vector3Int(worldSizeX, worldSizeY, 0);
         
         worldStartX = 0 - worldSizeX / 2;
-                worldStartY = 0 - worldSizeY / 2;
+        worldStartY = 0 - worldSizeY / 2;
         worldEndX = worldSizeX / 2;
         worldEndY = worldSizeY / 2;
         maxRoomSizeX = maxRoomSizeY = 20;
@@ -85,6 +89,17 @@ public class LevelGenerator : MonoBehaviour
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         SpawnFloorObjectFromWorldPosition("Treasure Chest", x + 4, y + 4);
+        SpawnBoxes(50);
+    }
+
+    private void SpawnBoxes(int v)
+    {
+       for (int i = 0; i < v; i++)
+        {
+            int x = Random.Range(worldStartX + 3, worldEndX - 3);
+            int y = Random.Range(worldStartY + 3, worldEndY - 3);
+            SpawnFloorObjectFromWorldPosition("Box", x, y);
+        }
     }
 
     private void DrawWallShades()
@@ -166,7 +181,6 @@ public class LevelGenerator : MonoBehaviour
                 allRooms[i].exit.exitType = allRoomsBiggerY ? ExitType.Bottom : ExitType.Top;
                 closestRoom[i].exit.exitType = allRooms[i].exit.exitType == ExitType.Bottom ? ExitType.Top : ExitType.Bottom;
             }
-
 
             CalculateExit(allRooms[i], corridorSize);
             CalculateExit(closestRoom[i], corridorSize);
@@ -477,6 +491,18 @@ public class LevelGenerator : MonoBehaviour
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY - 1, 0), bigCornerBottom);
                             }
+                                else if (roomGrid[x - 1, y - 1].tileType == TileType.TopTwo &&
+                               roomGrid[x - 1, y].tileType == TileType.Top &&
+                               roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
+                               roomGrid[x, y - 1].tileType == TileType.TopTwo &&
+                               roomGrid[x, y + 1].tileType == TileType.Nothing &&
+                               roomGrid[x + 1, y - 1].tileType == TileType.Right &&
+                               roomGrid[x + 1, y].tileType == TileType.Middle &&
+                               roomGrid[x + 1, y + 1].tileType == TileType.Left)
+                                {
+                                    backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
+                                    backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY - 1, 0), bigCornerBottom);
+                                }
                             else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
                                  roomGrid[x - 1, y].tileType == TileType.Middle &&
                                  roomGrid[x - 1, y + 1].tileType == TileType.Right &&
@@ -1242,6 +1268,30 @@ public class LevelGenerator : MonoBehaviour
             roomGrid[x, y].tileType = TileType.BottomRight;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
         }
+        else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
+            tempGrid[x - 1, y].tileType == TileType.Middle &&
+            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+            tempGrid[x, y - 1].tileType == TileType.Nothing &&
+            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+            tempGrid[x + 1, y].tileType == TileType.Middle &&
+            tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
+        {
+            roomGrid[x, y].tileType = TileType.BottomRight;
+            foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
+        }
+        else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
+           tempGrid[x - 1, y].tileType == TileType.Middle &&
+           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+           tempGrid[x, y - 1].tileType == TileType.Nothing &&
+           tempGrid[x, y + 1].tileType == TileType.Middle &&
+           tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+           tempGrid[x + 1, y].tileType == TileType.Nothing &&
+           tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
+            {
+                roomGrid[x, y].tileType = TileType.BottomRight;
+                foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
+            }
     }
     void CheckForTopRight(RoomGrid[,] tempGrid, int x, int y, Tile topRight)
     {
@@ -1409,6 +1459,18 @@ public class LevelGenerator : MonoBehaviour
             roomGrid[x, y].tileType = TileType.TopLeftExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topLeft);
         }
+        else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
+          tempGrid[x - 1, y].tileType == TileType.Middle &&
+          tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+          tempGrid[x, y - 1].tileType == TileType.Middle &&
+          tempGrid[x, y + 1].tileType == TileType.Nothing &&
+          tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+          tempGrid[x + 1, y].tileType == TileType.Middle &&
+          tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
+            {
+                roomGrid[x, y].tileType = TileType.TopLeft;
+                backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topLeft);
+            }
     }
     void CheckForBottom(RoomGrid[,] tempGrid, int x, int y, Tile bottom)
     {
@@ -1469,10 +1531,31 @@ public class LevelGenerator : MonoBehaviour
     public void SpawnFloorObjectFromWorldPosition(string oname, int x, int y)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
-        Vector2 node = new Vector2Int(x + Mathf.Abs(worldStartX), y + Mathf.Abs(worldStartY));
+        Vector2Int node = new Vector2Int(x + Mathf.Abs(worldStartX), y + Mathf.Abs(worldStartY));
         if (obj != null)
         {
+            var sr = obj.GetComponent<SpriteRenderer>();
+            Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
+
+            bool canBePlaced = false;
+            while (!canBePlaced)
+            {
+                canBePlaced = true;
+                for (int aX = 0; aX < size.x; aX++)
+                {
+                    if (roomGrid[node.x + aX, node.y].tileType != TileType.Middle)
+                        canBePlaced = false;
+                }
+                if (!canBePlaced)
+                {
+                    int newX = Mathf.Clamp(node.x + Random.Range(-15, 16), 0, worldSizeX - 1);
+                    int newY = Mathf.Clamp(node.y + Random.Range(-15, 16), 0, worldSizeY - 1);
+                    node = new Vector2Int(newX, newY);
+                }
+            }
             var spawnedObj = Instantiate(obj);
+            x = node.x - Mathf.Abs(worldStartX);
+            y = node.y - Mathf.Abs(worldStartY);
             spawnedObj.transform.position = new Vector2(x, y);
             spawnedObj.name = oname;
             spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
@@ -1502,7 +1585,8 @@ public enum TileType
     Bottom,
     BottomRight,
     Middle,
-    Nothing
+    Nothing,
+    Corridor
 }
 public enum ExitType
 {
@@ -1510,7 +1594,12 @@ public enum ExitType
     Right,
     Bottom,
     Left,
-
+}
+public enum RoomType
+{
+    Normal,
+    Start,
+    Boss
 }
 public struct Exit
 {
@@ -1522,4 +1611,5 @@ public class AllRooms
     public int startX, startY, endX, endY;
     public Exit exit;
     public bool hasCorridor;
+    public RoomType roomType;
 }

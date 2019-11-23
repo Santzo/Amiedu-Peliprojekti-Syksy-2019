@@ -10,7 +10,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(SpriteRenderer))]
 public class DynamicObject : MonoBehaviour
 {
-    protected Rigidbody2D rb;
+    public Rigidbody2D rb;
     protected Coroutine co;
     protected SortingGroup sgroup;
     protected Vector3 shadowOffset;
@@ -25,7 +25,11 @@ public class DynamicObject : MonoBehaviour
         spriteBoundsY = GetComponent<SpriteRenderer>().bounds.extents.y * 0.5f;
         CreateStaticCollider();
     }
-
+    private void Start()
+    {
+        FloorObjectManager.instance.Add(this);
+        sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
+    }
     private void CreateStaticCollider()
     {
         GameObject staticStats = new GameObject("StaticCollider");
@@ -35,16 +39,10 @@ public class DynamicObject : MonoBehaviour
         bc.offset = GetComponent<BoxCollider2D>().offset;
         staticStats.layer = LayerMask.NameToLayer("StaticObject");
     }
-    private void Update()
-    {
-        if (Time.frameCount % 5 != 0 || objectIsMoving)
-            return;
-        if (rb.velocity.magnitude > 0.1f)
-            UpdateSortLayer();
-    }
 
     public void UpdateSortLayer()
     {
+        if (objectIsMoving) return;
         if (co != null) StopCoroutine(co);
         co = StartCoroutine(UpdateLayer());
     }
@@ -54,10 +52,10 @@ public class DynamicObject : MonoBehaviour
         objectIsMoving = true;
         while (rb.velocity.magnitude > 0.1f)
         {
-            sgroup.sortingOrder = Info.SortingOrder(transform.position.y - spriteBoundsY);
+            sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
             yield return null;
         }
-        sgroup.sortingOrder = Info.SortingOrder(transform.position.y - spriteBoundsY);
+        sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
         objectIsMoving = false;
     }
 
