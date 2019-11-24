@@ -12,7 +12,7 @@ public class DynamicObject : MonoBehaviour
 {
     public Rigidbody2D rb;
     protected Coroutine co;
-    protected SortingGroup sgroup;
+    public SortingGroup sgroup;
     protected Vector3 shadowOffset;
     protected float spriteBoundsY;
 
@@ -28,7 +28,6 @@ public class DynamicObject : MonoBehaviour
     private void Start()
     {
         FloorObjectManager.instance.Add(this);
-        sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
     }
     private void CreateStaticCollider()
     {

@@ -30,7 +30,7 @@ public class LevelGenerator: MonoBehaviour
 
     private void Awake()
     {
-        numberOfRooms = 30;
+        numberOfRooms = 20;
         cellarTiles = Resources.LoadAll<Tile>("Cellar/Tiles");
         black = Resources.Load<Tile>("GenericTiles/Black");
         cornerTop = Array.Find(cellarTiles, _tile => _tile.name == "BigCornerTop");
@@ -59,7 +59,7 @@ public class LevelGenerator: MonoBehaviour
                 roomGrid[x, y].tileType = TileType.Nothing;
             }
         }
-
+        CreateBossRoom();
         CreateRooms();
         CreateCorridors();
         DrawRooms();
@@ -89,7 +89,7 @@ public class LevelGenerator: MonoBehaviour
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         SpawnFloorObjectFromWorldPosition("Treasure Chest", x + 4, y + 4);
-        SpawnBoxes(50);
+        //SpawnBoxes(50);
     }
 
     private void SpawnBoxes(int v)
@@ -135,28 +135,28 @@ public class LevelGenerator: MonoBehaviour
         int corridorSize = 4;
         for (int i = 0; i < allRooms.Count - 1; i++)
         {
-            int distX = 10000, distY = 10000;
-            foreach (var room in allRooms)
-            {
-                int tempX = 10000, tempY = 10000;
-                if (room == allRooms[i] || room.hasCorridor) continue;
-
-                if (room.startX > allRooms[i].endX)
-                    tempX = room.startX - allRooms[i].endX;
-                else if (room.startX <= allRooms[i].endX)
-                    tempX = allRooms[i].endX - room.startX;
-
-                if (room.startY > allRooms[i].endY)
-                    tempY = room.startY - allRooms[i].endY;
-                else if (room.startX <= allRooms[i].endX)
-                    tempY = allRooms[i].endY - room.startY;
-
-                if (tempX + tempY < distX + distY)
+                int distX = 10000, distY = 10000;
+                foreach (var room in allRooms)
                 {
-                    distX = tempX;
-                    distY = tempY;
-                    closestRoom[i] = room;
-                }
+                    int tempX = 10000, tempY = 10000;
+                    if (room == allRooms[i] || room.hasCorridor || room.roomType == RoomType.Boss) continue;
+
+                    if (room.startX > allRooms[i].endX)
+                        tempX = room.startX - allRooms[i].endX;
+                    else if (room.startX <= allRooms[i].endX)
+                        tempX = allRooms[i].endX - room.startX;
+
+                    if (room.startY > allRooms[i].endY)
+                        tempY = room.startY - allRooms[i].endY;
+                    else if (room.startX <= allRooms[i].endX)
+                        tempY = allRooms[i].endY - room.startY;
+
+                    if (tempX + tempY < distX + distY)
+                    {
+                        distX = tempX;
+                        distY = tempY;
+                        closestRoom[i] = room;
+                    }
             }
             allRooms[i].hasCorridor = true;
         }
@@ -241,7 +241,7 @@ public class LevelGenerator: MonoBehaviour
                 {
                     for (int x = startPos.x; x < startPos.x + corridorSize; x++)
                     {
-                        roomGrid[x, y].tileType = TileType.Middle;
+                        roomGrid[x, y].tileType = TileType.Corridor;
                     }
                 }
                 break;
@@ -263,7 +263,7 @@ public class LevelGenerator: MonoBehaviour
                 {
                     for (int y = startPos.y; y < startPos.y + corridorSize; y++)
                     {
-                        roomGrid[x, y].tileType = TileType.Middle;
+                        roomGrid[x, y].tileType = TileType.Corridor;
                     }
                 }
                 break;
@@ -281,19 +281,19 @@ public class LevelGenerator: MonoBehaviour
             {
                 if (exit.exitType == ExitType.Right)
                 {
-                    roomGrid[gridX + i, gridY + a].tileType = TileType.Middle;
+                    roomGrid[gridX + i, gridY + a].tileType = TileType.Corridor;
                 }
                 else if (exit.exitType == ExitType.Left)
                 {
-                    roomGrid[gridX - i, gridY + a].tileType = TileType.Middle;
+                    roomGrid[gridX - i, gridY + a].tileType = TileType.Corridor;
                 }
                 else if (exit.exitType == ExitType.Top)
                 {
-                    roomGrid[gridX + a, gridY + i].tileType = TileType.Middle;
+                    roomGrid[gridX + a, gridY + i].tileType = TileType.Corridor;
                 }
                 else if (exit.exitType == ExitType.Bottom)
                 {
-                    roomGrid[gridX + a, gridY - i].tileType = TileType.Middle;
+                    roomGrid[gridX + a, gridY - i].tileType = TileType.Corridor;
                 }
             }
         }
@@ -335,18 +335,27 @@ public class LevelGenerator: MonoBehaviour
             {
                 case ExitType.Bottom:
                 case ExitType.Top:
-                    roomGrid[gridX + x, gridY].tileType = TileType.Middle;
+                    roomGrid[gridX + x, gridY].tileType = TileType.Corridor;
                     break;
                 case ExitType.Left:
                 case ExitType.Right:
-                    roomGrid[gridX, gridY + x].tileType = TileType.Middle;
+                    roomGrid[gridX, gridY + x].tileType = TileType.Corridor;
                     break;
             }
         }
         room.exit.x = spotX;
         room.exit.y = spotY;
     }
+    void CreateBossRoom()
+    {
+        Vector2Int size = new Vector2Int(40, 25);
+        Vector2Int start = new Vector2Int(worldStartX + 2, worldEndY - size.y - 3);
+        if(CheckIfRoomFits(start.x, start.y, start.x + size.x, start.y + size.y))
+        {
+            allRooms[0].roomType = RoomType.Boss;
+        }
 
+    }
     void CreateRooms()
     {
         bool addRooms = true;
@@ -376,6 +385,7 @@ public class LevelGenerator: MonoBehaviour
                 }
             }
         }
+        Debug.Log(allRooms[0].startX + ", " + allRooms[0].endX);
     }
     void DrawRooms()
     {
@@ -395,6 +405,7 @@ public class LevelGenerator: MonoBehaviour
                             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), black);
                             break;
                         case "Middle":
+                        case "Corridor":
                             floorTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), middleTile);
                             break;
                     }
@@ -432,6 +443,7 @@ public class LevelGenerator: MonoBehaviour
                     switch (piece)
                     {
                         case "Middle":
+                        case "Corridor":
                             if (roomGrid[x, y - 1].tileType == TileType.Right && roomGrid[x + 1, y].tileType == TileType.Bottom)
                                 foregroundCorners.SetTile(new Vector3Int(x - startX, y - startY, 0), smallCorner);
                             else if (roomGrid[x, y - 1].tileType == TileType.BottomRight && roomGrid[x + 1, y].tileType == TileType.Bottom)
@@ -460,8 +472,8 @@ public class LevelGenerator: MonoBehaviour
                               roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                               roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                               roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                              roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                              roomGrid[x + 1, y].tileType == TileType.Middle &&
+                              CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                              CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                               roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -472,8 +484,8 @@ public class LevelGenerator: MonoBehaviour
                             roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                             roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                             roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                            roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                            roomGrid[x + 1, y].tileType == TileType.Middle &&
+                            CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                            CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                             roomGrid[x + 1, y + 1].tileType == TileType.TopLeftTwo)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -484,8 +496,8 @@ public class LevelGenerator: MonoBehaviour
                                roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                                roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                               roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                               roomGrid[x + 1, y].tileType == TileType.Middle &&
+                               CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                               CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -497,19 +509,19 @@ public class LevelGenerator: MonoBehaviour
                                roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                roomGrid[x, y + 1].tileType == TileType.Nothing &&
                                roomGrid[x + 1, y - 1].tileType == TileType.Right &&
-                               roomGrid[x + 1, y].tileType == TileType.Middle &&
+                               CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                roomGrid[x + 1, y + 1].tileType == TileType.Left)
                                 {
                                     backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
                                     backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY - 1, 0), bigCornerBottom);
                                 }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                 roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                                 CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                  roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                                  roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                  roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                                 roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                 roomGrid[x + 1, y].tileType == TileType.Middle &&
+                                 CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                                 CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                  roomGrid[x + 1, y + 1].tileType == TileType.TopLeftTwo)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -522,13 +534,13 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                            roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                            CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                             roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                             roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                             roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                            roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                            roomGrid[x + 1, y].tileType == TileType.Middle &&
+                            CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                            CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                             roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -542,12 +554,12 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                                CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                 roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                                 roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                 roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                                roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
+                                CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
                                 roomGrid[x + 1, y].tileType == TileType.TopTwo &&
                                 roomGrid[x + 1, y + 1].tileType == TileType.TopLeftExtra)
                             {
@@ -562,13 +574,13 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                               roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                               CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                roomGrid[x - 1, y + 1].tileType == TileType.TopRightTwo &&
                                roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                               roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                               roomGrid[x + 1, y].tileType == TileType.Middle &&
+                               CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                               CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -582,8 +594,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                               roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                               CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                                roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -599,8 +611,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                            roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                            CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                             roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                             roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                             roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -616,8 +628,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                           roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                           CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                            roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                            roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                            roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -633,13 +645,13 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
                                roomGrid[x - 1, y].tileType == TileType.TopTwo &&
                                roomGrid[x - 1, y + 1].tileType == TileType.TopRightExtra &&
                                roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                               roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                               roomGrid[x + 1, y].tileType == TileType.Middle &&
+                               CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                               CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 Vector3Int bigTopPos = new Vector3Int(x - startX - 1, y - startY, 0);
@@ -649,8 +661,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigTopPos, horizontalFlip);
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                 roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                                 CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                  roomGrid[x - 1, y + 1].tileType == TileType.TopRightTwo &&
                                  roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                  roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -665,7 +677,7 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigTopPos, horizontalFlip);
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
                               roomGrid[x - 1, y].tileType == TileType.TopTwo &&
                               roomGrid[x - 1, y + 1].tileType == TileType.TopRightExtra &&
                               roomGrid[x, y - 1].tileType == TileType.TopTwo &&
@@ -686,8 +698,8 @@ public class LevelGenerator: MonoBehaviour
                              roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                              roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                              roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                             roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                             roomGrid[x + 1, y].tileType == TileType.Middle &&
+                             CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                             CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                              roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -698,7 +710,7 @@ public class LevelGenerator: MonoBehaviour
                                    roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                                    roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                    roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                                   roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
+                                   CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
                                    roomGrid[x + 1, y].tileType == TileType.TopTwo &&
                                    roomGrid[x + 1, y + 1].tileType == TileType.TopLeftExtra)
                             {
@@ -710,7 +722,7 @@ public class LevelGenerator: MonoBehaviour
                             roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                             roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                             roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                            roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
+                            CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
                             roomGrid[x + 1, y].tileType == TileType.TopTwo &&
                             roomGrid[x + 1, y + 1].tileType == TileType.TopLeftExtra)
                             {
@@ -724,8 +736,8 @@ public class LevelGenerator: MonoBehaviour
                                  roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                                  roomGrid[x, y - 1].tileType == TileType.TopLeftTwo &&
                                  roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                                 roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                 roomGrid[x + 1, y].tileType == TileType.Middle &&
+                                 CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                                 CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                                  roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -739,8 +751,8 @@ public class LevelGenerator: MonoBehaviour
                             roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
                             roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                             roomGrid[x, y + 1].tileType == TileType.Nothing &&
-                            roomGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                            roomGrid[x + 1, y].tileType == TileType.Middle &&
+                            CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                            CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                             roomGrid[x + 1, y + 1].tileType == TileType.Left)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x - startX + 1, y - startY, 0), bigCornerTop);
@@ -749,8 +761,8 @@ public class LevelGenerator: MonoBehaviour
                             }
                             break;
                         case "TopRightExtra":
-                            if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                                CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                 roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                                 roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                 roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -768,7 +780,7 @@ public class LevelGenerator: MonoBehaviour
                             }
                             break;
                         case "TopRight":
-                            if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
+                            if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
                                  roomGrid[x - 1, y].tileType == TileType.TopTwo &&
                                  roomGrid[x - 1, y + 1].tileType == TileType.TopRight &&
                                  roomGrid[x, y - 1].tileType == TileType.TopRightTwo &&
@@ -785,8 +797,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                              roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                              CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                               roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                               roomGrid[x, y - 1].tileType == TileType.TopRightTwo &&
                               roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -802,8 +814,8 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                  roomGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
+                                  CheckIfFloor(roomGrid[x - 1, y ].tileType) &&
                                   roomGrid[x - 1, y + 1].tileType == TileType.Right &&
                                   roomGrid[x, y - 1].tileType == TileType.TopTwo &&
                                   roomGrid[x, y + 1].tileType == TileType.Nothing &&
@@ -819,7 +831,7 @@ public class LevelGenerator: MonoBehaviour
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
 
                             }
-                            else if (roomGrid[x - 1, y - 1].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
                              roomGrid[x - 1, y].tileType == TileType.TopTwo &&
                              roomGrid[x - 1, y + 1].tileType == TileType.TopRightExtra &&
                              roomGrid[x, y - 1].tileType == TileType.TopRightTwo &&
@@ -869,6 +881,7 @@ public class LevelGenerator: MonoBehaviour
                     switch (piece)
                     {
                         case "Middle":
+                        case "Corridor":
                             CheckForLeftPiece(tempGrid, x, y, left);
                             CheckForRightPiece(tempGrid, x, y, right);
                             CheckForBottomLeft(tempGrid, x, y, bottomLeft);
@@ -877,13 +890,13 @@ public class LevelGenerator: MonoBehaviour
                             CheckForTopLeft(tempGrid, x, y, topLeft);
                             CheckForBottom(tempGrid, x, y, bottom);
 
-                            if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                tempGrid[x - 1, y].tileType == TileType.Middle &&
+                            if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                                CheckIfFloor(tempGrid[x - 1, y].tileType) &&
                                 tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-                                tempGrid[x, y - 1].tileType == TileType.Middle &&
+                                CheckIfFloor(tempGrid[x, y - 1].tileType) &&
                                 tempGrid[x, y + 1].tileType == TileType.Nothing &&
-                                tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                tempGrid[x + 1, y].tileType == TileType.Middle &&
+                                CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+                                CheckIfFloor(tempGrid[x + 1, y].tileType) &&
                                 tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
                             {
                                 roomGrid[x, y].tileType = TileType.Top;
@@ -892,39 +905,39 @@ public class LevelGenerator: MonoBehaviour
                             }
 
 
-                            else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                  tempGrid[x - 1, y].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                                  CheckIfFloor(tempGrid[x - 1, y].tileType) &&
                                    tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-                                   tempGrid[x, y - 1].tileType == TileType.Middle &&
+                                   CheckIfFloor(tempGrid[x, y - 1].tileType) &&
                                    tempGrid[x, y + 1].tileType == TileType.Nothing &&
-                                   tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                   tempGrid[x + 1, y].tileType == TileType.Middle &&
-                                   tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+                                   CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+                                   CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+                                   CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
                             {
                                 roomGrid[x, y].tileType = TileType.Top;
                                 backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), top);
 
                             }
-                            else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                               tempGrid[x - 1, y].tileType == TileType.Middle &&
-                                tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-                                tempGrid[x, y - 1].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                               CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+                                CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+                                CheckIfFloor(tempGrid[x, y - 1].tileType) &&
                                 tempGrid[x, y + 1].tileType == TileType.Nothing &&
-                                tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                tempGrid[x + 1, y].tileType == TileType.Middle &&
+                                CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+                                CheckIfFloor(tempGrid[x + 1, y].tileType) &&
                                 tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
                             {
                                 roomGrid[x, y].tileType = TileType.Top;
                                 backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), top);
                             }
-                            else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                                   tempGrid[x - 1, y].tileType == TileType.Middle &&
-                                    tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-                                    tempGrid[x, y - 1].tileType == TileType.Middle &&
+                            else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                                   CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+                                    CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+                                    CheckIfFloor(tempGrid[x, y - 1].tileType) &&
                                     tempGrid[x, y + 1].tileType == TileType.Nothing &&
-                                    tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                                    tempGrid[x + 1, y].tileType == TileType.Middle &&
-                                    tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+                                    CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+                                    CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+                                    CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
                             {
                                 roomGrid[x, y].tileType = TileType.Top;
                                 backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), top);
@@ -971,10 +984,10 @@ public class LevelGenerator: MonoBehaviour
     }
     private bool CheckIfRoomFits(int startX, int startY, int endX, int endY)
     {
-        int tStartX = startX - 3;
-        int tEndX = endX + 3;
-        int tStartY = startY - 3;
-        int tEndY = endY + 3;
+        int tStartX = startX - 4;
+        int tEndX = endX + 4;
+        int tStartY = startY - 4;
+        int tEndY = endY + 4;
         foreach (var room in allRooms)
         {
             if (tStartX >= room.startX && tStartX <= room.endX && tStartY >= room.startY && tStartY <= room.endY) return false;
@@ -1011,72 +1024,72 @@ public class LevelGenerator: MonoBehaviour
         int startX = Mathf.Abs(worldStartX);
         int startY = Mathf.Abs(worldStartY);
         if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-                               tempGrid[x - 1, y].tileType == TileType.Nothing &&
-                               tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-                               tempGrid[x, y - 1].tileType == TileType.Middle &&
-                               tempGrid[x, y + 1].tileType == TileType.Middle &&
-                               tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                               tempGrid[x + 1, y].tileType == TileType.Middle &&
-                               tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            tempGrid[x - 1, y].tileType == TileType.Nothing &&
+            tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Left;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), left);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
                  tempGrid[x - 1, y].tileType == TileType.Nothing &&
                  tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-                 tempGrid[x, y - 1].tileType == TileType.Middle &&
-                 tempGrid[x, y + 1].tileType == TileType.Middle &&
-                 tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-                 tempGrid[x + 1, y].tileType == TileType.Middle &&
-                 tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+                 CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+                 CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+                 CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+                 CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+                 CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Left;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), left);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
                tempGrid[x - 1, y].tileType == TileType.Nothing &&
-               tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-               tempGrid[x, y - 1].tileType == TileType.Middle &&
-               tempGrid[x, y + 1].tileType == TileType.Middle &&
-               tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-               tempGrid[x + 1, y].tileType == TileType.Middle &&
-               tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+               CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+               CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+               CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+               CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+               CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+               CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Left;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), left);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
              tempGrid[x - 1, y].tileType == TileType.Nothing &&
-             tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-             tempGrid[x, y - 1].tileType == TileType.Middle &&
-             tempGrid[x, y + 1].tileType == TileType.Middle &&
-             tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-             tempGrid[x + 1, y].tileType == TileType.Middle &&
-             tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+             CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+             CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+             CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Left;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), left);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
          tempGrid[x - 1, y].tileType == TileType.Nothing &&
-         tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-         tempGrid[x, y - 1].tileType == TileType.Middle &&
-         tempGrid[x, y + 1].tileType == TileType.Middle &&
+         CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y + 1].tileType) &&
          tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-         tempGrid[x + 1, y].tileType == TileType.Middle &&
-         tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+         CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+         CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Left;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), left);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
          tempGrid[x - 1, y].tileType == TileType.Nothing &&
-         tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-         tempGrid[x, y - 1].tileType == TileType.Middle &&
-         tempGrid[x, y + 1].tileType == TileType.Middle &&
-         tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-         tempGrid[x + 1, y].tileType == TileType.Middle &&
+         CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+         CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x + 1, y].tileType) &&
          tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.Left;
@@ -1088,11 +1101,11 @@ public class LevelGenerator: MonoBehaviour
     {
         int startX = Mathf.Abs(worldStartX);
         int startY = Mathf.Abs(worldStartY);
-        if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                              tempGrid[x - 1, y].tileType == TileType.Middle &&
-                              tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-                              tempGrid[x, y - 1].tileType == TileType.Middle &&
-                              tempGrid[x, y + 1].tileType == TileType.Middle &&
+        if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                              CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+                              CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+                              CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+                              CheckIfFloor(tempGrid[x, y + 1].tileType) &&
                               tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
                               tempGrid[x + 1, y].tileType == TileType.Nothing &&
                               tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
@@ -1100,50 +1113,50 @@ public class LevelGenerator: MonoBehaviour
             roomGrid[x, y].tileType = TileType.Right;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), right);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-         tempGrid[x - 1, y].tileType == TileType.Middle &&
-         tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-         tempGrid[x, y - 1].tileType == TileType.Middle &&
-         tempGrid[x, y + 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+         CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x, y + 1].tileType) &&
          tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
          tempGrid[x + 1, y].tileType == TileType.Nothing &&
-         tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+         CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Right;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), right);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-           tempGrid[x - 1, y].tileType == TileType.Middle &&
-           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-           tempGrid[x, y - 1].tileType == TileType.Middle &&
-           tempGrid[x, y + 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
            tempGrid[x + 1, y].tileType == TileType.Nothing &&
            tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.Right;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), right);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-        tempGrid[x - 1, y].tileType == TileType.Middle &&
-        tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-        tempGrid[x, y - 1].tileType == TileType.Middle &&
-        tempGrid[x, y + 1].tileType == TileType.Middle &&
-        tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+        CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+        CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+        CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
         tempGrid[x + 1, y].tileType == TileType.Nothing &&
-        tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+        CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Right;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), right);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-             tempGrid[x - 1, y].tileType == TileType.Middle &&
-             tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-             tempGrid[x, y - 1].tileType == TileType.Middle &&
-             tempGrid[x, y + 1].tileType == TileType.Middle &&
-             tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+             CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+             CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+             CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+             CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
              tempGrid[x + 1, y].tileType == TileType.Nothing &&
-             tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+             CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Right;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), right);
@@ -1159,22 +1172,22 @@ public class LevelGenerator: MonoBehaviour
             tempGrid[x - 1, y].tileType == TileType.Nothing &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
-            tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
         tempGrid[x - 1, y].tileType == TileType.Nothing &&
-         tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+         CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
          tempGrid[x, y - 1].tileType == TileType.Nothing &&
-         tempGrid[x, y + 1].tileType == TileType.Middle &&
+         CheckIfFloor(tempGrid[x, y + 1].tileType) &&
          tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-         tempGrid[x + 1, y].tileType == TileType.Middle &&
-         tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+         CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+         CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
@@ -1183,46 +1196,46 @@ public class LevelGenerator: MonoBehaviour
        tempGrid[x - 1, y].tileType == TileType.Nothing &&
         tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
         tempGrid[x, y - 1].tileType == TileType.Nothing &&
-        tempGrid[x, y + 1].tileType == TileType.Middle &&
-        tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-        tempGrid[x + 1, y].tileType == TileType.Middle &&
-        tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+        CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+        CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+        CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
           tempGrid[x - 1, y].tileType == TileType.Nothing &&
-           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+           CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
            tempGrid[x, y - 1].tileType == TileType.Nothing &&
-           tempGrid[x, y + 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y].tileType == TileType.Middle &&
-           tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+           CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
         tempGrid[x - 1, y].tileType == TileType.Nothing &&
           tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
           tempGrid[x, y - 1].tileType == TileType.Nothing &&
-          tempGrid[x, y + 1].tileType == TileType.Middle &&
+          CheckIfFloor(tempGrid[x, y + 1].tileType) &&
           tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-          tempGrid[x + 1, y].tileType == TileType.Middle &&
-          tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+          CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+          CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-          tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+          CheckIfFloor(tempGrid[x - 1, y].tileType) &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
-            tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomLeft;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomLeft);
@@ -1233,10 +1246,10 @@ public class LevelGenerator: MonoBehaviour
         int startX = Mathf.Abs(worldStartX);
         int startY = Mathf.Abs(worldStartY);
         if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
-            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
             tempGrid[x + 1, y].tileType == TileType.Nothing &&
             tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
@@ -1244,11 +1257,11 @@ public class LevelGenerator: MonoBehaviour
             roomGrid[x, y].tileType = TileType.BottomRight;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-                tempGrid[x - 1, y].tileType == TileType.Middle &&
-                tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+                CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+                CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
                 tempGrid[x, y - 1].tileType == TileType.Nothing &&
-                tempGrid[x, y + 1].tileType == TileType.Middle &&
+                CheckIfFloor(tempGrid[x, y + 1].tileType) &&
                 tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
                 tempGrid[x + 1, y].tileType == TileType.Nothing &&
                 tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
@@ -1257,35 +1270,35 @@ public class LevelGenerator: MonoBehaviour
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-              tempGrid[x - 1, y].tileType == TileType.Middle &&
-              tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+              CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+              CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
               tempGrid[x, y - 1].tileType == TileType.Nothing &&
-              tempGrid[x, y + 1].tileType == TileType.Middle &&
+              CheckIfFloor(tempGrid[x, y + 1].tileType) &&
               tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
               tempGrid[x + 1, y].tileType == TileType.Nothing &&
-              tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+              CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.BottomRight;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
-            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
             tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.BottomRight;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottomRight);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-           tempGrid[x - 1, y].tileType == TileType.Middle &&
-           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+           CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
            tempGrid[x, y - 1].tileType == TileType.Nothing &&
-           tempGrid[x, y + 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+           CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
            tempGrid[x + 1, y].tileType == TileType.Nothing &&
            tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
             {
@@ -1298,10 +1311,10 @@ public class LevelGenerator: MonoBehaviour
 
         int startX = Mathf.Abs(worldStartX);
         int startY = Mathf.Abs(worldStartY);
-        if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
+        if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x, y - 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
             tempGrid[x, y + 1].tileType == TileType.Nothing &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
             tempGrid[x + 1, y].tileType == TileType.Nothing &&
@@ -1310,11 +1323,11 @@ public class LevelGenerator: MonoBehaviour
             roomGrid[x, y].tileType = TileType.TopRight;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x, y - 1].tileType == TileType.Middle &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
             tempGrid[x + 1, y].tileType == TileType.Nothing &&
             tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
@@ -1322,22 +1335,22 @@ public class LevelGenerator: MonoBehaviour
             roomGrid[x, y].tileType = TileType.TopRight;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-        tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x - 1, y].tileType) &&
         tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-        tempGrid[x, y - 1].tileType == TileType.Middle &&
-        tempGrid[x, y + 1].tileType == TileType.Middle &&
+        CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x, y + 1].tileType) &&
         tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
         tempGrid[x + 1, y].tileType == TileType.Nothing &&
-        tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+        CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopRight;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-              tempGrid[x - 1, y].tileType == TileType.Middle &&
-              tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-              tempGrid[x, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+              CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+              CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+              CheckIfFloor(tempGrid[x, y - 1].tileType) &&
               tempGrid[x, y + 1].tileType == TileType.Nothing &&
               tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
               tempGrid[x + 1, y].tileType == TileType.Nothing &&
@@ -1346,62 +1359,62 @@ public class LevelGenerator: MonoBehaviour
             roomGrid[x, y].tileType = TileType.TopRight;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-          tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+          CheckIfFloor(tempGrid[x - 1, y].tileType) &&
           tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-          tempGrid[x, y - 1].tileType == TileType.Middle &&
+          CheckIfFloor(tempGrid[x, y - 1].tileType) &&
           tempGrid[x, y + 1].tileType == TileType.Nothing &&
           tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-          tempGrid[x + 1, y].tileType == TileType.Middle &&
-          tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+          CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+          CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopRight;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-              tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+              CheckIfFloor(tempGrid[x - 1, y].tileType) &&
               tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-              tempGrid[x, y - 1].tileType == TileType.Middle &&
+              CheckIfFloor(tempGrid[x, y - 1].tileType) &&
               tempGrid[x, y + 1].tileType == TileType.Nothing &&
-              tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+              CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
               tempGrid[x + 1, y].tileType == TileType.Nothing &&
               tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.TopRightExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
-            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-            tempGrid[x, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
             tempGrid[x, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
             tempGrid[x + 1, y].tileType == TileType.Nothing &&
             tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.TopRightExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-           tempGrid[x - 1, y].tileType == TileType.Middle &&
-           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-           tempGrid[x, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x, y - 1].tileType) &&
            tempGrid[x, y + 1].tileType == TileType.Nothing &&
            tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
            tempGrid[x + 1, y].tileType == TileType.Nothing &&
-           tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+           CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopRightExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-         tempGrid[x - 1, y].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+         CheckIfFloor(tempGrid[x - 1, y].tileType) &&
          tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-         tempGrid[x, y - 1].tileType == TileType.Middle &&
+         CheckIfFloor(tempGrid[x, y - 1].tileType) &&
          tempGrid[x, y + 1].tileType == TileType.Nothing &&
          tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
          tempGrid[x + 1, y].tileType == TileType.Nothing &&
-         tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+         CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopRightExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topRight);
@@ -1414,10 +1427,10 @@ public class LevelGenerator: MonoBehaviour
         if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
             tempGrid[x - 1, y].tileType == TileType.Nothing &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x, y - 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
             tempGrid[x, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
             tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.TopLeft;
@@ -1426,46 +1439,46 @@ public class LevelGenerator: MonoBehaviour
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
             tempGrid[x - 1, y].tileType == TileType.Nothing &&
             tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x, y - 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y - 1].tileType) &&
             tempGrid[x, y + 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
-            tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopLeft;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topLeft);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
        tempGrid[x - 1, y].tileType == TileType.Nothing &&
        tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-       tempGrid[x, y - 1].tileType == TileType.Middle &&
+       CheckIfFloor(tempGrid[x, y - 1].tileType) &&
        tempGrid[x, y + 1].tileType == TileType.Nothing &&
-       tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-       tempGrid[x + 1, y].tileType == TileType.Middle &&
+       CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+       CheckIfFloor(tempGrid[x + 1, y].tileType) &&
        tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
         {
             roomGrid[x, y].tileType = TileType.TopLeftExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topLeft);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
              tempGrid[x - 1, y].tileType == TileType.Nothing &&
              tempGrid[x - 1, y + 1].tileType == TileType.Nothing &&
-             tempGrid[x, y - 1].tileType == TileType.Middle &&
+             CheckIfFloor(tempGrid[x, y - 1].tileType) &&
              tempGrid[x, y + 1].tileType == TileType.Nothing &&
-             tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-             tempGrid[x + 1, y].tileType == TileType.Middle &&
-             tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+             CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+             CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.TopLeftExtra;
             backgroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), topLeft);
         }
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-          tempGrid[x - 1, y].tileType == TileType.Middle &&
-          tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
-          tempGrid[x, y - 1].tileType == TileType.Middle &&
+          CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+          CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+          CheckIfFloor(tempGrid[x, y - 1].tileType) &&
           tempGrid[x, y + 1].tileType == TileType.Nothing &&
-          tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-          tempGrid[x + 1, y].tileType == TileType.Middle &&
+          CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+          CheckIfFloor(tempGrid[x + 1, y].tileType) &&
           tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
             {
                 roomGrid[x, y].tileType = TileType.TopLeft;
@@ -1478,50 +1491,50 @@ public class LevelGenerator: MonoBehaviour
         int startY = Mathf.Abs(worldStartY);
 
         if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x - 1, y].tileType == TileType.Middle &&
-            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
             tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
-            tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Bottom;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
         }
 
         else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
-           tempGrid[x - 1, y].tileType == TileType.Middle &&
-            tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+           CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
             tempGrid[x, y - 1].tileType == TileType.Nothing &&
-            tempGrid[x, y + 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-            tempGrid[x + 1, y].tileType == TileType.Middle &&
-            tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+            CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+            CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Bottom;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-        tempGrid[x - 1, y].tileType == TileType.Middle &&
-        tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+        CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+        CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
         tempGrid[x, y - 1].tileType == TileType.Nothing &&
-        tempGrid[x, y + 1].tileType == TileType.Middle &&
+        CheckIfFloor(tempGrid[x, y + 1].tileType) &&
         tempGrid[x + 1, y - 1].tileType == TileType.Nothing &&
-        tempGrid[x + 1, y].tileType == TileType.Middle &&
-        tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+        CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+        CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Bottom;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
         }
-        else if (tempGrid[x - 1, y - 1].tileType == TileType.Middle &&
-           tempGrid[x - 1, y].tileType == TileType.Middle &&
-           tempGrid[x - 1, y + 1].tileType == TileType.Middle &&
+        else if (CheckIfFloor(tempGrid[x - 1, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
            tempGrid[x, y - 1].tileType == TileType.Nothing &&
-           tempGrid[x, y + 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y - 1].tileType == TileType.Middle &&
-           tempGrid[x + 1, y].tileType == TileType.Middle &&
-           tempGrid[x + 1, y + 1].tileType == TileType.Middle)
+           CheckIfFloor(tempGrid[x, y + 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+           CheckIfFloor(tempGrid[x + 1, y + 1].tileType))
         {
             roomGrid[x, y].tileType = TileType.Bottom;
             foregroundTilemap.SetTile(new Vector3Int(x - startX, y - startY, 0), bottom);
@@ -1560,6 +1573,11 @@ public class LevelGenerator: MonoBehaviour
             spawnedObj.name = oname;
             spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
+    }
+    private bool CheckIfFloor(TileType tile)
+    {
+        if (tile == TileType.Middle || tile == TileType.Corridor) return true;
+        return false;
     }
 }
 

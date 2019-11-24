@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class FloorObjectManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Events.onGameFieldCreated += () => StartCoroutine(DoubleCheckSorting());
     }
     public void Add(DynamicObject obj)
     {
@@ -21,6 +23,10 @@ public class FloorObjectManager : MonoBehaviour
         dynamicObjects.Remove(obj);
     }
 
+    private void OnDisable()
+    {
+        Events.onGameFieldCreated -= () => StartCoroutine(DoubleCheckSorting());
+    }
     void Update()
     {
         if (Time.frameCount % 5 != 0) return;
@@ -29,4 +35,16 @@ public class FloorObjectManager : MonoBehaviour
             if (obj.rb.velocity.magnitude > 0.1f) obj.UpdateSortLayer();
         }
     }
+    
+    IEnumerator DoubleCheckSorting()
+    {
+        Debug.Log("Jep");
+        yield return new WaitForSeconds(0.5f);
+        foreach (var obj in dynamicObjects)
+        {
+            obj.sgroup.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+        }
+
+    }
+
 }
