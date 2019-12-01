@@ -37,7 +37,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             details[i].text = "";
         }
         details[0].text = "No weapon equipped";
-        details[3].text = details[7].text = $"Ammo {TextColor.Return("yellow")}Pistol {TextColor.Return("green")}{CharacterStats.pistolAmmo} {TextColor.Return("yellow")} - Rifle {TextColor.Return("green")}{CharacterStats.rifleAmmo}{TextColor.Return("yellow")} - Gas {TextColor.Return("green")}{CharacterStats.gasAmmo}";
+        details[3].text = $"Ammo {TextColor.Return("yellow")}Pistol {TextColor.Return("green")}{CharacterStats.pistolAmmo} {TextColor.Return("yellow")} - Rifle {TextColor.Return("green")}{CharacterStats.rifleAmmo}{TextColor.Return("yellow")} - Gas {TextColor.Return("green")}{CharacterStats.gasAmmo}";
         details[4].text = $"Total Defense {TextColor.Return("yellow")}{CharacterStats.totalPhysicalDefense}{TextColor.Return()} / {TextColor.Return("purple")}{CharacterStats.totalSpectralDefense}{TextColor.Return()} / {TextColor.Return("red")}{CharacterStats.totalFireDefense}";
         details[5].text = $"Sight Radius {TextColor.Return("green")}{Mathf.Round(Info.SightRadius * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{SightRadiusDesc(Info.SightRadius)}{TextColor.Return()})";
         details[6].text = $"Movement Speed {TextColor.Return("green")}{Mathf.Round(CharacterStats.moveSpeed * 10f) / 10f} {TextColor.Return()}({TextColor.Return("yellow")}{MovementSpeedDesc(CharacterStats.moveSpeed)}{TextColor.Return()})";
@@ -80,7 +80,7 @@ public class StatsDetails : MonoBehaviour, IUIHandler
 
     public void EntryEnter(int index)
     {
-        if (CharacterStats.characterEquipment.weapon == null && index < 4) return;
+        if (CharacterStats.characterEquipment.weapon == null && index < 3) return;
         images[index].enabled = true;
         Vector2 pos = transform.GetChild(index).position;
         obj = ObjectPooler.op.SpawnUI("StatDescription", new Vector2(pos.x, pos.y + 3.5f), transform.parent.parent);
@@ -96,8 +96,14 @@ public class StatsDetails : MonoBehaviour, IUIHandler
             case 2:
                 _text.UpdateText("Total Attack Speed", "The amount of times your attack can deal damage per second. This number includes all positive and negative effects from your items and attributes.");
                 break;
+            case 3:
+                _text.UpdateText("Total Ammunition", $"Pistol ammo: {TextColor.Return("yellow")}{CharacterStats.pistolAmmo}\n{TextColor.Return()}Rifle / Shotgun ammo: {TextColor.Return("yellow")}{CharacterStats.rifleAmmo}{TextColor.Return()}\nFlamethrower gas: {TextColor.Return("yellow")}{CharacterStats.gasAmmo}");
+                break;
             case 4:
                 _text.UpdateText("Total Defense", $"Total combined defense value from all your gear and items. \n\n{TextColor.Return("yellow")}Physical Defense {CharacterStats.totalPhysicalDefense}\n{TextColor.Return("purple")}Spectral Defense {CharacterStats.totalSpectralDefense}\n{TextColor.Return("red")}Fire Defense {CharacterStats.totalFireDefense}");
+                break;
+            case 5:
+                _text.UpdateText("Total Sight Radius", "Total sight radius of your character. This number includes all positive and negative effects from your items and attributes.");
                 break;
             case 6:
                 _text.UpdateText("Movement Speed", "Movement speed tells you the current movement speed of your character. This number includes all positive and negative effects from your items and attributes.");
