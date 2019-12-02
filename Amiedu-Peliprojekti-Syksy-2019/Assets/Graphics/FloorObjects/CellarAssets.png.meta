@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -104780146754413530
-    second: cellar_bookcase
+    second: BookcaseBottom
   - first:
       213: -7130185910787063364
     second: cellar_wall_shelf
@@ -17,6 +17,9 @@ TextureImporter:
   - first:
       213: 7290522026856043605
     second: cellar_barrels
+  - first:
+      213: -905702925067647655
+    second: BookcaseTop
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cellar_bookcase
+      name: BookcaseBottom
       rect:
         serializedVersion: 2
         x: 151
         y: 521
         width: 435
-        height: 626
+        height: 528
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,6 +216,27 @@ TextureImporter:
       bones: []
       spriteID: c1a91f7b4d9c4e84ba60f18b78783759
       internalID: 7290522026856043605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BookcaseTop
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 1049
+        width: 435
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 332dd1c1eea8cd14e84e0b7a0cf2b601
+      internalID: -905702925067647655
       vertices: []
       indices: 
       edges: []

@@ -1,0 +1,5 @@
+<UXML xmlns="UnityEngine.UIElements">
+  <Propertyfield class="enemyDamage">      
+    <VisualElement class="enemyDamageText"/>   
+  </Propertyfield>
+</UXML>

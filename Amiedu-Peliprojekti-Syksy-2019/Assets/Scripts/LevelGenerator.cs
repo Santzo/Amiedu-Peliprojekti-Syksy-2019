@@ -129,7 +129,7 @@ public class LevelGenerator : MonoBehaviour
                 for (int aX = x; aX < x + size.x; aX++)
                 {
                     canPlace = true;
-                    if (roomGrid[aX, y].tileType != TileType.Middle)
+                    if (roomGrid[aX, y].tileType != TileType.Middle || objectGrid[aX, y].tileType != TileType.Nothing)
                     {
                         canPlace = false;
                         break;
@@ -1589,7 +1589,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject CheckSize(string oname, out Vector2Int size)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
-        var sr = obj.GetComponent<SpriteRenderer>();
+        var sr = obj.GetComponentInChildren<SpriteRenderer>();
         size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
         return obj;
     }
@@ -1600,7 +1600,7 @@ public class LevelGenerator : MonoBehaviour
         Vector2Int node = new Vector2Int(x, y);
         if (obj != null)
         {
-            var sr = obj.GetComponent<SpriteRenderer>();
+            var sr = obj.GetComponentInChildren<SpriteRenderer>();
             Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
 
             bool canBePlaced = false;
@@ -1623,16 +1623,12 @@ public class LevelGenerator : MonoBehaviour
             roomGrid[node.x, node.y].tileType = TileType.Object;
             for (int aX = 1; aX < size.x; aX++)
             {
-                for (int aY = 1; aY < size.y; aY++)
-                {
-                    objectGrid[node.x + aX, node.y + aY].tileType = TileType.ObjectPlace;
-                    Debug.Log("blaa");
-                }
+                objectGrid[node.x + aX, node.y].tileType = TileType.ObjectPlace;
             }
             roomGrid[node.x, node.y].objectSize = new Vector2Int(size.x * 2, size.y);
             spawnedObj.transform.position = new Vector2(node.x + offsetX, node.y + offsetY);
             spawnedObj.name = oname;
-            spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
+            spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }
 

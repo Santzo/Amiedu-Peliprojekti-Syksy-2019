@@ -5811,7 +5811,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundCorners: {fileID: 0}
-  foregroundCorners: {fileID: 0}
   cornerTop: {fileID: 0}
   worldSizeX: 0
   worldSizeY: 0
@@ -16125,6 +16124,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.y
       value: 1.690645
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: attacks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: attacks.minPhysical
+      value: -0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: attacks.maxPhysical
+      value: 0.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: attacks.minSpectral
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: kaa
+      value: asdasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: ooo
+      value: fgfg
+      objectReference: {fileID: 0}
+    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+        type: 3}
+      propertyPath: attacks.Array.data[0].minPhysical
+      value: -4.21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bf41ec802db1142a770b4e744bd318, type: 3}

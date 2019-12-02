@@ -12,34 +12,36 @@ public class BaseEnemy : MonoBehaviour
     protected IEnemyState aggressiveState;
     protected IEnemyState attackState;
     protected IEnemyState gotHitState;
-    
+    public string ooo;
     protected EnemySprite[] sprites;
     Vector3 oriScale;
     private float minPathUpdateTime = 0.45f;
     private float interval = 0.15f;
     private Collider2D[] colliders;
     [HideInInspector]
-    public Vector2[] patrolPoints = new Vector2[3];
+   internal Vector2[] patrolPoints = new Vector2[3];
     [HideInInspector]
-    public Transform sortingTransform;
+    internal Transform sortingTransform;
     [HideInInspector]
-    public Transform top;
+    internal Transform top;
     [HideInInspector]
-    protected Transform spritesTransform;
+    internal Transform spritesTransform;
     [HideInInspector]
-    public SortingGroup sGroup;
+    internal SortingGroup sGroup;
     [HideInInspector]
-    public Vector2 destination;
+    internal Vector2 destination;
     [HideInInspector]
-    public Vector2[] path;
+    internal Vector2[] path;
     [HideInInspector]
-    public EnemyStats stats = new EnemyStats();
+    internal EnemyStats stats = new EnemyStats();
     [HideInInspector]
-    public int targetIndex = 0;
+    internal int targetIndex = 0;
     [HideInInspector]
-    public Rigidbody2D rb;
+    internal Rigidbody2D rb;
     [HideInInspector]
-    public bool hasBeenHit;
+    internal bool hasBeenHit;
+    public EnemyDamage[] attacks;
+    
 
 
     private void Awake()
