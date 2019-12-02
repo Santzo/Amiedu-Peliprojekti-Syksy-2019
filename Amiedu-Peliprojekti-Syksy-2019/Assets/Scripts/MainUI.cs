@@ -36,6 +36,7 @@ public class MainUI : MonoBehaviour
     {
         References.rf.statsDetails.UpdateStats();
         underlay.SetActive(!underlay.activeSelf);
+        Events.onInventory = !inventory.activeSelf;
         inventory.SetActive(!inventory.activeSelf);
-    }
+    }  
 }

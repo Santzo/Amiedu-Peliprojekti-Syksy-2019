@@ -56,6 +56,12 @@ TextureImporter:
   - first:
       213: 7036514783472505793
     second: BigCornerBottom
+  - first:
+      213: -8825974492348296977
+    second: SmallLeft
+  - first:
+      213: 3932111608479122882
+    second: SmallRight
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -494,6 +500,48 @@ TextureImporter:
       bones: []
       spriteID: 64b16e19a0100f246887a902c0ea48b4
       internalID: 7036514783472505793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SmallLeft
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 208
+        width: 128
+        height: 128
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 141000683434fdc468d460a16f38a76b
+      internalID: -8825974492348296977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SmallRight
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 208
+        width: 128
+        height: 128
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2138074efa75fdc468603f56677ec73d
+      internalID: 3932111608479122882
       vertices: []
       indices: 
       edges: []

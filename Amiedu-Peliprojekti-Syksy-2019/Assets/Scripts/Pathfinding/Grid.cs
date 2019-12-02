@@ -49,60 +49,179 @@ public class Grid : MonoBehaviour
     void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
+        var bgc = References.rf.levelGenerator.backgroundCorners;
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
         RoomGrid[,] rooms = References.rf.levelGenerator.roomGrid;
         Tilemap temp = References.rf.levelGenerator.backgroundCorners;
-        int startX = gridSizeX / 2;
-        int startY = gridSizeY / 2;
+        Vector2Int roomGridSize = new Vector2Int(References.rf.levelGenerator.worldSizeX, References.rf.levelGenerator.worldSizeY);
+        Vector2 multiplier = new Vector2(gridSizeX / roomGridSize.x, gridSizeY / roomGridSize.y);
+
+        //Initialize grid with empty nodes
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-
-                //var results = Physics2D.OverlapCircleAll(worldPoint, nodeRadius,unwalkableMask | walkableMask);
-
-                //foreach (var item in results)
-                //{
-                //    if (item.gameObject.layer == 16 || item.gameObject.layer == 21)
-                //    {
-                //        walkable = 1;
-                //        break;
-                //    }
-                //    if (item.gameObject.layer == 11)
-                //    {
-                //        walkable = 2;
-                //    }
-                //}
-
-
-                //var _ray = Physics2D.Raycast(worldPoint, Vector2.zero, unwalkableMask);
-                //if (_ray)
-                //{
-                //    walkableRegionsDictionary.TryGetValue(_ray.collider.gameObject.layer, out movementPenalty);
-                //}
-
-                //if (walkable == 1)
-                //{
-                //    movementPenalty += obstacleProximityPenalty;
-                //}
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                int movementPenalty = 0;
-                int walkable = 0;
-                if (rooms[x, y].tileType != TileType.Bottom)
+                grid[x, y] = new Node(0, worldPoint, x, y, 0);
+            }
+        }
+        // Set floor
+        for (int x = 0; x < roomGridSize.x; x++)
+        {
+            for (int y = 0; y < roomGridSize.y; y++)
+            {
+                Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
+                TileType tile = rooms[x, y].tileType;
+                if (tile == TileType.Middle || tile == TileType.Corridor)
                 {
-                    if (rooms[x, y].tileType == TileType.Middle || rooms[x, y].tileType == TileType.Corridor) walkable = 2;
-                    else if (rooms[x, y].tileType == TileType.Nothing) walkable = 0;
-                    else walkable = 1;
-                    if (temp.GetTile(new Vector3Int(x - startX, y - startY, 0)) == References.rf.levelGenerator.cornerTop)
-                    {
-                        walkable = 1;
-                    }
-                    grid[x, y] = new Node(walkable, worldPoint, x, y, movementPenalty);
+                    int lX = Mathf.RoundToInt(x * multiplier.x);
+                    int lY = Mathf.RoundToInt(y * multiplier.y);
+                    grid[lX - 1, lY - 1].walkable = 2;
+                    grid[lX - 1, lY].walkable = 2;
+                    grid[lX - 1, lY + 1].walkable = 2;
+                    grid[lX, lY - 1].walkable = 2;
+                    grid[lX, lY].walkable = 2;
+                    grid[lX, lY + 1].walkable = 2;
+                    grid[lX + 1, lY - 1].walkable = 2;
+                    grid[lX + 1, lY].walkable = 2;
+                    grid[lX + 1, lY + 1].walkable = 2;
                 }
-                else
+            }
+        }
+        // Find and walls and set appropriate unwalkable nodes
+        for (int x = 0; x < roomGridSize.x; x++)
+        {
+            for (int y = 0; y < roomGridSize.y; y++)
+            {
+                Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
+                int walkable = 0;
+                int lX = Mathf.RoundToInt(x * multiplier.x);
+                int lY = Mathf.RoundToInt(y * multiplier.y);
+
+                TileType tile = rooms[x, y].tileType;
+                var bCorner = bgc.GetTile(new Vector3Int(x, y, 0));
+                if (bCorner != null)
                 {
-                    grid[x, y] = new Node(2, worldPoint, x, y, movementPenalty);
-                    grid[x, y - 1].walkable = 1;
+                    if (bCorner.name == "BigCornerTop")
+                    {
+                        var flipped = bgc.GetTransformMatrix(new Vector3Int(x, y, 0));
+                        if (flipped.lossyScale.x == 1)
+                        {
+                            grid[lX, lY].walkable = 1;
+                            grid[lX, lY - 1].walkable = 1;
+                            grid[lX - 1, lY - 1].walkable = 1;
+                            grid[lX - 1, lY].walkable = 0;
+                            grid[lX - 1, lY + 1].walkable = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            grid[lX + 1, lY].walkable = 1;
+                            grid[lX + 1, lY + 1].walkable = 1;
+                            continue;
+                        }
+
+                    }
+                }
+
+                if (tile == TileType.Middle || tile == TileType.Corridor) continue;
+                else if (rooms[x, y].tileType == TileType.Nothing) walkable = 0;
+                else walkable = 1;
+                switch (tile)
+                {
+                    case TileType.Left:
+                        grid[lX, lY + 1].walkable = walkable;
+                        grid[lX, lY - 1].walkable = walkable;
+                        grid[lX, lY].walkable = walkable;
+                        break;
+                    case TileType.Right:
+                        grid[lX, lY].walkable = 2;
+                        grid[lX + 1, lY].walkable = walkable;
+                        grid[lX + 1, lY + 1].walkable = walkable;
+                        grid[lX + 1, lY - 1].walkable = walkable;
+                        grid[lX - 1, lY].walkable = 2;
+                        grid[lX - 1, lY - 1].walkable = 2;
+                        grid[lX, lY - 1].walkable = 2;
+                        break;
+                    case TileType.Bottom:
+                        grid[lX, lY].walkable = 2;
+                        grid[lX - 1, lY].walkable = 2;
+                        grid[lX, lY - 1].walkable = walkable;
+                        grid[lX - 1, lY - 1].walkable = walkable;
+                        grid[lX + 1, lY - 1].walkable = walkable;
+                        break;
+                    case TileType.TopTwo:
+                        grid[lX, lY].walkable = 2;
+                        grid[lX - 1, lY].walkable = 2;
+                        grid[lX + 1, lY].walkable = 2;
+                        grid[lX - 1, lY - 1].walkable = 2;
+                        grid[lX, lY - 1].walkable = 2;
+                        grid[lX + 1, lY - 1].walkable = 2;
+                        grid[lX - 1, lY + 1].walkable = walkable;
+                        grid[lX, lY + 1].walkable = walkable;
+                        break;
+                    case TileType.Top:
+                        grid[lX, lY].walkable = 0;
+                        break;
+                    case TileType.TopLeftTwo:
+                        grid[lX, lY].walkable = 1;
+                        grid[lX, lY + 1].walkable = 1;
+                        break;
+                    case TileType.TopRightTwo:
+                        grid[lX, lY].walkable = 2;
+                        grid[lX, lY - 1].walkable = 2;
+                        grid[lX - 1, lY + 1].walkable = 1;
+                        grid[lX, lY + 1].walkable = 1;
+                        grid[lX + 1, lY + 1].walkable = 1;
+                        grid[lX + 1, lY].walkable = 1;
+                        break;
+                    case TileType.TopRightExtra:
+                        grid[lX - 1, lY - 1].walkable = 1;
+                        grid[lX, lY - 1].walkable = 1;
+                        grid[lX, lY - 2].walkable = 2;
+                        break;
+                    case TileType.TopLeftExtra:
+                        grid[lX, lY - 1].walkable = 1;
+                        break;
+                    case TileType.BottomLeft:
+                        grid[lX, lY].walkable = walkable;
+                        grid[lX, lY - 1].walkable = walkable;
+                        grid[lX, lY + 1].walkable = walkable;
+                        grid[lX + 1, lY - 1].walkable = walkable;
+                        break;
+                    case TileType.BottomRight:
+                        grid[lX, lY].walkable = 2;
+                        grid[lX - 1, lY].walkable = 2;
+                        grid[lX, lY - 1].walkable = walkable;
+                        grid[lX + 1, lY].walkable = walkable;
+                        grid[lX + 1, lY - 1].walkable = walkable;
+                        break;
+
+
+
+                }
+
+
+
+            }
+        }
+
+        for (int x = 0; x < roomGridSize.x; x++)
+        {
+            for (int y = 0; y < roomGridSize.y; y++)
+            {
+                Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
+                TileType tile = rooms[x, y].tileType;
+                int lX = Mathf.RoundToInt(x * multiplier.x);
+                int lY = Mathf.RoundToInt(y * multiplier.y);
+                if (tile == TileType.Object)
+                {
+                    grid[lX, lY].walkable = 1;
+                    grid[lX + 1, lY].walkable = 1;
+                }
+                else if (tile == TileType.ObjectRight)
+                {
+                    grid[lX, lY].walkable = 1;
                 }
             }
         }
@@ -175,8 +294,8 @@ public class Grid : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt(gridSizeX  * percentX);
-        int y = Mathf.RoundToInt(gridSizeY  * percentY);
+        int x = Mathf.RoundToInt(gridSizeX * percentX);
+        int y = Mathf.RoundToInt(gridSizeY * percentY);
 
         return grid[x, y];
     }

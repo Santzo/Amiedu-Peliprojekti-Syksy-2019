@@ -13,17 +13,16 @@ public class LevelGenerator : MonoBehaviour
     public Tilemap backgroundCorners;
     Tilemap foregroundTilemap;
     Tilemap floorTilemap;
-    Tilemap foregroundCorners;
+    public Tilemap foregroundCorners;
     Tile[] cellarTiles;
     GameObject[] floorObjects;
     Tile wallShade, black, smallWallShade;
     [HideInInspector]
     public Tile cornerTop;
     int numberOfRooms;
-    int worldSizeX, worldSizeY;
+    public int worldSizeX, worldSizeY;
     int maxRoomSizeX, maxRoomSizeY;
     int maxAttempts = 20;
-    float pixelsPerUnit = 1f;
     public List<AllRooms> allRooms = new List<AllRooms>();
     public RoomGrid[,] roomGrid;
 
@@ -42,7 +41,7 @@ public class LevelGenerator : MonoBehaviour
         foregroundTilemap = GameObject.Find("ForegroundTilemap").GetComponent<Tilemap>();
         foregroundCorners = GameObject.Find("ForegroundCorners").GetComponent<Tilemap>();
         floorTilemap = GameObject.Find("FloorTilemap").GetComponent<Tilemap>();
-        worldSizeX = worldSizeY = 120;
+        worldSizeX = worldSizeY = 100;
         backgroundTilemap.size = foregroundTilemap.size = foregroundCorners.size = backgroundCorners.size = floorTilemap.size = new Vector3Int(worldSizeX, worldSizeY, 0);
 
         maxRoomSizeX = maxRoomSizeY = 20;
@@ -67,13 +66,19 @@ public class LevelGenerator : MonoBehaviour
 
     private void AddExtraWallLayer()
     {
+        Tile left = Array.Find(cellarTiles, _tile => _tile.name == "SmallLeft");
+        Tile right = Array.Find(cellarTiles, _tile => _tile.name == "SmallRight");
         for (int x = 0; x < worldSizeX; x++)
         {
             for (int y = 0; y < worldSizeY; y++)
             {
                 if (roomGrid[x, y].tileType == TileType.TopLeft)
                 {
-                    //foregroundTilemap.SetTile(new Vector3Int(x, y, 0), )
+                    foregroundTilemap.SetTile(new Vector3Int(x, y, 0), left);
+                }
+                if (roomGrid[x, y].tileType == TileType.TopRight)
+                {
+                    foregroundTilemap.SetTile(new Vector3Int(x, y, 0), right);
                 }
             }
         }
@@ -100,22 +105,55 @@ public class LevelGenerator : MonoBehaviour
         }
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
-        SpawnFloorObjectFromWorldPosition("Treasure Chest", x + 4, y + 4);
-        SpawnBoxes(50);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        //SpawnBookshelves(10);
+        //SpawnBoxes(50);
+      
     }
 
-    private void SpawnBookshelf()
+    private void SpawnBookshelves(int v)
     {
-        Vector2Int size = CheckSize("Bookshelf");
-    }
+        GameObject obj = CheckSize("Bookshelf", out Vector2Int size);
+        int count = 0;
+        while (count < v)
+        {
+            bool canPlace = false;
+            while (!canPlace)
+            {
+                int room = Random.Range(0, allRooms.Count);
+                int y = allRooms[room].endY - 2;
+                int x = Random.Range(allRooms[room].startX + 1, allRooms[room].endX - 1 - size.x);
+                for (int aX = x; aX < x + size.x; aX++)
+                {
+                    canPlace = true;
+                    if (roomGrid[aX, y].tileType != TileType.Middle)
+                    {
+                        canPlace = false;
+                        break;
+                    }
+                    if (roomGrid[aX, y + 1].tileType != TileType.TopLeftTwo && roomGrid[aX, y + 1].tileType != TileType.TopTwo && roomGrid[aX, y+1].tileType != TileType.TopRightTwo)
+                    {
+                        canPlace = false;
+                        break;
+                    }
+                }
+                if (canPlace)
+                {
+                    SpawnFloorObject(obj, x, y, 0f, 0.35f);
+                    break;
+                }
+            }
 
+            count++;
+        }
+    }
     private void SpawnBoxes(int v)
     {
         for (int i = 0; i < v; i++)
         {
             int x = Random.Range(0, worldSizeX - 3);
             int y = Random.Range(0, worldSizeY - 3);
-            SpawnFloorObjectFromWorldPosition("Box", x, y);
+            SpawnFloorObject("Box", x, y);
         }
     }
 
@@ -1480,6 +1518,18 @@ public class LevelGenerator : MonoBehaviour
             roomGrid[x, y].tileType = TileType.TopLeft;
             backgroundTilemap.SetTile(new Vector3Int(x, y, 0), topLeft);
         }
+        else if (tempGrid[x - 1, y - 1].tileType == TileType.Nothing &&
+          tempGrid[x - 1, y].tileType == TileType.Nothing &&
+          CheckIfFloor(tempGrid[x - 1, y + 1].tileType) &&
+          CheckIfFloor(tempGrid[x, y - 1].tileType) &&
+          tempGrid[x, y + 1].tileType == TileType.Nothing &&
+          CheckIfFloor(tempGrid[x + 1, y - 1].tileType) &&
+          CheckIfFloor(tempGrid[x + 1, y].tileType) &&
+          tempGrid[x + 1, y + 1].tileType == TileType.Nothing)
+            {
+                roomGrid[x, y].tileType = TileType.TopLeft;
+                backgroundTilemap.SetTile(new Vector3Int(x, y, 0), topLeft);
+            }
     }
     void CheckForBottom(RoomGrid[,] tempGrid, int x, int y, Tile bottom)
     {
@@ -1534,15 +1584,15 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    public Vector2Int CheckSize(string oname)
+    public GameObject CheckSize(string oname, out Vector2Int size)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
         var sr = obj.GetComponent<SpriteRenderer>();
-        Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
-        return size;
+        size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
+        return obj;
     }
 
-    public void SpawnFloorObjectFromWorldPosition(string oname, int x, int y)
+    public void SpawnFloorObject(string oname, int x, int y)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
         Vector2Int node = new Vector2Int(x, y);
@@ -1570,10 +1620,46 @@ public class LevelGenerator : MonoBehaviour
             var spawnedObj = Instantiate(obj);
             for (int aX = 0; aX < size.x; aX++)
             {
-                roomGrid[node.x + aX, node.y].tileType = TileType.Object;
+                if (aX + 1 < size.x) roomGrid[node.x + aX, node.y].tileType = TileType.Object;
+                else roomGrid[node.x + aX, node.y].tileType = TileType.ObjectRight;
             }
             spawnedObj.transform.position = new Vector2(node.x, node.y);
             spawnedObj.name = oname;
+            spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
+        }
+    }
+    public void SpawnFloorObject(GameObject obj, int x, int y, float offsetX = 0f, float offsetY = 0f)
+    {
+        Vector2Int node = new Vector2Int(x, y);
+        if (obj != null)
+        {
+            var sr = obj.GetComponent<SpriteRenderer>();
+            Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
+
+            bool canBePlaced = false;
+            while (!canBePlaced)
+            {
+                canBePlaced = true;
+                for (int aX = 0; aX < size.x; aX++)
+                {
+                    if (roomGrid[node.x + aX, node.y].tileType != TileType.Middle && roomGrid[node.x + aX, node.y].tileType != TileType.Corridor)
+                        canBePlaced = false;
+                }
+                if (!canBePlaced)
+                {
+                    int newX = Mathf.Clamp(node.x + Random.Range(-15, 16), 0, worldSizeX - 1);
+                    int newY = Mathf.Clamp(node.y + Random.Range(-15, 16), 0, worldSizeY - 1);
+                    node = new Vector2Int(newX, newY);
+                }
+            }
+            var spawnedObj = Instantiate(obj);
+            for (int aX = 0; aX < size.x; aX++)
+            {
+                if (aX + 1 < size.x) roomGrid[node.x + aX, node.y].tileType = TileType.Object;
+                else roomGrid[node.x + aX, node.y].tileType = TileType.ObjectRight;
+            }
+            spawnedObj.transform.position = new Vector2(node.x + offsetX, node.y + offsetY);
+            spawnedObj.name = obj.name;
             spawnedObj.GetComponent<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }
@@ -1608,7 +1694,8 @@ public enum TileType
     Middle,
     Nothing,
     Corridor,
-    Object
+    Object,
+    ObjectRight
 }
 public enum ExitType
 {

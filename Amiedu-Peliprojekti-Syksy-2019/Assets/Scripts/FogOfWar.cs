@@ -12,8 +12,6 @@ public class FogOfWar : MonoBehaviour
     public Material image;
     public Camera fogOfWarMainCamera;
     public Camera fogOfWarSecondaryCamera;
-    private float padding = 7.5f;
-
 
     private void Awake()
     {

@@ -18,17 +18,27 @@ public class BaseEnemy : MonoBehaviour
     private float minPathUpdateTime = 0.45f;
     private float interval = 0.15f;
     private Collider2D[] colliders;
-
+    [HideInInspector]
     public Vector2[] patrolPoints = new Vector2[3];
+    [HideInInspector]
     public Transform sortingTransform;
+    [HideInInspector]
     public Transform top;
-    
+    [HideInInspector]
+    protected Transform spritesTransform;
+    [HideInInspector]
     public SortingGroup sGroup;
+    [HideInInspector]
     public Vector2 destination;
+    [HideInInspector]
     public Vector2[] path;
+    [HideInInspector]
     public EnemyStats stats = new EnemyStats();
+    [HideInInspector]
     public int targetIndex = 0;
+    [HideInInspector]
     public Rigidbody2D rb;
+    [HideInInspector]
     public bool hasBeenHit;
 
 
@@ -36,7 +46,7 @@ public class BaseEnemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sGroup = GetComponent<SortingGroup>();
-        oriScale = transform.localScale;
+
         sortingTransform = transform.Find("SortingTransform");
         top = transform.Find("Top");
         stats = Array.Find(EnemyStats.enemyStats, enemy => enemy.name == transform.name);
@@ -47,15 +57,16 @@ public class BaseEnemy : MonoBehaviour
         patrolState = new PatrolState(this);
         gotHitState = new GotHitState(this);
 
-        var spritesTransform = transform.Find("Sprites");
+        spritesTransform = transform.Find("Sprites");
+        oriScale = spritesTransform.localScale;
         colliders = spritesTransform.GetComponentsInChildren<Collider2D>();
-        sprites = new EnemySprite[spritesTransform.childCount];
-
-        for (int i = 0; i < spritesTransform.childCount; i++)
+        var spriteChilds = spritesTransform.GetComponentsInChildren<SpriteRenderer>();
+        sprites = new EnemySprite[spriteChilds.Length];
+        for (int i = 0; i < spriteChilds.Length; i++)
         {
-            var _transform = spritesTransform.GetChild(i);
-            var _sprite = spritesTransform.GetChild(i).GetComponent<SpriteRenderer>();
-            var _color = _sprite.color;
+            var _transform = spriteChilds[i].transform;
+            var _sprite = spriteChilds[i];
+            var _color = spriteChilds[i].color;
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
         AddToEnemyHitBoxList();
@@ -77,7 +88,7 @@ public class BaseEnemy : MonoBehaviour
                 path = newPath;
                 targetIndex = 0;
                 destination = path[0];
-                transform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
+                spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
             }
         }
     }
@@ -88,13 +99,14 @@ public class BaseEnemy : MonoBehaviour
         {
             targetIndex++;
             destination = path[targetIndex];
-            transform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
+            spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         }
         return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
 
     public void OnGetHit(int damage)
     {
+        if (Events.onInventory) return;
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
         obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
         StopCoroutine("GetHit");

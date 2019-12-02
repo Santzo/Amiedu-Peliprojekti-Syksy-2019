@@ -38,7 +38,6 @@ public class FloorObjectManager : MonoBehaviour
     
     IEnumerator DoubleCheckSorting()
     {
-        Debug.Log("Jep");
         yield return new WaitForSeconds(0.5f);
         foreach (var obj in dynamicObjects)
         {

@@ -62,7 +62,7 @@ TagManager:
   - name: ForegroundTiles
     uniqueID: 3459311375
     locked: 0
-  - name: Wall
+  - name: BackwallObject
     uniqueID: 2453385979
     locked: 0
   - name: LOSBlocker
