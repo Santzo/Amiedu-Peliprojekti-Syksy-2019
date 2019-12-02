@@ -72,7 +72,7 @@ public class Grid : MonoBehaviour
             {
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
                 TileType tile = rooms[x, y].tileType;
-                if (tile == TileType.Middle || tile == TileType.Corridor)
+                if (tile == TileType.Middle || tile == TileType.Corridor || tile == TileType.Object)
                 {
                     int lX = Mathf.RoundToInt(x * multiplier.x);
                     int lY = Mathf.RoundToInt(y * multiplier.y);
@@ -205,7 +205,7 @@ public class Grid : MonoBehaviour
 
             }
         }
-
+        // Find all floor objects (boxes, shelves etc.) and set appropriate unwalkable nodes for them
         for (int x = 0; x < roomGridSize.x; x++)
         {
             for (int y = 0; y < roomGridSize.y; y++)
@@ -216,12 +216,14 @@ public class Grid : MonoBehaviour
                 int lY = Mathf.RoundToInt(y * multiplier.y);
                 if (tile == TileType.Object)
                 {
-                    grid[lX, lY].walkable = 1;
-                    grid[lX + 1, lY].walkable = 1;
-                }
-                else if (tile == TileType.ObjectRight)
-                {
-                    grid[lX, lY].walkable = 1;
+                    Vector2Int tileSize = rooms[x, y].objectSize;
+                    for (int oX = 0; oX < tileSize.x; oX++)
+                    {
+                        for (int oY = 0; oY < tileSize.y; oY++)
+                        {
+                            grid[oX + lX, oY + lY].walkable = 1;
+                        }
+                    }
                 }
             }
         }
