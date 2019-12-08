@@ -8,18 +8,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public Sprite backgroundPanel;
     private GameObject background;
     [HideInInspector]
     public float wsH, wsW;
 
     private void Awake()
     {
-        QualitySettings.vSyncCount = 1;
-        Application.targetFrameRate = 60;
+        GameSettings.ApplySettings();
         wsH = Camera.main.orthographicSize * 2;
         wsW = wsH / Screen.height * Screen.width;
-        Debug.Log(Screen.height + ", " + Screen.width);
 
         if (instance == null)
         {
@@ -30,8 +27,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
     }
 
     private void Start()
@@ -39,7 +34,8 @@ public class GameManager : MonoBehaviour
         background = GameObject.Find("Background");
         SpriteRenderer sr = background.GetComponent<SpriteRenderer>();
         background.transform.localScale = new Vector3(wsW / sr.sprite.bounds.size.x, wsH / sr.sprite.bounds.size.y, 1);
-        
+        GameObject.Find("Zombie").GetComponent<Animator>().SetTrigger("Idle");
+        GameObject.Find("ZombieShadow").GetComponent<Animator>().SetTrigger("Idle");
     }
 
     public void NewGame()

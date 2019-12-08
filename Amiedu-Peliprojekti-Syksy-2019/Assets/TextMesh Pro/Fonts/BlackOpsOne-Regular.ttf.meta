@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7ab65457faf2bc847a95527f74e8c409
+guid: b2f46662ed41a914a999117e8c7204c7
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Big Shoulders Text
+  fontName: Black Ops One
   fontNames:
-  - Big Shoulders Text
+  - Black Ops One
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
