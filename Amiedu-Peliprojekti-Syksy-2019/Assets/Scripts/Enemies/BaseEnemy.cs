@@ -95,6 +95,7 @@ public class BaseEnemy : MonoBehaviour
             destination = path[targetIndex];
             spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         }
+        Debug.Log(destination);
         return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
 
