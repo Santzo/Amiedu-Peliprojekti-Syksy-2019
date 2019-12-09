@@ -32,10 +32,10 @@ public static class KeyboardConfig
 
 
 
-    public static KeyCode[] hotbar1 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar1", "Alpha1")) };
-    public static KeyCode[] hotbar2 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar2", "Alpha2")) };
-    public static KeyCode[] hotbar3 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar3", "Alpha3")) };
-    public static KeyCode[] hotbar4 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar4", "Alpha4")) };
+    public static KeyCode[] hotbar1 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar1Key", "Alpha1")) };
+    public static KeyCode[] hotbar2 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar2Key", "Alpha2")) };
+    public static KeyCode[] hotbar3 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar3Key", "Alpha3")) };
+    public static KeyCode[] hotbar4 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar4Key", "Alpha4")) };
     // Delay time to check for a double click
 
 
@@ -44,8 +44,8 @@ public static class KeyboardConfig
     {
         if (key.StartsWith("Alpha")) return key[5].ToString();
         if (key == "Mouse0") return "mouse left";
-        if (key == "Mouse1") return "mouse middle";
-        if (key == "Mouse2") return "mouse right";
+        if (key == "Mouse1") return "mouse right";
+        if (key == "Mouse2") return "mouse middle";
         string result = "";
         for (int i = 0; i < key.Length; i++)
         {
@@ -56,7 +56,7 @@ public static class KeyboardConfig
     }
     public static void SaveKey(string fieldName, KeyCode key)
     {
-        PlayerPrefs.SetString(fieldName, key.ToString());
+        PlayerPrefs.SetString(fieldName + "Key", key.ToString());
     }
 
 }

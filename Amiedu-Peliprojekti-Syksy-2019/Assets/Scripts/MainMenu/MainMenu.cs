@@ -22,6 +22,7 @@ public class MainMenu: MonoBehaviour, IUIObject
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (mainMenuHandler.newKeyBeingSet || menuState.menuState == MainMenuHandler.MenuState.AudioSettings && transform.GetSiblingIndex() < 4) return;
         Audio.PlaySound("Click", 1, 0.8f);
         mainMenuHandler.OnClick(transform);

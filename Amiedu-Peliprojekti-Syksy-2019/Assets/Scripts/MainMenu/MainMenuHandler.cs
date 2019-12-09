@@ -134,11 +134,11 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
                                 return;
                             }
                         }
-                        newKeyBeingSet = false;
                         Destroy(currentConfirmKey);
                         keys[keyName][0] = key;
                         KeyboardConfig.SaveKey(keyName, key);
                         SwitchMenuState(MenuState.ControlSettings, keys.Count + 1);
+                        StartCoroutine(KeyChanged());
                         return;
                     }
                 }
@@ -151,6 +151,11 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             slider.value += -Input.mouseScrollDelta.y * slider.maxValue / 15f;
         }
         if (Input.GetKeyDown(KeyCode.Escape)) GoBack();
+    }
+    IEnumerator KeyChanged()
+    {
+        yield return new WaitForSeconds(0.1f);
+        newKeyBeingSet = false;
     }
     void LateUpdate()
     {
