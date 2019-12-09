@@ -77,10 +77,10 @@ public class EquipConsumable : MonoBehaviour, IUIHandler, IPointerClickHandler
 
     private void SetKeys()
     {
-        for (int i = 0; i < uitem.Count; i++)
-        {
-            uitem[i].text.text = KeyboardConfig.hotbar[i].ToString();
-        }
+        uitem[0].text.text = KeyboardConfig.ReturnKeyName(KeyboardConfig.hotbar1[0].ToString());
+        uitem[1].text.text = KeyboardConfig.ReturnKeyName(KeyboardConfig.hotbar2[0].ToString());
+        uitem[2].text.text = KeyboardConfig.ReturnKeyName(KeyboardConfig.hotbar3[0].ToString());
+        uitem[3].text.text = KeyboardConfig.ReturnKeyName(KeyboardConfig.hotbar4[0].ToString());
     }
     private void ResetIcons()
     {

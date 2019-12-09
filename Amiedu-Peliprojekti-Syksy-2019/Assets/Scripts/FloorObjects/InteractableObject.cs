@@ -9,7 +9,6 @@ public class InteractableObject : MonoBehaviour
     float spriteX, spriteY;
     Animator anim;
     int triggerId;
-    bool activated = false;
     Transform actionTrigger;
 
     private void Awake()

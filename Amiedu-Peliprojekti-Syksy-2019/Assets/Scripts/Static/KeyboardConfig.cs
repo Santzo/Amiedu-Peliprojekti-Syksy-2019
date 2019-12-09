@@ -5,9 +5,6 @@ using UnityEngine;
 
 public static class KeyboardConfig 
 {
-    // Delay time to check for a double click
-    public static float doubleClickInterval = 0.25f;
-
     // Up, Down, Left & Right keys
     public static KeyCode[] up = new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("upKey", "W")),
                                                         (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("upKeyAlt", "UpArrow")) };
@@ -33,15 +30,19 @@ public static class KeyboardConfig
 
 
 
-   
 
-    public static KeyCode[] hotbar =        new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar1", "1")),
-                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar2", "2")),
-                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar3", "3")),
-                                                            (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar4", "4")) };
 
+    public static KeyCode[] hotbar1 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar1", "Alpha1")) };
+    public static KeyCode[] hotbar2 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar2", "Alpha2")) };
+    public static KeyCode[] hotbar3 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar3", "Alpha3")) };
+    public static KeyCode[] hotbar4 =       new KeyCode[] { (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("hotbar4", "Alpha4")) };
+    // Delay time to check for a double click
+
+
+    public static float doubleClickInterval = 0.25f;
     public static string ReturnKeyName(string key)
     {
+        if (key.StartsWith("Alpha")) return key[5].ToString();
         if (key == "Mouse0") return "mouse left";
         if (key == "Mouse1") return "mouse middle";
         if (key == "Mouse2") return "mouse right";
@@ -52,6 +53,10 @@ public static class KeyboardConfig
             result += isUpper && i > 0 ? " " + key[i].ToString() : key[i].ToString();
         }
         return result;
+    }
+    public static void SaveKey(string fieldName, KeyCode key)
+    {
+        PlayerPrefs.SetString(fieldName, key.ToString());
     }
 
 }

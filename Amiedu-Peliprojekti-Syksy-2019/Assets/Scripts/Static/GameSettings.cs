@@ -30,7 +30,6 @@ public static class GameSettings
     }
     public static void ChangeFullScreen()
     {
-        Debug.Log("toimii");
         Screen.fullScreen = !fullScreen;
         fullScreen = !fullScreen;
         PlayerPrefs.SetInt("FullScreen", Convert.ToInt32(fullScreen));

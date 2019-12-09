@@ -31,6 +31,7 @@ public interface IUIObject: IPointerClickHandler, IPointerEnterHandler, IPointer
 }
 public interface IMainMenuHandler
 {
+    bool newKeyBeingSet { get; set; }
     void OnClick(Transform trans);
     void OnEnter(Transform trans);
     void OnExit(Transform trans);
@@ -42,3 +43,5 @@ public interface IEnemyState
     void OnStateUpdate();
     void OnStateExit();
 }
+
+
