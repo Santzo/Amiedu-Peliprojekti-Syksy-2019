@@ -1,5 +1,62 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1705668288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1705668289}
+  - component: {fileID: 1705668290}
+  m_Layer: 19
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1705668289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705668288}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.54, y: -1.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7085275184081539074}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1705668290
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705668288}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5507317, y: 0.6373657}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0866324, y: 1.3093996}
+  m_EdgeRadius: 0
 --- !u!1 &404710369063968799
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,8 +640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7085275184081539074}
   - component: {fileID: 102122384038357633}
-  - component: {fileID: 3156362675301084591}
-  m_Layer: 19
+  m_Layer: 18
   m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,6 +662,7 @@ Transform:
   - {fileID: 8517046115591798236}
   - {fileID: 7776118152235650219}
   - {fileID: 8528725154328253561}
+  - {fileID: 1705668289}
   m_Father: {fileID: 8635805965239663635}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -659,32 +716,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &3156362675301084591
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3156362675301084588}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.05451435, y: -0.88000464}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.01, y: 0.72}
-    newSize: {x: 1.01, y: 0.72}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.1190287, y: 1.1405325}
-  m_EdgeRadius: 0
 --- !u!1 &3674254650798020811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,7 +1474,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805963931081196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.20899959, y: -1.2399988, z: 0}
+  m_LocalPosition: {x: 0.20999935, y: -1.140002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8635805964186948989}
@@ -1530,18 +1561,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45e5db08fa9f874294e89d6f78716c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  sortingTransform: {fileID: 0}
-  top: {fileID: 0}
-  sGroup: {fileID: 0}
-  destination: {x: 0, y: 0}
-  path: []
-  targetIndex: 0
-  rb: {fileID: 0}
-  hasBeenHit: 0
+  stats:
+    health: 60
+    moveSpeed: 2.5
+    physicalDefense: 0
+    fireDefense: 10
+    spectralDefense: 0
+    damage: []
 --- !u!95 &8635805964186948991
 Animator:
   serializedVersion: 3
@@ -1585,7 +1611,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805964985679216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.33, y: 1.11, z: 0}
+  m_LocalPosition: {x: 0.33099982, y: 1.379998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8635805964186948989}
@@ -1695,7 +1721,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805965239663632}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.43999925, y: -1.4499978, z: 0}
+  m_LocalPosition: {x: 0.441, y: -1.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7085275184081539074}

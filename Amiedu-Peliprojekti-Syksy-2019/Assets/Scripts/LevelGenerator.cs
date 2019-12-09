@@ -109,6 +109,11 @@ public class LevelGenerator : MonoBehaviour
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
         SpawnBookshelves(10);
         SpawnBoxes(50);
 

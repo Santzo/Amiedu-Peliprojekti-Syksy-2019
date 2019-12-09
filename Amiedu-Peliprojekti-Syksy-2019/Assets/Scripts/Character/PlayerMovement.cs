@@ -283,7 +283,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (col != null)
             {
-                Vector2 colBounds = new Vector2(col.transform.position.y - col.bounds.extents.y * 3f, col.transform.position.y + 0.15f);
+                Vector2 colBounds = new Vector2(col.transform.position.y - 0.4f, col.transform.position.y + col.bounds.size.y);
+                Debug.Log(transform.position.y + " vs " + colBounds.x + ", " + colBounds.y);
                 if (transform.position.y > colBounds.x && transform.position.y < colBounds.y)
                 {
                     hitPosition = position.ClosestPoint(col.transform.position);

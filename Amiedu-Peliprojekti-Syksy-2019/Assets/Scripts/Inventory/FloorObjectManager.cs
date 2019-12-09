@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FloorObjectManager : MonoBehaviour
@@ -29,10 +30,15 @@ public class FloorObjectManager : MonoBehaviour
     }
     void Update()
     {
-        if (Time.frameCount % 5 != 0) return;
         foreach (var obj in dynamicObjects)
         {
-            if (obj.rb.velocity.magnitude > 0.1f) obj.UpdateSortLayer();
+            if (obj.lastPos != obj.transform.position)
+            {
+                Debug.Log("Updated object");
+                obj.lastPos = obj.transform.position;
+                obj.sgroup.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+            }
+
         }
     }
     
@@ -42,8 +48,9 @@ public class FloorObjectManager : MonoBehaviour
         foreach (var obj in dynamicObjects)
         {
             obj.sgroup.sortingOrder = Info.SortingOrder(obj.transform.position.y);
+            obj.lastPos = obj.transform.position;
         }
-
     }
+  
 
 }

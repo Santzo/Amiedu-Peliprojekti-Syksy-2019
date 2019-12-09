@@ -77,7 +77,6 @@ public class Pathfinding {
 		Vector2[] waypoints = SimplifyPath(path);
 		Array.Reverse(waypoints);
 		return waypoints;
-		
 	}
 	
 	Vector2[] SimplifyPath(List<Node> path) {
@@ -85,7 +84,7 @@ public class Pathfinding {
 		Vector2 directionOld = Vector2.zero;
 		
 		for (int i = 1; i < path.Count; i ++) {
-			Vector2 directionNew = new Vector2(path[i-1].gridX - path[i].gridX,path[i-1].gridY - path[i].gridY);
+			Vector2 directionNew = new Vector2(path[i-1].gridX - path[i].gridX, path[i-1].gridY - path[i].gridY);
 			if (directionNew != directionOld) {
 				waypoints.Add(path[i].worldPosition);
 			}
@@ -102,6 +101,4 @@ public class Pathfinding {
 			return 14*dstY + 10* (dstX-dstY);
 		return 14*dstX + 10 * (dstY-dstX);
 	}
-	
-	
 }

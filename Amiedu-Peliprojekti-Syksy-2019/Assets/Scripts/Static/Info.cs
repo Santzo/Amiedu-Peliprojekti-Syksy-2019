@@ -190,7 +190,7 @@ public class Info
         float specDmg = Random.Range(minSpectral, maxSpectral) - enemyStats.spectralDefense;
         float fireDmg = Random.Range(minFire, maxFire) - enemyStats.fireDefense;
         float totalDmg = physDmg + specDmg + fireDmg;
-        int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : 1;
+        int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
         return returnDmg;
     }
 

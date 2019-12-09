@@ -39,9 +39,6 @@ public class BaseEnemy : MonoBehaviour
     [HideInInspector]
     internal bool hasBeenHit;
 
-    
-
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -69,7 +66,6 @@ public class BaseEnemy : MonoBehaviour
         }
         AddToEnemyHitBoxList();
     }
-
 
     private void FixedUpdate()
     {

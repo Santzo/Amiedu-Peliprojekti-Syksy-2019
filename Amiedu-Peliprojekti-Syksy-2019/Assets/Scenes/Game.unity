@@ -16115,65 +16115,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3156362675301084591, guid: 43bf41ec802db1142a770b4e744bd318,
+    - target: {fileID: 8635805965239663635, guid: 43bf41ec802db1142a770b4e744bd318,
         type: 3}
-      propertyPath: m_Offset.y
-      value: -0.6049484
+      propertyPath: m_LocalPosition.x
+      value: 0.23
       objectReference: {fileID: 0}
-    - target: {fileID: 3156362675301084591, guid: 43bf41ec802db1142a770b4e744bd318,
+    - target: {fileID: 8635805963931081199, guid: 43bf41ec802db1142a770b4e744bd318,
         type: 3}
-      propertyPath: m_Size.y
-      value: 1.690645
+      propertyPath: m_LocalPosition.x
+      value: -0.0009994209
       objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
+    - target: {fileID: 8635805964985679219, guid: 43bf41ec802db1142a770b4e744bd318,
         type: 3}
-      propertyPath: attacks.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: attacks.minPhysical
-      value: -0.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: attacks.maxPhysical
-      value: 0.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: attacks.minSpectral
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: kaa
-      value: asdasd
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: ooo
-      value: fgfg
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: attacks.Array.data[0].minPhysical
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: attacks.Array.data[0].maxPhysical
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: stats.health
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318,
-        type: 3}
-      propertyPath: stats.moveSpeed
-      value: 2.5
+      propertyPath: m_LocalPosition.x
+      value: 0.12000099
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bf41ec802db1142a770b4e744bd318, type: 3}
@@ -16317,7 +16272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8244054524038950271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10, z: 0}
+  m_LocalPosition: {x: 10.19, y: 10.03, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 756926175023289694}

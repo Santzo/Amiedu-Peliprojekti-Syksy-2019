@@ -46,7 +46,7 @@ public static class CharacterStats
         sightBonusFromItems = sightBonusPercentage = criticalBonusFromItems = criticalBonusPercentage = 0f;
         healthBonusFromItems = healthBonusPercentage = staminaBonusFromItems = staminaBonusPercentage = 0f;
         staminaRegenerationRate = 0.1f;
-        gasAmmo = 100;
+        gasAmmo = 1000;
     }
 }
 

@@ -29,7 +29,7 @@ MonoBehaviour:
   fireMax: 6
   spectralMin: 0
   spectralMax: 0
-  attackRate: 6
+  attackRate: 30
   staminaCost: 0
   criticalHitChance: 5
   bulletPerShot: 1

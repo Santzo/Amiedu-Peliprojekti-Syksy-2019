@@ -10,11 +10,14 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(SpriteRenderer))]
 public class DynamicObject : MonoBehaviour
 {
+    [HideInInspector]
     public Rigidbody2D rb;
     protected Coroutine co;
+    [HideInInspector]
     public SortingGroup sgroup;
     protected Vector3 shadowOffset;
     protected float spriteBoundsY;
+    public Vector3 lastPos;
 
     private bool objectIsMoving = false;
 
@@ -38,36 +41,4 @@ public class DynamicObject : MonoBehaviour
         bc.offset = GetComponent<BoxCollider2D>().offset;
         staticStats.layer = LayerMask.NameToLayer("StaticObject");
     }
-
-    public void UpdateSortLayer()
-    {
-        if (objectIsMoving) return;
-        if (co != null) StopCoroutine(co);
-        co = StartCoroutine(UpdateLayer());
-    }
-
-    private IEnumerator UpdateLayer()
-    {
-        objectIsMoving = true;
-        while (rb.velocity.magnitude > 0.1f)
-        {
-            sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
-            yield return null;
-        }
-        sgroup.sortingOrder = Info.SortingOrder(transform.position.y);
-        objectIsMoving = false;
-    }
-
-    private IEnumerator ResetRotation()
-    {
-     
-        while (rb.rotation != 0f)
-        {
-            rb.rotation = 0f;
-        }
-        Debug.Log("Rotation reset");
-        yield return null;
-    }
-
- 
 }

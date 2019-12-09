@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 
 public class Grid : MonoBehaviour
 {
-
     public bool displayGridGizmos;
     public LayerMask unwalkableMask;
     public LayerMask walkableMask;
