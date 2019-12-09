@@ -45,15 +45,13 @@ public class ItemDetails : MonoBehaviour
         {
             Weapon _item = item as Weapon;
             itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel;
-            details[0].text = $"Damage {TextColor.Return("yellow")}{_item.minDamage} - {_item.maxDamage}";
-            details[1].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
-            details[2].text = $"Attack speed {TextColor.Return("yellow")}{_item.fireRate}{TextColor.Return()} times per second";
-            if (_item.weaponType != WeaponType.Melee)
-            {
-                details[3].text = "Clip size " + TextColor.Return("yellow") + _item.clipSize;
-                details[4].text = "Reload time <color=yellow>" + _item.reloadTime + "<color=white> seconds";
-                details[5].text = "Weapon shoots <color=yellow>" + _item.bulletPerShot + "<color=white> bullets per shot";
-            }
+            details[0].text = $"Physical damage {TextColor.Yellow}{_item.physicalMin} {TextColor.White}-{TextColor.Yellow} {_item.physicalMax}";
+            details[1].text = $"Spectral damage {TextColor.Purple}{_item.spectralMin} {TextColor.White}-{TextColor.Purple} {_item.spectralMax}";
+            details[2].text = $"Fire damage {TextColor.Red}{_item.fireMin} {TextColor.White}-{TextColor.Red} {_item.fireMax}";
+            details[3].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
+            details[4].text = $"Attack speed {TextColor.Return("yellow")}{_item.attackRate}{TextColor.Return()} times per second";
+
+      
 
         }
         else if (item is Lightsource)

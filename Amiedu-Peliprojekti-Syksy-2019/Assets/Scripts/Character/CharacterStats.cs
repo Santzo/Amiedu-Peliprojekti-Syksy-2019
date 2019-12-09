@@ -32,7 +32,7 @@ public static class CharacterStats
         strength = 10;
         constitution = 10;
         dexterity = 10;
-        perception = 10;
+        perception = 40;
         luck = 10;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
         Info.CalculateHealthAndStamina();

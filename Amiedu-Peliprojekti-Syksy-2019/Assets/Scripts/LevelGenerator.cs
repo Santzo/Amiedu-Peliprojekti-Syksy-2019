@@ -29,7 +29,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Awake()
     {
-        QualitySettings.pixelLightCount = 0;
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         numberOfRooms = 20;
         cellarTiles = Resources.LoadAll<Tile>("Cellar/Tiles");
         black = Resources.Load<Tile>("GenericTiles/Black");

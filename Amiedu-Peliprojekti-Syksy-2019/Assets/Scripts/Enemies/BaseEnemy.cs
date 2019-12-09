@@ -12,7 +12,6 @@ public class BaseEnemy : MonoBehaviour
     protected IEnemyState aggressiveState;
     protected IEnemyState attackState;
     protected IEnemyState gotHitState;
-    public string ooo;
     protected EnemySprite[] sprites;
     Vector3 oriScale;
     private float minPathUpdateTime = 0.45f;
@@ -32,15 +31,14 @@ public class BaseEnemy : MonoBehaviour
     internal Vector2 destination;
     [HideInInspector]
     internal Vector2[] path;
-    [HideInInspector]
-    internal EnemyStats stats = new EnemyStats();
+    public EnemyStats stats = new EnemyStats();
     [HideInInspector]
     internal int targetIndex = 0;
     [HideInInspector]
     internal Rigidbody2D rb;
     [HideInInspector]
     internal bool hasBeenHit;
-    public EnemyDamage[] attacks;
+
     
 
 
@@ -48,10 +46,8 @@ public class BaseEnemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sGroup = GetComponent<SortingGroup>();
-
         sortingTransform = transform.Find("SortingTransform");
         top = transform.Find("Top");
-        stats = Array.Find(EnemyStats.enemyStats, enemy => enemy.name == transform.name);
         Events.onGameFieldCreated += RandomizePatrolPath;
 
         idleState = new IdleState(this);                        // Set enemy states

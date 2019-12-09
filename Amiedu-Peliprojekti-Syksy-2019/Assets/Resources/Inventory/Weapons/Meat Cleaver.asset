@@ -16,18 +16,21 @@ MonoBehaviour:
   weight: 2.5
   obj: {fileID: 4999152298579067960, guid: 6c4c5d1cf1635b04f812735d7bb175c4, type: 3}
   icon: {fileID: 0}
+  material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: Meat cleaver.
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 0
-  minDamage: 96
-  maxDamage: 249
-  fireRate: 1.65
+  physicalMin: 9
+  physicalMax: 11
+  fireMin: 0
+  fireMax: 0
+  spectralMin: 30
+  spectralMax: 50
+  attackRate: 1.45
   staminaCost: 13
-  clipSize: 0
-  reloadTime: 0
   criticalHitChance: 0
   bulletPerShot: 0
   gearEffects: []

@@ -16,6 +16,7 @@ MonoBehaviour:
   weight: 1.2
   obj: {fileID: 5447659618020291305, guid: 49d5a02c3423158409315207bacaf3ad, type: 3}
   icon: {fileID: 0}
+  material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: 'A sword looking like it could have been made in the 16th century.
@@ -25,12 +26,14 @@ MonoBehaviour:
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 0
-  minDamage: 10
-  maxDamage: 12
-  fireRate: 1.95
+  physicalMin: 0
+  physicalMax: 0
+  fireMin: 0
+  fireMax: 0
+  spectralMin: 0
+  spectralMax: 0
+  attackRate: 1.5
   staminaCost: 12
-  clipSize: 0
-  reloadTime: 0
   criticalHitChance: 14.4
   bulletPerShot: 0
   gearEffects:

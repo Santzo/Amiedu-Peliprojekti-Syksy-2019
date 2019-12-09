@@ -8,13 +8,10 @@ public class Weapon : InventoryItems
     public WeaponType weaponType;
     public AnimationClip attackAnimation;
     public Hands hands;
-    public float minDamage, maxDamage;
+    public float physicalMin, physicalMax, fireMin, fireMax, spectralMin, spectralMax;
     [Tooltip("How many shots / swings (melee) per second.")]
-    public float fireRate;
+    public float attackRate;
     public float staminaCost;
-    public int clipSize;
-    [Tooltip("Reload time in seconds")]
-    public float reloadTime;
     [Range(0, 100)]
     public float criticalHitChance;
     public int bulletPerShot;

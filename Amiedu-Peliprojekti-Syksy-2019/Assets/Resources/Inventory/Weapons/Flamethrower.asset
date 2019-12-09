@@ -16,18 +16,21 @@ MonoBehaviour:
   weight: 6.5
   obj: {fileID: 5863568968154505762, guid: ea2810a4725ec6f40b938459204c59df, type: 3}
   icon: {fileID: 0}
+  material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: Is it barbeque time?
   weaponType: 4
   attackAnimation: {fileID: 7400000, guid: 912742d5215f3b24ca4f58b2d4e93203, type: 2}
   hands: 1
-  minDamage: 4
-  maxDamage: 6
-  fireRate: 6
+  physicalMin: 0
+  physicalMax: 0
+  fireMin: 4
+  fireMax: 6
+  spectralMin: 0
+  spectralMax: 0
+  attackRate: 6
   staminaCost: 0
-  clipSize: 0
-  reloadTime: 0
   criticalHitChance: 5
   bulletPerShot: 1
   gearEffects: []

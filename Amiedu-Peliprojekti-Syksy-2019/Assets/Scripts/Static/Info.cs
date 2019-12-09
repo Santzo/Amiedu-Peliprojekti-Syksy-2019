@@ -10,8 +10,12 @@ public class Info
     public static float CanvasScale { get { return canvas.scaleFactor; } }
     public static Transform content;
     public static PlayerEquipment playerEquipment = GameObject.Find("PlayerEquipment").GetComponent<PlayerEquipment>();
-    public static float minDamage { get; private set; }
-    public static float maxDamage { get; private set; }
+    public static float minPhys { get; private set; }
+    public static float maxPhys { get; private set; }
+    public static float minFire { get; private set; }
+    public static float maxFire { get; private set; }
+    public static float minSpectral { get; private set; }
+    public static float maxSpectral { get; private set; }
     public static float totalCriticalHitChance { get; private set; }
     public static float totalAttackSpeed { get; private set; }
     public static float attackInterval { get; private set; }
@@ -114,7 +118,7 @@ public class Info
             for (int i = 50; temp > 10; i -= 10)
             {
                 int add = temp >= 10 ? 10 : temp;
-                float addValue = Mathf.Clamp(i * 0.02f, 0.2f, 1f);
+                float addValue = Mathf.Clamp(i * 0.0175f, 0.2f, 1f);
                 _value += addValue * add;
                 temp -= 10;
             }
@@ -122,7 +126,7 @@ public class Info
             for (int i = 50; temp > 10; i -= 10)
             {
                 int add = temp >= 10 ? 10 : temp;
-                float addValue = Mathf.Clamp(i * 0.005f, 0.05f, 1f);
+                float addValue = Mathf.Clamp(i * 0.004f, 0.05f, 1f);
                 _value += addValue * add;
                 temp -= 10;
             }
@@ -149,11 +153,17 @@ public class Info
     {
         get
         {
-            float dmg = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.minDamage : 0;
-            float statBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (dmg * 0.1f) : CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
-            dmg += statBonus;
-            minDamage = dmg;
-            return Mathf.RoundToInt(dmg);
+            if (CharacterStats.characterEquipment.weapon == null) return 0;
+            Weapon wep = CharacterStats.characterEquipment.weapon;
+            float physBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.physicalMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.physicalMin * 0.1f);
+            float fireBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.fireMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.fireMin * 0.1f);
+            float specBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.spectralMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.spectralMin * 0.1f);
+            float luckmulti = 1f + (CharacterStats.luck / 1500f);
+            Debug.Log(luckmulti);
+            minPhys = (wep.physicalMin + physBonus) * luckmulti;
+            minFire = (wep.fireMin + fireBonus) * luckmulti;
+            minSpectral = (wep.spectralMin + specBonus) * luckmulti;
+            return Mathf.RoundToInt(minPhys + minFire + minSpectral);
         }
     }
 
@@ -161,20 +171,27 @@ public class Info
     {
         get
         {
-            float dmg = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.maxDamage : 0;
-            float statBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (dmg * 0.1f) : CharacterStats.dexterity * 0.05f * (dmg * 0.1f);
-            dmg += statBonus;
-            maxDamage = dmg;
-            return Mathf.RoundToInt(dmg);
+            if (CharacterStats.characterEquipment.weapon == null) return 0;
+            Weapon wep = CharacterStats.characterEquipment.weapon;
+            float physBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.physicalMax * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.physicalMax * 0.1f);
+            float fireBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.fireMax * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.fireMax * 0.1f);
+            float specBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.spectralMax * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.spectralMax * 0.1f);
+            float luckmulti = 1f + (CharacterStats.luck / 1500f);
+            maxPhys = (wep.physicalMax + physBonus) * luckmulti;
+            maxFire = (wep.fireMax + fireBonus) * luckmulti;
+            maxSpectral = (wep.spectralMax + specBonus) * luckmulti;
+            return Mathf.RoundToInt(maxPhys + maxFire + maxSpectral);
         }
     }
 
     public static int CalculateDamage(EnemyStats enemyStats)
     {
-        float dmg = Random.Range(minDamage, maxDamage);
-        float defense = enemyStats.defense;
-        int totalDmg = dmg - defense > 1f ? Mathf.RoundToInt(dmg - defense) : 1;
-        return totalDmg;
+        float physDmg = Random.Range(minPhys, maxPhys) - enemyStats.physicalDefense;
+        float specDmg = Random.Range(minSpectral, maxSpectral) - enemyStats.spectralDefense;
+        float fireDmg = Random.Range(minFire, maxFire) - enemyStats.fireDefense;
+        float totalDmg = physDmg + specDmg + fireDmg;
+        int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : 1;
+        return returnDmg;
     }
 
     internal static void AddDefenses(Armor armor, bool unEquip = false)
@@ -193,7 +210,7 @@ public class Info
 
     public static void CalculateAttackSpeed()
     {
-        float weaponSpeed = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.fireRate : 0f;
+        float weaponSpeed = CharacterStats.characterEquipment.weapon != null ? CharacterStats.characterEquipment.weapon.attackRate : 0f;
         totalAttackSpeed = weaponSpeed * BaseAttackSpeed;
 
         attackInterval = totalAttackSpeed > 0f ? 1f / totalAttackSpeed : 0f;

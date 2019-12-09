@@ -16,6 +16,7 @@ MonoBehaviour:
   weight: 1.3
   obj: {fileID: 5447659618020291305, guid: c0546d9b2d3c6254b91d70b73d969c5a, type: 3}
   icon: {fileID: 0}
+  material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1.5
   description: 'A massive two-handed sword. Covered in blood, making it an excellent
@@ -25,12 +26,14 @@ MonoBehaviour:
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 1
-  minDamage: 21
-  maxDamage: 35
-  fireRate: 0.75
+  physicalMin: 0
+  physicalMax: 0
+  fireMin: 0
+  fireMax: 0
+  spectralMin: 0
+  spectralMax: 0
+  attackRate: 0.86
   staminaCost: 25
-  clipSize: 0
-  reloadTime: 0
   criticalHitChance: 19.5
   bulletPerShot: 0
   gearEffects:

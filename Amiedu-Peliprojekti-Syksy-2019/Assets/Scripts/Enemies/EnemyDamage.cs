@@ -12,3 +12,5 @@ public class EnemyDamage
     public float minSpectral = 0;
     public float maxSpectral = 1;
 }
+
+
