@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class EnemyDamage
+public class EnemyAttack
 {
+    public float attackRange;
+    public float forwardForce;
     public float minPhysical = 0;
     public float maxPhysical = 1;
     public float minFire = 0;

@@ -301,7 +301,6 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             float multiplier = (float)res.width / 16f;
             bool rightResolution = Mathf.RoundToInt(multiplier * 9f) == res.height;
             if (rightResolution) accepted.Add(res);
-
         }
         return accepted.ToArray();
     }

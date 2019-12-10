@@ -132,12 +132,12 @@ ScriptedImporter:
     uvTransform: {x: -89, y: 261}
   - name: Head
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5208368, y: 0.12651713}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
+      x: 5
       y: 4
       width: 146
       height: 112
@@ -154,8 +154,8 @@ ScriptedImporter:
     uvTransform: {x: -19, y: -164}
   - name: L_Hand
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.19392987, y: 0.8996716}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -176,8 +176,8 @@ ScriptedImporter:
     uvTransform: {x: -1, y: 384}
   - name: L_Lower_Arm
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5001084, y: 0.88755137}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -198,8 +198,8 @@ ScriptedImporter:
     uvTransform: {x: 41, y: 350}
   - name: L_Upper_Arm
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.9024042, y: 0.8483166}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -242,8 +242,8 @@ ScriptedImporter:
     uvTransform: {x: -32, y: 12}
   - name: L_Foot
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.1824915, y: 0.71897006}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -264,13 +264,13 @@ ScriptedImporter:
     uvTransform: {x: 101, y: 124}
   - name: L_Lower_Leg
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.55426705, y: 0.8920423}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 36
-      y: 331
+      y: 330
       width: 23
       height: 52
     spriteID: 44ed3d1824f184743b0961cd64da6903
@@ -286,8 +286,8 @@ ScriptedImporter:
     uvTransform: {x: -23, y: 318}
   - name: L_Upper_Leg
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.3786541, y: 0.90834045}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -308,8 +308,8 @@ ScriptedImporter:
     uvTransform: {x: -51, y: 280}
   - name: Pelvis
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5176876, y: 0.53604895}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -330,8 +330,8 @@ ScriptedImporter:
     uvTransform: {x: 114, y: -75}
   - name: R_Hand
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.15229185, y: 0.84138656}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -352,8 +352,8 @@ ScriptedImporter:
     uvTransform: {x: -176, y: 321}
   - name: R_Lower_Arm
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.09112812, y: 0.7170662}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -374,8 +374,8 @@ ScriptedImporter:
     uvTransform: {x: 27, y: -14}
   - name: R_Upper_Arm
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.16448006, y: 0.9160448}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -396,8 +396,8 @@ ScriptedImporter:
     uvTransform: {x: -107, y: 147}
   - name: R_Foot
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.18515551, y: 0.77042925}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -418,8 +418,8 @@ ScriptedImporter:
     uvTransform: {x: 19, y: 122}
   - name: R_Lower_Leg
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.480189, y: 0.9081951}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -440,8 +440,8 @@ ScriptedImporter:
     uvTransform: {x: -23, y: 188}
   - name: R_Upper_Leg
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.46217778, y: 0.87752223}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

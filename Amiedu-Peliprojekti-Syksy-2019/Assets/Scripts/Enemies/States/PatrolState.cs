@@ -30,6 +30,7 @@ public class PatrolState : IEnemyState
         }
         else if (enemy.targetIndex == enemy.path.Length - 1 && enemy.rb.position == enemy.destination)
             UpdatePatrolPath();
+        enemy.CheckPlayerAggro();
     }
 
     public void OnStateUpdate()

@@ -159,7 +159,6 @@ public class Info
             float fireBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.fireMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.fireMin * 0.1f);
             float specBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.spectralMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.spectralMin * 0.1f);
             float luckmulti = 1f + (CharacterStats.luck / 1500f);
-            Debug.Log(luckmulti);
             minPhys = (wep.physicalMin + physBonus) * luckmulti;
             minFire = (wep.fireMin + fireBonus) * luckmulti;
             minSpectral = (wep.spectralMin + specBonus) * luckmulti;

@@ -18,6 +18,7 @@ public class Pathfinding {
 
         if (startNode.walkable < 2)
         {
+            Debug.Log("Replacing start node...");
             startNode = grid.GetWalkableNeighbor(startNode);
         }
         if (targetNode.walkable < 2)
@@ -73,37 +74,21 @@ public class Pathfinding {
 		Node currentNode = endNode;
         Vector2 checkPath = endNode.worldPosition;
         Vector2 curPath, updatedPath = Vector2.zero;
-
+        path.Add(checkPath);
         while (currentNode != startNode) {
             curPath = checkPath - currentNode.worldPosition;
-            if (curPath != updatedPath)
+            if (curPath != updatedPath && checkPath != endNode.worldPosition || currentNode.parent == startNode)
             {
-                Vector2 pathDiverse = new Vector2(RandomNumber(-0.1f, 0.1f), RandomNumber(-0.1f, 0.1f));
-                path.Add(checkPath + pathDiverse);
+                path.Add(checkPath);
                 updatedPath = curPath;
             }
             checkPath = currentNode.worldPosition;
             currentNode = currentNode.parent;
-            
         }
-        //Vector2[] waypoints = SimplifyPath(path);
+        
         Vector2[] readyPath = path.ToArray();
 		Array.Reverse(readyPath);
 		return readyPath;
-	}
-	
-	Vector2[] SimplifyPath(List<Node> path) {
-		List<Vector2> waypoints = new List<Vector2>();
-		Vector2 directionOld = Vector2.zero;
-		
-		for (int i = 1; i < path.Count; i ++) {
-			Vector2 directionNew = new Vector2(path[i-1].gridX - path[i].gridX, path[i-1].gridY - path[i].gridY);
-			if (directionNew != directionOld) {
-				waypoints.Add(path[i].worldPosition);
-			}
-			directionOld = directionNew;
-		}
-		return waypoints.ToArray();
 	}
 	
 	int GetDistance(Node nodeA, Node nodeB) {

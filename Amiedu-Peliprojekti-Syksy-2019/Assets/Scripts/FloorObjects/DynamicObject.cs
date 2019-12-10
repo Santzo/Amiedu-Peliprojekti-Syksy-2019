@@ -19,8 +19,6 @@ public class DynamicObject : MonoBehaviour
     protected float spriteBoundsY;
     public Vector2 lastPos;
 
-    private bool objectIsMoving = false;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

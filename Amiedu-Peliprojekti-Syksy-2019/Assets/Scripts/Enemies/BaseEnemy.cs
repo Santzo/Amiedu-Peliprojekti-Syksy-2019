@@ -9,6 +9,7 @@ public class BaseEnemy : MonoBehaviour
     public AnimationClip walk, idle;
     public AnimationClip[] death;
     protected Animator anim;
+    LayerMask layers;
     protected StateMachine state = new StateMachine();
     protected IEnemyState idleState;
     protected IEnemyState patrolState;
@@ -17,7 +18,7 @@ public class BaseEnemy : MonoBehaviour
     protected IEnemyState gotHitState;
     protected EnemySprite[] sprites;
     Vector3 oriScale;
-    private float minPathUpdateTime = 0.45f;
+    public float minPathUpdateTime = 1.15f;
     private float interval = 0.15f;
     private Collider2D[] colliders;
     [HideInInspector]
@@ -79,7 +80,7 @@ public class BaseEnemy : MonoBehaviour
         overrideController["BaseWalk"] = walk;
         overrideController["BaseIdle"] = idle;
         overrideController["BaseDeath"] = death[0];
-        ;
+        layers = LayerMask.GetMask("StaticWall", "Player");
 
     }
 
@@ -92,15 +93,13 @@ public class BaseEnemy : MonoBehaviour
     {
         if (pathSuccessful)
         {
-            if (newPath.Length == 0) RandomizePatrolPath();
+            if (newPath.Length == 0 && state.currentState == patrolState) RandomizePatrolPath();
             if (newPath.Length > 0)
             {
-                Debug.DrawLine(rb.position, newPath[0], Color.green, 10f);
-                Debug.DrawLine(newPath[0], newPath[0], Color.red, 10f);
+                Debug.DrawLine(rb.position, newPath[0], Color.red, 1.5f);
                 for (int i = 0; i < newPath.Length - 1; i++)
                 {
-                    Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 10f);
-                    Debug.DrawLine(newPath[i + 1], newPath[i + 1], Color.red, 10f);
+                    Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 8f);
                 }
                 path = newPath;
                 targetIndex = 0;
@@ -200,5 +199,27 @@ public class BaseEnemy : MonoBehaviour
         yield return new WaitForSeconds(time);
         hasBeenHit = false;
     }
+    public void CheckPlayerAggro()
+    {
+        Vector3 player = References.rf.playerMovement.head.transform.position;
+        if((top.transform.position - player).sqrMagnitude < stats.hearingRange)
+        {
+            Debug.Log("Aggro from hearing");
+            state.ChangeState(aggressiveState);
+            return;
+        }
 
+        RaycastHit2D hit = Physics2D.Raycast(top.position, player - top.position, stats.sightRange, layers);
+        if (!hit) return;
+        if (hit.transform.name != "Player") return;
+        float angle = Vector2.Angle(top.transform.right * Mathf.Sign(spritesTransform.localScale.x), References.rf.playerMovement.transform.position - transform.position);
+        if (angle > stats.sightRadius) return;
+        state.ChangeState(aggressiveState);
+    }
+    //private void OnDrawGizmos()
+    //{
+    //    var node = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawCube(node.worldPosition, new Vector2(0.5f, 0.5f));
+    //}
 }

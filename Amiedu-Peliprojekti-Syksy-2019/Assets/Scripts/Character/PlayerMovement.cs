@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
-    GameObject head;
+    public GameObject head;
     public ParticleSystem weaponTrailRenderer;
     [HideInInspector]
     public MeleeWeaponHit meleeWeapon;

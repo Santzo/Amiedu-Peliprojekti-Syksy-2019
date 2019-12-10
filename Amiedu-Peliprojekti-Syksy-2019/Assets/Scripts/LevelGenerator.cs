@@ -728,6 +728,8 @@ public class LevelGenerator : MonoBehaviour
                                 backgroundCorners.SetTile(bigBotPos, bigCornerBottom);
                                 backgroundCorners.SetTransformMatrix(bigTopPos, horizontalFlip);
                                 backgroundCorners.SetTransformMatrix(bigBotPos, horizontalFlip);
+                                backgroundCorners.SetTile(new Vector3Int(x + 1, y, 0), bigCornerTop);
+                                backgroundCorners.SetTile(new Vector3Int(x + 1, y - 1, 0), bigCornerBottom);
                             }
                             else if (CheckIfFloor(roomGrid[x - 1, y - 1].tileType) &&
                                  CheckIfFloor(roomGrid[x - 1, y].tileType) &&
