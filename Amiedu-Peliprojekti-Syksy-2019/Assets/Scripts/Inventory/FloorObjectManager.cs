@@ -32,7 +32,7 @@ public class FloorObjectManager : MonoBehaviour
     {
         foreach (var obj in dynamicObjects)
         {
-            if (obj.lastPos != obj.transform.position)
+            if ((obj.lastPos - (Vector2) obj.transform.position).sqrMagnitude > 0.01f)
             {
                 Debug.Log("Updated object");
                 obj.lastPos = obj.transform.position;

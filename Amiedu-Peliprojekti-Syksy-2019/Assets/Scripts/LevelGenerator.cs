@@ -108,12 +108,12 @@ public class LevelGenerator : MonoBehaviour
         }
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
         SpawnBookshelves(10);
         SpawnBoxes(50);
 
@@ -161,7 +161,7 @@ public class LevelGenerator : MonoBehaviour
         {
             int x = Random.Range(0, worldSizeX - 3);
             int y = Random.Range(0, worldSizeY - 3);
-            SpawnFloorObject("Box", x, y);
+            SpawnFloorObject("Box", x, y, 0.1f);
         }
     }
 
@@ -543,6 +543,18 @@ public class LevelGenerator : MonoBehaviour
                             CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
                             CheckIfFloor(roomGrid[x + 1, y].tileType) &&
                             roomGrid[x + 1, y + 1].tileType == TileType.TopLeftTwo)
+                            {
+                                backgroundCorners.SetTile(new Vector3Int(x + 1, y, 0), bigCornerTop);
+                                backgroundCorners.SetTile(new Vector3Int(x + 1, y - 1, 0), bigCornerBottom);
+                            }
+                            else if (roomGrid[x - 1, y - 1].tileType == TileType.TopTwo &&
+                        roomGrid[x - 1, y].tileType == TileType.TopLeftExtra &&
+                        roomGrid[x - 1, y + 1].tileType == TileType.Nothing &&
+                        roomGrid[x, y - 1].tileType == TileType.TopTwo &&
+                        roomGrid[x, y + 1].tileType == TileType.Nothing &&
+                        CheckIfFloor(roomGrid[x + 1, y - 1].tileType) &&
+                        CheckIfFloor(roomGrid[x + 1, y].tileType) &&
+                        roomGrid[x + 1, y + 1].tileType == TileType.TopLeftTwo)
                             {
                                 backgroundCorners.SetTile(new Vector3Int(x + 1, y, 0), bigCornerTop);
                                 backgroundCorners.SetTile(new Vector3Int(x + 1, y - 1, 0), bigCornerBottom);

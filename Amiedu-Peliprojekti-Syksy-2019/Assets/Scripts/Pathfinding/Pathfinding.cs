@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System;
 using Debug = UnityEngine.Debug;
+using Random = System.Random;
 
 public class Pathfinding {
-	
+
+    Random random = new System.Random();
 	public Vector2[] StartFindPath(Grid grid, Vector2 startPos, Vector2 targetPos) {
 		Vector2[] waypoints = new Vector2[0];
 		bool pathSuccess = false;
@@ -67,16 +69,27 @@ public class Pathfinding {
 		
 	
 	Vector2[] RetracePath(Node startNode, Node endNode) {
-		List<Node> path = new List<Node>();
+		List<Vector2> path = new List<Vector2>();
 		Node currentNode = endNode;
-		
-		while (currentNode != startNode) {
-			path.Add(currentNode);
-			currentNode = currentNode.parent;
-		}
-		Vector2[] waypoints = SimplifyPath(path);
-		Array.Reverse(waypoints);
-		return waypoints;
+        Vector2 checkPath = endNode.worldPosition;
+        Vector2 curPath, updatedPath = Vector2.zero;
+
+        while (currentNode != startNode) {
+            curPath = checkPath - currentNode.worldPosition;
+            if (curPath != updatedPath)
+            {
+                Vector2 pathDiverse = new Vector2(RandomNumber(-0.1f, 0.1f), RandomNumber(-0.1f, 0.1f));
+                path.Add(checkPath + pathDiverse);
+                updatedPath = curPath;
+            }
+            checkPath = currentNode.worldPosition;
+            currentNode = currentNode.parent;
+            
+        }
+        //Vector2[] waypoints = SimplifyPath(path);
+        Vector2[] readyPath = path.ToArray();
+		Array.Reverse(readyPath);
+		return readyPath;
 	}
 	
 	Vector2[] SimplifyPath(List<Node> path) {
@@ -101,4 +114,12 @@ public class Pathfinding {
 			return 14*dstY + 10* (dstX-dstY);
 		return 14*dstX + 10 * (dstY-dstX);
 	}
+
+    public float RandomNumber(float min, float max)
+    {
+        int a = random.Next(0, 100);
+        float num = a * 0.01f;
+        return min + (num * (max-min));
+
+    }
 }

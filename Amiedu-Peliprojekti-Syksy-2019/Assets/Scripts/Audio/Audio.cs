@@ -149,8 +149,12 @@ public class Audio : MonoBehaviour
     {
         return ad.audioLib[clip].source.volume;
     }
+    public static void VolumeFade(string clip, float from, float to, float time, bool pause = false, bool stop = false)
+    {
+        ad.StartCoroutine(_VolumeFade(clip, from, to, time, pause, stop));
+    }
 
-    public static IEnumerator _VolumeFade(string clip, float from, float to, float time, bool pause = false, bool stop = false)
+    private static IEnumerator _VolumeFade(string clip, float from, float to, float time, bool pause = false, bool stop = false)
     {
         ad.audioLib[clip].source.volume = from;
         if (!ad.audioLib[clip].source.isPlaying) ad.audioLib[clip].source.Play();

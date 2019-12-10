@@ -17,7 +17,7 @@ public class DynamicObject : MonoBehaviour
     public SortingGroup sgroup;
     protected Vector3 shadowOffset;
     protected float spriteBoundsY;
-    public Vector3 lastPos;
+    public Vector2 lastPos;
 
     private bool objectIsMoving = false;
 

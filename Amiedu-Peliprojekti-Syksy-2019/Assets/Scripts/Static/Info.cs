@@ -186,9 +186,9 @@ public class Info
 
     public static int CalculateDamage(EnemyStats enemyStats)
     {
-        float physDmg = Random.Range(minPhys, maxPhys) - enemyStats.physicalDefense;
-        float specDmg = Random.Range(minSpectral, maxSpectral) - enemyStats.spectralDefense;
-        float fireDmg = Random.Range(minFire, maxFire) - enemyStats.fireDefense;
+        float physDmg = Mathf.Max(Random.Range(minPhys, maxPhys) - enemyStats.physicalDefense,0);
+        float specDmg = Mathf.Max(Random.Range(minSpectral, maxSpectral) - enemyStats.spectralDefense,0);
+        float fireDmg = Mathf.Max(Random.Range(minFire, maxFire) - enemyStats.fireDefense,0);
         float totalDmg = physDmg + specDmg + fireDmg;
         int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
         return returnDmg;
@@ -237,4 +237,5 @@ public class Info
         CharacterStats.animationBaseMoveSpeed = CharacterStats.moveSpeed / 5f;
         CharacterStats.animationSprintMoveSpeed = CharacterStats.animationBaseMoveSpeed * CharacterStats.movementSpeedMultiplier;
     }
+  
 }

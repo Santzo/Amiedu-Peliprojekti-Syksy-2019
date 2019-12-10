@@ -79,6 +79,13 @@ public class BaseEnemy : MonoBehaviour
             if (newPath.Length == 0) RandomizePatrolPath();
             if (newPath.Length > 0)
             {
+                Debug.DrawLine(rb.position, newPath[0], Color.green, 10f);
+                Debug.DrawLine(newPath[0], newPath[0], Color.red, 10f);
+                for (int i = 0; i < newPath.Length - 1; i++)
+                {
+                    Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 10f);
+                    Debug.DrawLine(newPath[i + 1], newPath[i + 1], Color.red, 10f);
+                }
                 path = newPath;
                 targetIndex = 0;
                 destination = path[0];
@@ -95,7 +102,7 @@ public class BaseEnemy : MonoBehaviour
             destination = path[targetIndex];
             spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         }
-        Debug.Log(destination);
+        //Debug.Log(destination);
         return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
 

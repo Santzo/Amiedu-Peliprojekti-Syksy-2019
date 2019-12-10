@@ -193,6 +193,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             switch (trans.name)
             {
                 case "Option1":
+                    Audio.VolumeFade("MainMenuMusic", 1f, 0f, 1.5f, false, true);
                     SceneManager.LoadScene("Game");
                     break;
 
