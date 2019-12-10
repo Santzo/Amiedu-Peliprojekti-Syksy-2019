@@ -16135,8 +16135,47 @@ PrefabInstance:
       propertyPath: stats.damage.Array.size
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8635805964186948986, guid: 43bf41ec802db1142a770b4e744bd318, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 43bf41ec802db1142a770b4e744bd318, type: 3}
+--- !u!1 &2780064888793716034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8635805964186948984, guid: 43bf41ec802db1142a770b4e744bd318,
+    type: 3}
+  m_PrefabInstance: {fileID: 2780064888793716033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2780064888793716035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780064888793716034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8332a8326e643e41ac484c35cb03ee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walk: {fileID: 7400000, guid: 2a8d6903205da1844aec767a0535d01f, type: 2}
+  idle: {fileID: 7400000, guid: 1fd7be9a981d15c479ca5b95cf393f82, type: 2}
+  death:
+  - {fileID: 0}
+  stats:
+    health: 60
+    moveSpeed: 1.5
+    physicalDefense: 2
+    fireDefense: -50
+    spectralDefense: 0
+    hearingRange: 3
+    followTime: 2.5
+    damage:
+    - minPhysical: 4
+      maxPhysical: 6
+      minFire: 0
+      maxFire: 0
+      minSpectral: 0
+      maxSpectral: 0
+      animation: {fileID: 0}
 --- !u!1 &3541135318900242012
 GameObject:
   m_ObjectHideFlags: 0

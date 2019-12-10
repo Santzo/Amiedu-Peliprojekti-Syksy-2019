@@ -11,6 +11,7 @@ public class EnemyDamage
     public float maxFire = 1;
     public float minSpectral = 0;
     public float maxSpectral = 1;
+    public AnimationClip animation;
 }
 
 

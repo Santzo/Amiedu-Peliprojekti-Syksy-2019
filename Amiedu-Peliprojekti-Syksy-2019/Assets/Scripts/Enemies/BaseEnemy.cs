@@ -6,6 +6,9 @@ using UnityEngine.Rendering;
 
 public class BaseEnemy : MonoBehaviour
 {
+    public AnimationClip walk, idle;
+    public AnimationClip[] death;
+    protected Animator anim;
     protected StateMachine state = new StateMachine();
     protected IEnemyState idleState;
     protected IEnemyState patrolState;
@@ -38,11 +41,14 @@ public class BaseEnemy : MonoBehaviour
     internal Rigidbody2D rb;
     [HideInInspector]
     internal bool hasBeenHit;
+    AnimatorOverrideController overrideController;
 
+    int _animMoveSpeed;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sGroup = GetComponent<SortingGroup>();
+        anim = GetComponent<Animator>();
         sortingTransform = transform.Find("SortingTransform");
         top = transform.Find("Top");
         Events.onGameFieldCreated += RandomizePatrolPath;
@@ -65,6 +71,16 @@ public class BaseEnemy : MonoBehaviour
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
         AddToEnemyHitBoxList();
+        _animMoveSpeed = Animator.StringToHash("MoveSpeed");
+        anim.SetFloat(_animMoveSpeed, stats.moveSpeed * 0.5f);
+        overrideController = new AnimatorOverrideController();
+        overrideController.runtimeAnimatorController = anim.runtimeAnimatorController;
+        anim.runtimeAnimatorController = overrideController;
+        overrideController["BaseWalk"] = walk;
+        overrideController["BaseIdle"] = idle;
+        overrideController["BaseDeath"] = death[0];
+        ;
+
     }
 
     private void FixedUpdate()

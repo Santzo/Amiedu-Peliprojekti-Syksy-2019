@@ -34,7 +34,7 @@ public class FloorObjectManager : MonoBehaviour
         {
             if ((obj.lastPos - (Vector2) obj.transform.position).sqrMagnitude > 0.01f)
             {
-                Debug.Log("Updated object");
+                //Debug.Log("Updated object");
                 obj.lastPos = obj.transform.position;
                 obj.sgroup.sortingOrder = Info.SortingOrder(obj.transform.position.y);
             }
