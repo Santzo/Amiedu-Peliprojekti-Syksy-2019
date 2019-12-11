@@ -18,7 +18,6 @@ public class Pathfinding {
 
         if (startNode.walkable < 2)
         {
-            Debug.Log("Replacing start node...");
             startNode = grid.GetWalkableNeighbor(startNode);
         }
         if (targetNode.walkable < 2)

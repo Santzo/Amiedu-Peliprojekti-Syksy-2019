@@ -3779,7 +3779,7 @@ ParticleSystem:
     outside: 0
     enter: 2
     exit: 0
-    radiusScale: 4
+    radiusScale: 1.34
   SubModule:
     serializedVersion: 2
     enabled: 0

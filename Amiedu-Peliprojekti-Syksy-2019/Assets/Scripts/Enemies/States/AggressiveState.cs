@@ -22,7 +22,7 @@ public class AggressiveState : IEnemyState
     public void OnStateFixedUpdate()
     {
         timer += Time.fixedDeltaTime;
-        if (timer > enemy.minPathUpdateTime)
+        if (timer > enemy.stats.minPathUpdateTime)
         {
             UpdatePath();
         }

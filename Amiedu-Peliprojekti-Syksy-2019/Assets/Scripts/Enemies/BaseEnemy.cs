@@ -18,7 +18,7 @@ public class BaseEnemy : MonoBehaviour
     protected IEnemyState gotHitState;
     protected EnemySprite[] sprites;
     Vector3 oriScale;
-    public float minPathUpdateTime = 1.15f;
+
     private float interval = 0.15f;
     private Collider2D[] colliders;
     [HideInInspector]
@@ -126,8 +126,19 @@ public class BaseEnemy : MonoBehaviour
         if (Events.onInventory) return;
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
         obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
-        StopCoroutine("GetHit");
-        StartCoroutine("GetHit");
+        stats.health -= damage;
+        if (stats.health > 0)
+        {
+            StopCoroutine("GetHit");
+            StartCoroutine("GetHit");
+        }
+        else
+        {
+            CharacterStats.Essence += stats.essence;
+            Debug.Log("Dead");
+            this.enabled = false;
+            Destroy(gameObject);
+        }
     }
 
     protected IEnumerator GetHit()

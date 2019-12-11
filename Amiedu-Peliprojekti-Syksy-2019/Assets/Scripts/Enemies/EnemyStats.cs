@@ -11,11 +11,13 @@ public class EnemyStats
     public float fireDefense;
     public float spectralDefense;
     public float sightRange;
+    public int essence;
     [Range(30, 360)]
     public float sightRadius;
     public float hearingRange;
     [Tooltip("How long the enemy follows after losing LOS")]
     public float followTime;
+    public float minPathUpdateTime = 1.15f;
     public EnemyAttack[] damage;
 
 }

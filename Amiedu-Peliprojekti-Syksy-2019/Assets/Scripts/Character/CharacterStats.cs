@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class CharacterStats
 {
+    private static int essence;
+
     public static string name = "Player";
     public static int strength;
     public static int constitution;
@@ -22,7 +24,7 @@ public static class CharacterStats
     public static float totalPhysicalDefense, physicalDefenseFromItems, physicalDefensePercentage;
     public static float totalSpectralDefense, spectralDefenseFromItems, spectralDefensePercentage;
     public static float totalFireDefense, fireDefenseFromItems, fireDefensePercentage;
-
+    public static int Essence { get { return essence; } set { if (value <= 0) return; essence = value; Events.onEssenceChanged(Essence);  } }
 
 
     public static void ResetStats()

@@ -23,7 +23,7 @@ public static class Events
     public static Action<GameObject, InventoryItems> onAddPlayerEquipment = delegate { };
     public static Action onGameFieldCreated = delegate { };
     public static Action<List<Collider2D>> onEnemyHitboxesUpdated = delegate { };
-
+    public static Action<int> onEssenceChanged = delegate { };
     public static bool onDrag = false;
     public static bool onDiscard = false;
     public static bool onDialogueBox = false;
