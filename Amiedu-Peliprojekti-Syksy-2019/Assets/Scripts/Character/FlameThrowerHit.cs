@@ -10,7 +10,7 @@ public class FlameThrowerHit : MonoBehaviour
 
     private void Awake()
     {
-        layer = LayerMask.GetMask("EnemyHitbox");
+        layer = LayerMask.GetMask("StaticObject");
         particles = GetComponent<ParticleSystem>();
     }
     private void OnEnable()
@@ -37,9 +37,11 @@ public class FlameThrowerHit : MonoBehaviour
         if (hits.Count == 0) return;
         foreach (var hit in hits)
         {
-            var collision = Physics2D.OverlapCircle(new Vector2(hit.position.x, hit.position.y - 1f), 2f,layer);
+            Debug.Log("BAA");
+            var collision = Physics2D.OverlapCircle(new Vector2(hit.position.x, hit.position.y), 1.5f,layer);
             if (collision)
             {
+                Debug.Log(collision.gameObject.layer);
                 BaseEnemy enemy = collision.GetComponentInParent<BaseEnemy>();
                 if (enemy != null && !enemy.hasBeenHit)
                 {

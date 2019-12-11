@@ -9,7 +9,9 @@ public class EssenceUI : MonoBehaviour
 {
     TextMeshProUGUI essence;
     TextMeshProUGUI updateEssence;
+    Coroutine updatingAmount;
     int oldAmount;
+    int amount;
     void Awake()
     {
         essence = GetComponent<TextMeshProUGUI>();
@@ -25,26 +27,27 @@ public class EssenceUI : MonoBehaviour
 
     private void UpdateEssenceUI(int _essence)
     {
+        Debug.Log(_essence);
         updateEssence.gameObject.SetActive(false);
         int amountIncreased = _essence - oldAmount;
-        UpdateAmount(_essence, oldAmount);
-        oldAmount = CharacterStats.Essence;
+        if (updatingAmount == null) updatingAmount = StartCoroutine(UpdateAmount());
         updateEssence.text = "+" + amountIncreased;
         updateEssence.gameObject.SetActive(true);
     }
 
-    async void UpdateAmount(int newAmount, int oldAmount)
+    IEnumerator UpdateAmount()
     {
-        while (oldAmount < newAmount)
+        amount = oldAmount;
+        while (amount < CharacterStats.Essence)
         {
-            Debug.Log("Blee");
-            int amountToAdd = Mathf.Max((newAmount - oldAmount) / 20, 1);
-            oldAmount += amountToAdd;
-            essence.text = oldAmount.ToString();
-            await Task.Yield();
+            int amountToAdd = Mathf.Max((CharacterStats.Essence - amount) / 20, 1);
+            amount += amountToAdd;
+            essence.text = amount.ToString();
+            yield return null;
         }
-        if (oldAmount > newAmount) oldAmount = newAmount;
-        essence.text = oldAmount.ToString();
-
+        essence.text = CharacterStats.Essence.ToString();
+        updatingAmount = null;
+        oldAmount = CharacterStats.Essence;
+        amount = CharacterStats.Essence;
     }
 }

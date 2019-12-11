@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour
 {
@@ -81,6 +82,9 @@ public class BaseEnemy : MonoBehaviour
         overrideController["BaseIdle"] = idle;
         overrideController["BaseDeath"] = death[0];
         layers = LayerMask.GetMask("StaticWall", "Player");
+        stats.moveSpeed += Random.Range(-0.2f, 0.2f);
+        stats.minPathUpdateTime += Random.Range(-0.2f, 0.2f);
+
 
     }
 
