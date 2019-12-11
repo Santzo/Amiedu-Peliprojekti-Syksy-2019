@@ -38,6 +38,7 @@ public class FlameThrowerHit : MonoBehaviour
         foreach (var hit in hits)
         {
             var collision = Physics2D.OverlapCircle(hit.position, 2f,layer);
+            Debug.Log(collision);
             if (collision)
             {
                 BaseEnemy enemy = collision.GetComponentInParent<BaseEnemy>();

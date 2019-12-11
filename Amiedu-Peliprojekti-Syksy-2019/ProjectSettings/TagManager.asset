@@ -44,11 +44,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: BackgroundTiles
-    uniqueID: 1503360197
-    locked: 0
   - name: FloorObjects
     uniqueID: 400957895
+    locked: 0
+  - name: BackgroundTiles
+    uniqueID: 1503360197
     locked: 0
   - name: MainCharacter
     uniqueID: 918335077

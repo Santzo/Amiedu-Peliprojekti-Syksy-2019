@@ -6,8 +6,8 @@ using UnityEngine;
 public static class GameSettings
 {
     public static int lightingQuality = PlayerPrefs.GetInt("LightingQuality", 0);
-    public static int resolutionX = PlayerPrefs.GetInt("ResolutionX", Screen.width);
-    public static int resolutionY = PlayerPrefs.GetInt("ResolutionY", Screen.height);
+    public static int resolutionX = PlayerPrefs.GetInt("ResolutionX", 1920);
+    public static int resolutionY = PlayerPrefs.GetInt("ResolutionY", 1080);
     public static bool fullScreen = Convert.ToBoolean(PlayerPrefs.GetInt("FullScreen", 1));
 
     public static void ApplySettings()

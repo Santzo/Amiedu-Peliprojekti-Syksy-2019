@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -281,7 +282,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
                 currentKeyBeingSet = index;
                 newKeyBeingSet = true;
                 currentConfirmKey = Instantiate(confirmKey, transform.parent.parent);
-                currentConfirmKey.GetComponentInChildren<TextMeshProUGUI>().text = $"select a new key for {TextColor.Return("yellow")}{keyFields[index].Name}";
+                currentConfirmKey.GetComponentInChildren<TextMeshProUGUI>().text = $"select a new key for {TextColor.Yellow}{keyFields[index].Name}";
                 currentConfirmKeyWarning = currentConfirmKey.transform.Find("Warning").gameObject;
             }
         }
@@ -300,8 +301,10 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         {
             float multiplier = (float)res.width / 16f;
             bool rightResolution = Mathf.RoundToInt(multiplier * 9f) == res.height;
-            if (rightResolution) accepted.Add(res);
+            var a = accepted.Any(ac => ac.width == res.width);
+            if (rightResolution && !a) accepted.Add(res);
         }
+        accepted.Reverse();
         return accepted.ToArray();
     }
 
@@ -344,24 +347,24 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         }
         else if (newMenu == MenuState.VideoSettings)
         {
-            menuOptions[0].text = $"Resolution {TextColor.Return("yellow")}{GameSettings.resolutionX}{TextColor.Return()}x{TextColor.Return("yellow")}{GameSettings.resolutionY}";
-            menuOptions[1].text = $"Lighting Quality {TextColor.Return("yellow")}{Lighting(QualitySettings.pixelLightCount)}";
-            menuOptions[2].text = $"Fullscreen mode {TextColor.Return("yellow")}" + (GameSettings.fullScreen ? "On" : "Off");
+            menuOptions[0].text = $"Resolution {TextColor.Yellow}{GameSettings.resolutionX}{TextColor.White}x{TextColor.Yellow}{GameSettings.resolutionY}";
+            menuOptions[1].text = $"Lighting Quality {TextColor.Yellow}{Lighting(QualitySettings.pixelLightCount)}";
+            menuOptions[2].text = $"Fullscreen mode {TextColor.Yellow}" + (GameSettings.fullScreen ? "On" : "Off");
             menuOptions[3].text = "Back to Settings";
         }
         else if (newMenu == MenuState.LightingQuality)
         {
-            menuOptions[0].text = $"{TextColor.Return("yellow")}Low";
-            menuOptions[1].text = $"{TextColor.Return("yellow")}Medium";
-            menuOptions[2].text = $"{TextColor.Return("yellow")}High";
-            menuOptions[3].text = $"{TextColor.Return("yellow")}Highest";
+            menuOptions[0].text = $"{TextColor.Yellow}Low";
+            menuOptions[1].text = $"{TextColor.Yellow}Medium";
+            menuOptions[2].text = $"{TextColor.Yellow}High";
+            menuOptions[3].text = $"{TextColor.Yellow}Highest";
             menuOptions[4].text = "Back to Video Settings";
         }
         else if (newMenu == MenuState.Resolutions)
         {
             for (int i = 0; i < resolutions.Length; i++)
             {
-                menuOptions[i].text = $"{TextColor.Return("yellow")}{resolutions[i].width}{TextColor.Return()}x{TextColor.Return("yellow")}{resolutions[i].height}";
+                menuOptions[i].text = $"{TextColor.Yellow}{resolutions[i].width}{TextColor.White}x{TextColor.Yellow}{resolutions[i].height}";
             }
             menuOptions[resolutions.Length].text = "Back to Video Settings";
         }
@@ -370,7 +373,7 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
             int i = 0;
             foreach (var key in keys)
             {
-                menuOptions[i].text = $"{key.Key} {TextColor.Return("yellow")}{KeyboardConfig.ReturnKeyName(key.Value[0].ToString())}";
+                menuOptions[i].text = $"{key.Key} {TextColor.Yellow}{KeyboardConfig.ReturnKeyName(key.Value[0].ToString())}";
                 i++;
             }
             menuOptions[keys.Count].text = "Back to Settings";
