@@ -78,8 +78,8 @@ public class Pathfinding {
             curPath = checkPath - currentNode.worldPosition;
             if (curPath != updatedPath && checkPath != endNode.worldPosition || currentNode.parent == startNode)
             {
-                Vector2 pathOffset = new Vector2(RandomNumber(-0.1f, 0.1f), RandomNumber(-0.1f, 0.1f));
-                path.Add(checkPath);
+                Vector2 pathOffset = new Vector2(RandomNumber(-0.2f, 0.2f), RandomNumber(-0.2f, 0.2f));
+                path.Add(checkPath + pathOffset);
                 updatedPath = curPath;
             }
             checkPath = currentNode.worldPosition;
