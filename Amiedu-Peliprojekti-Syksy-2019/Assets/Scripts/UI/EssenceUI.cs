@@ -15,13 +15,13 @@ public class EssenceUI : MonoBehaviour
     void Awake()
     {
         essence = GetComponent<TextMeshProUGUI>();
-        updateEssence = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        updateEssence.gameObject.SetActive(false);
         essence.text = CharacterStats.Essence.ToString();
         oldAmount = CharacterStats.Essence;
     }
     private void Start()
     {
+        updateEssence = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        updateEssence.gameObject.SetActive(false);
         Events.onEssenceChanged += UpdateEssenceUI;
     }
 

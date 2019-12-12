@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour
 {
+    protected bool isDead = false;
+    [HideInInspector]
+    public EnemyAttack currentAttack;
     public AnimationClip walk, idle;
     public AnimationClip[] death;
-    protected Animator anim;
+    public Animator anim;
     LayerMask layers;
-    protected StateMachine state = new StateMachine();
-    protected IEnemyState idleState;
-    protected IEnemyState patrolState;
-    protected IEnemyState aggressiveState;
-    protected IEnemyState attackState;
-    protected IEnemyState gotHitState;
+    public StateMachine state = new StateMachine();
+    public IEnemyState idleState;
+    public IEnemyState patrolState;
+    public IEnemyState aggressiveState;
+    public IEnemyState attackState;
+    public IEnemyState gotHitState;
     protected EnemySprite[] sprites;
     Vector3 oriScale;
 
@@ -43,9 +47,10 @@ public class BaseEnemy : MonoBehaviour
     internal Rigidbody2D rb;
     [HideInInspector]
     internal bool hasBeenHit;
-    AnimatorOverrideController overrideController;
+    public AnimatorOverrideController overrideController;
 
-    int _animMoveSpeed;
+    public int _animMoveSpeed, _animAttackSpeed;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -59,10 +64,13 @@ public class BaseEnemy : MonoBehaviour
         aggressiveState = new AggressiveState(this);
         patrolState = new PatrolState(this);
         gotHitState = new GotHitState(this);
+      
 
         spritesTransform = transform.Find("Sprites");
         oriScale = spritesTransform.localScale;
         colliders = spritesTransform.GetComponentsInChildren<Collider2D>();
+        var attackCol = colliders.First(col => col.tag == "EnemyAttackBox");
+        attackState = new AttackState(this, GetComponent<Collider2D>(), attackCol);
         var spriteChilds = spritesTransform.GetComponentsInChildren<SpriteRenderer>();
         sprites = new EnemySprite[spriteChilds.Length];
         for (int i = 0; i < spriteChilds.Length; i++)
@@ -73,7 +81,10 @@ public class BaseEnemy : MonoBehaviour
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
         AddToEnemyHitBoxList();
+
         _animMoveSpeed = Animator.StringToHash("MoveSpeed");
+        _animAttackSpeed = Animator.StringToHash("AttackSpeed");
+
         anim.SetFloat(_animMoveSpeed, stats.moveSpeed * 0.5f);
         overrideController = new AnimatorOverrideController();
         overrideController.runtimeAnimatorController = anim.runtimeAnimatorController;
@@ -93,9 +104,9 @@ public class BaseEnemy : MonoBehaviour
 
     internal void OnPathFound(Vector2[] newPath, bool pathSuccessful)
     {
+        if (isDead) return;
         if (pathSuccessful)
         {
-
             if (newPath.Length == 0)
             {
                 if (state.currentState == patrolState)
@@ -107,139 +118,166 @@ public class BaseEnemy : MonoBehaviour
                     state.ChangeState(aggressiveState);
                 }
             }
-        if (newPath.Length > 0)
-        {
-            Debug.DrawLine(rb.position, newPath[0], Color.red, 1.5f);
-            for (int i = 0; i < newPath.Length - 1; i++)
+            if (newPath.Length > 0)
             {
-                Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 8f);
+                Debug.DrawLine(rb.position, newPath[0], Color.red, 1.5f);
+                for (int i = 0; i < newPath.Length - 1; i++)
+                {
+                    Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 8f);
+                }
+                path = newPath;
+                targetIndex = 0;
+                destination = path[0];
+                spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
             }
-            path = newPath;
-            targetIndex = 0;
-            destination = path[0];
-            spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
         }
     }
-}
 
-internal Vector2 ReturnNextPoint()
-{
-    if (rb.position == destination && targetIndex < path.Length - 1)
+    internal Vector2 ReturnNextPoint()
     {
-        targetIndex++;
-        destination = path[targetIndex];
-        spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
-    }
-    //Debug.Log(destination);
-    return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
-}
-
-public void OnGetHit(int damage)
-{
-    if (Events.onInventory) return;
-    GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
-    obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
-    stats.health -= damage;
-    if (stats.health > 0)
-    {
-        StopCoroutine("GetHit");
-        StartCoroutine("GetHit");
-    }
-    else
-    {
-        CharacterStats.Essence += stats.essence;
-        Debug.Log("Dead");
-        this.enabled = false;
-        Destroy(gameObject);
-    }
-}
-
-protected IEnumerator GetHit()
-{
-    int loop = 0;
-    foreach (var sr in sprites)
-    {
-        sr.sr.color = sr.oriColor;
-    }
-    while (loop < 3)
-    {
-        while (sprites[0].sr.color.r > 0.3f)
+        if (rb.position == destination && targetIndex < path.Length - 1)
         {
-            foreach (var sr in sprites)
-            {
-                sr.sr.color = new Color(sr.sr.color.r - interval, sr.sr.color.g - interval, sr.sr.color.b - interval, sr.sr.color.a);
-            }
-            yield return null;
+            targetIndex++;
+            destination = path[targetIndex];
+            TurnEnemy(destination.x);
         }
-        while (sprites[0].sr.color.r < 1f)
-        {
-            foreach (var sr in sprites)
-            {
-                sr.sr.color = new Color(sr.sr.color.r + interval, sr.sr.color.g + interval, sr.sr.color.b + interval, sr.sr.color.a);
-            }
-            yield return null;
-        }
-        loop++;
+        return Vector2.MoveTowards(rb.position, destination, stats.moveSpeed * Time.deltaTime);
     }
 
-    yield return null;
-}
-private void RandomizePatrolPath()
-{
-    Node spawnPoint = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);
-    spawnPoint = PathRequestManager.instance.grid.GetWalkableNeighbor(spawnPoint);
-    rb.position = PathRequestManager.instance.grid.WorldPointFromNode(spawnPoint);
-
-    Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(1f, 15f), transform.position.y));
-    Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(1f, 15f)));
-    Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-1f, -15f), transform.position.y));
-
-    pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
-    pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
-    pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
-
-    patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
-    patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
-    patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
-
-    state.ChangeState(patrolState);
-}
-
-void AddToEnemyHitBoxList()
-{
-    foreach (var col in colliders)
-        Info.AddEnemyHitbox(col);
-    Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
-}
-void RemoveFromEnemyHitBoxList()
-{
-    foreach (var col in colliders)
-        Info.RemoveEnemyHitbox(col);
-    Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
-}
-public IEnumerator HasBeenHit(float time)
-{
-    hasBeenHit = true;
-    yield return new WaitForSeconds(time);
-    hasBeenHit = false;
-}
-public void CheckPlayerAggro()
-{
-    Vector3 player = References.rf.playerMovement.head.transform.position;
-    if ((top.transform.position - player).sqrMagnitude < stats.hearingRange)
+    public void TurnEnemy(float destinationX)
     {
-        Debug.Log("Aggro from hearing");
+        spritesTransform.localScale = destinationX > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
+    }
+    public void OnGetHit(int damage)
+    {
+        if (Events.onInventory) return;
+        if (state.currentState != aggressiveState && state.currentState != attackState) state.ChangeState(aggressiveState);
+        GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
+        obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
+        stats.health -= damage;
+        if (stats.health > 0)
+        {
+            StopCoroutine("GetHit");
+            StartCoroutine("GetHit");
+        }
+        else
+        {
+            CharacterStats.Essence += stats.essence;
+            Debug.Log("Dead");
+            isDead = true;
+            this.enabled = false;
+            Destroy(gameObject);
+        }
+    }
+
+    protected IEnumerator GetHit()
+    {
+        int loop = 0;
+        foreach (var sr in sprites)
+        {
+            sr.sr.color = sr.oriColor;
+        }
+        while (loop < 3)
+        {
+            while (sprites[0].sr.color.r > 0.3f)
+            {
+                foreach (var sr in sprites)
+                {
+                    sr.sr.color = new Color(sr.sr.color.r - interval, sr.sr.color.g - interval, sr.sr.color.b - interval, sr.sr.color.a);
+                }
+                yield return null;
+            }
+            while (sprites[0].sr.color.r < 1f)
+            {
+                foreach (var sr in sprites)
+                {
+                    sr.sr.color = new Color(sr.sr.color.r + interval, sr.sr.color.g + interval, sr.sr.color.b + interval, sr.sr.color.a);
+                }
+                yield return null;
+            }
+            loop++;
+        }
+
+        yield return null;
+    }
+    private void RandomizePatrolPath()
+    {
+        Node spawnPoint = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);
+        spawnPoint = PathRequestManager.instance.grid.GetWalkableNeighbor(spawnPoint);
+        rb.position = PathRequestManager.instance.grid.WorldPointFromNode(spawnPoint);
+
+        Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(1f, 15f), transform.position.y));
+        Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(1f, 15f)));
+        Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-1f, -15f), transform.position.y));
+
+        pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
+        pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
+        pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
+
+        patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
+        patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
+        patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
+
+        state.ChangeState(patrolState);
+    }
+
+    void AddToEnemyHitBoxList()
+    {
+        foreach (var col in colliders)
+            if (!col.CompareTag("EnemyAttackBox")) Info.AddEnemyHitbox(col);
+        Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
+    }
+    void RemoveFromEnemyHitBoxList()
+    {
+        foreach (var col in colliders)
+            if (!col.CompareTag("EnemyAttackBox")) Info.RemoveEnemyHitbox(col);
+        Events.onEnemyHitboxesUpdated(Info.enemyHitboxes);
+    }
+    public IEnumerator HasBeenHit(float time)
+    {
+        hasBeenHit = true;
+        yield return new WaitForSeconds(time);
+        hasBeenHit = false;
+    }
+    public void CheckPlayerAggro()
+    {
+        if (CheckRangeToPlayer(stats.hearingRange))
+        {
+            state.ChangeState(aggressiveState);
+            return;
+        }
+        if (!CheckLineOfSightToPlayer()) return;
+        if (!CheckIfInSightRadius(stats.sightRadius)) return;
         state.ChangeState(aggressiveState);
-        return;
+    }
+    public bool CheckIfInSightRadius(float sRadius)
+    {
+        float angle = Vector2.Angle(top.transform.right * Mathf.Sign(spritesTransform.localScale.x), References.rf.playerMovement.transform.position - transform.position);
+        if (angle > sRadius) return false;
+        return true;
     }
 
-    RaycastHit2D hit = Physics2D.Raycast(top.position, player - top.position, stats.sightRange, layers);
-    if (!hit) return;
-    if (hit.transform.name != "Player") return;
-    float angle = Vector2.Angle(top.transform.right * Mathf.Sign(spritesTransform.localScale.x), References.rf.playerMovement.transform.position - transform.position);
-    if (angle > stats.sightRadius) return;
-    state.ChangeState(aggressiveState);
-}
+    public bool CheckLineOfSightToPlayer()
+    {
+        Vector3 player = References.rf.playerMovement.head.transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(top.position, player - top.position, stats.sightRange, layers);
+        if (!hit) return false;
+        if (hit.transform.parent.name != "Player") return false;
+        return true;
+    }
+    public bool CheckRangeToPlayer(float distance)
+    {
+        Vector3 player = References.rf.playerMovement.head.transform.position;
+        if ((top.transform.position - player).sqrMagnitude > distance)
+            return false;
+        return true;
+    }
+    public void ApplyForwardForce()
+    {
+        AttackState _state = state.currentState as AttackState;
+        _state.applyForce = true;
+
+    }
     //private void OnDrawGizmos()
     //{
     //    var node = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);

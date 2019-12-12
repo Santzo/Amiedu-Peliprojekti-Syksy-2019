@@ -1661,7 +1661,6 @@ public class LevelGenerator : MonoBehaviour
         {
             var sr = obj.GetComponentInChildren<SpriteRenderer>();
             Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
-            Debug.Log(size);
             bool canBePlaced = false;
             while (!canBePlaced)
             {

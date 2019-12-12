@@ -16,8 +16,12 @@ public static class CharacterStats
     public static List<Inventory> inventoryItems = new List<Inventory>();
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
     public static Inventory[] hotbar = new Inventory[4];
-
-    public static float health, maxHealth, stamina, maxStamina, staminaRegenerationRate, movementSpeedMultiplier, attackSpeed, moveSpeed, animationBaseMoveSpeed, animationSprintMoveSpeed;
+    private static float health, maxHealth, stamina, maxStamina;
+    public static float Health { get { return health; } set {if (value == health) return; health = value; References.rf.healthBar.UpdateValue(health); } }
+    public static float MaxHealth { get { return maxHealth; } set { if (value == maxHealth) return; maxHealth = value; References.rf.healthBar.ChangeValues(health, maxHealth); } }
+    public static float Stamina { get { return stamina; } set { if (value == stamina) return; stamina = value; References.rf.staminaBar.UpdateValue(stamina); } }
+    public static float MaxStamina { get { return maxStamina; } set { if (value == maxStamina) return; maxStamina = value; References.rf.staminaBar.ChangeValues(stamina, maxStamina); } }
+    public static float staminaRegenerationRate, movementSpeedMultiplier, attackSpeed, moveSpeed, animationBaseMoveSpeed, animationSprintMoveSpeed;
     public static float sightBonusFromItems, sightBonusPercentage, criticalBonusFromItems, criticalBonusPercentage;
     public static float healthBonusFromItems, healthBonusPercentage, staminaBonusFromItems, staminaBonusPercentage;
     public static int gasAmmo, pistolAmmo, rifleAmmo;
@@ -38,8 +42,8 @@ public static class CharacterStats
         luck = 10;
         weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
         Info.CalculateHealthAndStamina();
-        health = maxHealth;
-        stamina = maxStamina;
+        Health = MaxHealth;
+        Stamina = MaxStamina;
         staminaRegenerationRate = 0.1f;
         movementSpeedMultiplier = 1.7f;
         attackSpeed = 1f;

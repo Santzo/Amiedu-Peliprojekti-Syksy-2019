@@ -192,6 +192,16 @@ public class Info
         int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
         return returnDmg;
     }
+    public static int CalculateEnemyDamage(EnemyAttack enemyAttack)
+    {
+        float physDmg = Mathf.Max(Random.Range(enemyAttack.minPhysical, enemyAttack.maxPhysical) - CharacterStats.physicalDefenseFromItems, 0);
+        float specDmg = Mathf.Max(Random.Range(minSpectral, maxSpectral) - CharacterStats.spectralDefenseFromItems, 0);
+        float fireDmg = Mathf.Max(Random.Range(minFire, maxFire) - CharacterStats.fireDefenseFromItems, 0);
+
+        float totalDmg = physDmg + specDmg + fireDmg;
+        int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
+        return returnDmg;
+    }
 
     internal static void AddDefenses(Armor armor, bool unEquip = false)
     {
@@ -224,12 +234,10 @@ public class Info
     }
     public static void CalculateHealthAndStamina()
     {
-        CharacterStats.maxHealth = Mathf.Ceil(BaseHealth + CharacterStats.healthBonusFromItems + CharacterStats.healthBonusPercentage);
-        CharacterStats.maxStamina = Mathf.Ceil(12.5f + BaseStamina + CharacterStats.staminaBonusFromItems + CharacterStats.staminaBonusPercentage);
-        if (CharacterStats.health > CharacterStats.maxHealth) CharacterStats.health = CharacterStats.maxHealth;
-        if (CharacterStats.stamina > CharacterStats.maxStamina) CharacterStats.stamina = CharacterStats.maxStamina;
-        References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
-        References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
+        CharacterStats.MaxHealth = Mathf.Ceil(BaseHealth + CharacterStats.healthBonusFromItems + CharacterStats.healthBonusPercentage);
+        CharacterStats.MaxStamina = Mathf.Ceil(12.5f + BaseStamina + CharacterStats.staminaBonusFromItems + CharacterStats.staminaBonusPercentage);
+        if (CharacterStats.Health > CharacterStats.MaxHealth) CharacterStats.Health = CharacterStats.MaxHealth;
+        if (CharacterStats.Stamina > CharacterStats.MaxStamina) CharacterStats.Stamina = CharacterStats.MaxStamina;
     }
     public static void CalculateAnimationSpeeds()
     {

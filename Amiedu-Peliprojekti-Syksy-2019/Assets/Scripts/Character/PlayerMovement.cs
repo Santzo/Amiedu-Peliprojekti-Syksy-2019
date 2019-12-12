@@ -99,8 +99,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        References.rf.healthBar.ChangeValues(CharacterStats.health, CharacterStats.maxHealth);
-        References.rf.staminaBar.ChangeValues(CharacterStats.stamina, CharacterStats.maxStamina);
         ObjectPooler.op.SpawnDialogueBox(head, new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
                                          new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }
@@ -162,7 +160,6 @@ public class PlayerMovement : MonoBehaviour
                     }
                     if (meleeWeapon != null && frame > 0.7f)
                     {
-
                         meleeWeapon.CheckForCollision();
                     }
                 }
@@ -229,11 +226,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyboardConfig.attack[0]) || Input.GetKeyDown(KeyboardConfig.attack[1]))
         {
-            if (!attacking && CharacterStats.characterEquipment.weapon != null && CharacterStats.stamina > 0f)
+            if (!attacking && CharacterStats.characterEquipment.weapon != null && CharacterStats.Stamina > 0f)
             {
                 if (CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee)
                 {
-                    CharacterStats.stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
+                    CharacterStats.Stamina -= CharacterStats.characterEquipment.weapon.staminaCost;
                     attacking = true;
                     activeAttackFrames = true;
                     StopCoroutine("WaitForMeleeAttack");
@@ -254,25 +251,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyboardConfig.sprint[0]) || Input.GetKey(KeyboardConfig.sprint[1]))
         {
-            if (CharacterStats.stamina <= 0f)
+            if (CharacterStats.Stamina <= 0f)
             {
                 pa.Sprinting = false;
                 return;
             }
-            CharacterStats.stamina -= 0.5f;
+            CharacterStats.Stamina -= 0.5f;
             pa.Sprinting = true;
-            References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
-
         }
     }
 
     void RegenerateStamina()
     {
-        if (CharacterStats.stamina >= CharacterStats.maxStamina) return;
-        CharacterStats.stamina += CharacterStats.staminaRegenerationRate;
-        if (CharacterStats.stamina > CharacterStats.maxStamina)
-            CharacterStats.stamina = CharacterStats.maxStamina;
-        References.rf.staminaBar.UpdateValue(CharacterStats.stamina);
+        if (CharacterStats.Stamina >= CharacterStats.MaxStamina) return;
+        CharacterStats.Stamina += CharacterStats.staminaRegenerationRate;
+        if (CharacterStats.Stamina > CharacterStats.MaxStamina)
+            CharacterStats.Stamina = CharacterStats.MaxStamina;
 
     }
     public void MeleeWeaponHit(Collider2D[] collisions, Collider2D position)
@@ -281,7 +275,7 @@ public class PlayerMovement : MonoBehaviour
         GameObject obj = null;
         foreach (var col in collisions)
         {
-            if (col != null)
+            if (col != null && !col.CompareTag("EnemyAttackBox"))
             {
                 Vector2 colBounds = new Vector2(col.transform.position.y - 0.4f, col.transform.position.y + col.bounds.size.y);
                 Debug.Log(transform.position.y + " vs " + colBounds.x + ", " + colBounds.y);
@@ -332,5 +326,12 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(Info.attackInterval);
             if (CharacterStats.gasAmmo < 0) CharacterStats.gasAmmo = 0;
         }
+    }
+    public void OnGetHit(int damage)
+    {
+        GameObject obj = ObjectPooler.op.Spawn("DamageText", new Vector2(head.transform.position.x, head.transform.position.y + 0.75f));
+        DamageText dm = obj.GetComponent<DamageText>();
+        dm.text.text = $"{TextColor.Red}{damage.ToString()}";
+        CharacterStats.Health -= damage;
     }
 }

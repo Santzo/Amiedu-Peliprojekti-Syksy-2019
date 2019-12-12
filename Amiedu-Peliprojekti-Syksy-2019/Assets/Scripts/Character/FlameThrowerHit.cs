@@ -10,7 +10,7 @@ public class FlameThrowerHit : MonoBehaviour
 
     private void Awake()
     {
-        layer = LayerMask.GetMask("StaticObject");
+        layer = LayerMask.GetMask("EnemyHitbox");
         particles = GetComponent<ParticleSystem>();
     }
     private void OnEnable()

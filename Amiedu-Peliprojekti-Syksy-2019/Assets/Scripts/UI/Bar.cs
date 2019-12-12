@@ -33,14 +33,14 @@ public class Bar : MonoBehaviour
     {
         if (name == "HealthBar")
         {
-            int maxHealth = Mathf.RoundToInt(CharacterStats.maxHealth);
-            int health = Mathf.Clamp(Mathf.RoundToInt(CharacterStats.health), 0, maxHealth);
+            int maxHealth = Mathf.RoundToInt(CharacterStats.MaxHealth);
+            int health = Mathf.Clamp(Mathf.RoundToInt(CharacterStats.Health), 0, maxHealth);
             text.text = $"{health} / {maxHealth}";
         }
         else
         {
-            int maxStamina = Mathf.RoundToInt(CharacterStats.maxStamina);
-            int stamina = Mathf.Clamp(Mathf.RoundToInt(CharacterStats.stamina), 0, maxStamina);
+            int maxStamina = Mathf.RoundToInt(CharacterStats.MaxStamina);
+            int stamina = Mathf.Clamp(Mathf.RoundToInt(CharacterStats.Stamina), 0, maxStamina);
             text.text = $"{stamina} / {maxStamina}";
         }
     }

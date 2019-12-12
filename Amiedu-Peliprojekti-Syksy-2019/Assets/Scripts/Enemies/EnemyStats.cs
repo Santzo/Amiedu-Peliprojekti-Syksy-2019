@@ -18,7 +18,7 @@ public class EnemyStats
     [Tooltip("How long the enemy follows after losing LOS")]
     public float followTime;
     public float minPathUpdateTime = 1.15f;
-    public EnemyAttack[] damage;
+    public EnemyAttack[] attacks;
 
 }
 

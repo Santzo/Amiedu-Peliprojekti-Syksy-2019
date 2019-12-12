@@ -44,7 +44,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.35868052, y: 0.78499585}
+  m_Offset: {x: 0.46549788, y: 1.2907269}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -55,7 +55,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9742896, y: 1.6117858}
+  m_Size: {x: 1.2710141, y: 2.623248}
   m_EdgeRadius: 0
 --- !u!1 &404710369063968799
 GameObject:
@@ -822,7 +822,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4386730265439586876}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2745326, y: 0.2647766, z: 0}
+  m_LocalPosition: {x: -0.321, y: 0.214, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9063725407256471684}
@@ -986,7 +986,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5202740912542823134}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.13542174, y: 0.34169984, z: 0}
+  m_LocalPosition: {x: 0.1354217, y: 0.34169984, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7413973730183522331}
@@ -1054,9 +1054,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4366359397703970768}
   - component: {fileID: 2889194884001697979}
-  m_Layer: 0
+  - component: {fileID: 312317323}
+  m_Layer: 19
   m_Name: L_Hand
-  m_TagString: Untagged
+  m_TagString: EnemyAttackBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1124,6 +1125,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &312317323
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374016279623709792}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.24927518, y: 0.17206275}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.19392987, y: 0.8996716}
+    oldSize: {x: 0.29, y: 0.41}
+    newSize: {x: 0.29, y: 0.41}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8996772, y: 1.0818563}
+  m_EdgeRadius: 0
 --- !u!1 &5503646961761578448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805963931081196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0009994209, y: -0.32000113, z: 0}
+  m_LocalPosition: {x: -0.078000665, y: -1.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8635805964186948989}
@@ -1493,6 +1520,7 @@ GameObject:
   - component: {fileID: 8635805964186948988}
   - component: {fileID: 4011460280680233408}
   - component: {fileID: 5858142480763306042}
+  - component: {fileID: 504046208109844528}
   m_Layer: 18
   m_Name: Zombie
   m_TagString: Untagged
@@ -1561,31 +1589,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8332a8326e643e41ac484c35cb03ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAttack:
+    attackRange: 0
+    forwardForce: 0
+    attackInterval: 0
+    animationMultiplier: 0
+    minPhysical: 0
+    maxPhysical: 0
+    minFire: 0
+    maxFire1: 0
+    minSpectral: 0
+    maxSpectral: 0
+    animation: {fileID: 0}
   walk: {fileID: 7400000, guid: 2a8d6903205da1844aec767a0535d01f, type: 2}
   idle: {fileID: 7400000, guid: 1fd7be9a981d15c479ca5b95cf393f82, type: 2}
   death:
   - {fileID: 0}
-  minPathUpdateTime: 0.45
+  anim: {fileID: 0}
   stats:
-    health: 60
+    health: 171.95
     moveSpeed: 1.5
     physicalDefense: 2
     fireDefense: -2
     spectralDefense: 0
     sightRange: 6.11
+    essence: 1200
     sightRadius: 83
     hearingRange: 5.5
     followTime: 2.5
-    damage:
-    - attackRange: 0
-      forwardForce: 0
+    minPathUpdateTime: 1.15
+    attacks:
+    - attackRange: 6.41
+      forwardForce: 4.73
+      attackInterval: 1.55
+      animationMultiplier: 0.8
       minPhysical: 4
       maxPhysical: 6
       minFire: 0
-      maxFire: 0
+      maxFire1: 0
       minSpectral: 0
       maxSpectral: 0
-      animation: {fileID: 0}
+      animation: {fileID: 7400000, guid: ff9ce134484cf2a4a868bf2df7d526eb, type: 2}
+  overrideController: {fileID: 0}
+  _animMoveSpeed: 0
+  _animAttackSpeed: 0
 --- !u!95 &5858142480763306042
 Animator:
   serializedVersion: 3
@@ -1605,6 +1652,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &504046208109844528
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8635805964186948984}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.93681026}
+  serializedVersion: 2
+  m_Radius: 0.35883754
 --- !u!1 &8635805964985679216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,7 +1692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805964985679216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.12000099, y: 2.1999989, z: 0}
+  m_LocalPosition: {x: 0.042999744, y: 1.2600003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8635805964186948989}
@@ -1660,7 +1723,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805965179835110}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.332, y: 0.02, z: 0}
+  m_LocalPosition: {x: -0.199, y: 0.02, z: 0}
   m_LocalScale: {x: 1.12, y: 0.93, z: 0.9}
   m_Children: []
   m_Father: {fileID: 8635805965239663635}
@@ -1739,7 +1802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8635805965239663632}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.23, y: -0.36, z: 0}
+  m_LocalPosition: {x: 0.153, y: -1.2999985, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7085275184081539074}
