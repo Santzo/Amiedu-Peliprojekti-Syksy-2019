@@ -102,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Audio.PlayOnLoop("BackgroundMusic", 0f, 0.95f);
         Audio.VolumeFade("BackgroundMusic", 0f, 0.35f, 5f);
+        sortingGroup.sortingOrder = Info.SortingOrder(transform.position.y);
         ObjectPooler.op.SpawnDialogueBox(head, new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
                                          new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }

@@ -9,9 +9,11 @@ public class PlayerEquipment : MonoBehaviour
     private Dictionary<string, SpriteRenderer> chestgearEquipment = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, SpriteRenderer> leggearEquipment = new Dictionary<string, SpriteRenderer>();
     private Material defaultMat;
+    private Lightsource curLight;
     [HideInInspector]
     public Transform LOSCircle;
     private Transform twoHandedLightSource;
+    private Transform oneHandedLightSource;
     [HideInInspector]
     public Animator anim;
     public AnimatorOverrideController overrider;
@@ -37,6 +39,7 @@ public class PlayerEquipment : MonoBehaviour
         Events.onAddPlayerEquipment += AddEquipment;
         LOSCircle = transform.parent.Find("MainFogCircle");
         twoHandedLightSource = transform.parent.GetFromAllChildren("TwoHandedLightSource");
+        oneHandedLightSource = transform.parent.GetFromAllChildren("Lightsource");
         References.rf.playerMovement.mask = transform.parent.Find("VisionMask");
         References.rf.playerMovement.mask.SetParent(null);
         CharacterStats.ResetStats();
@@ -105,6 +108,15 @@ public class PlayerEquipment : MonoBehaviour
         if (equip.item.GetType() == typeof(Lightsource))
         {
             Lightsource temp = equip.item as Lightsource;
+            Debug.Log(equip.obj.transform.rotation);
+            Weapon wep = CharacterStats.characterEquipment.weapon;
+            if (wep != null)
+            {
+                if (wep.hands == Hands.One_handed) equip.obj.transform.SetParent(oneHandedLightSource, false);
+                else equip.obj.transform.SetParent(twoHandedLightSource, false);
+            }
+            else equip.obj.transform.SetParent(oneHandedLightSource);
+        
             CharacterStats.sightBonusFromItems += temp.lightRadius;
         }
 
@@ -115,7 +127,8 @@ public class PlayerEquipment : MonoBehaviour
             Equipped ls = equipment["Lightsource"];
             if (ls.obj != null)
             {
-                ls.obj.SetActive(temp.hands == Hands.One_handed);
+                if (temp.hands == Hands.One_handed) ls.obj.transform.SetParent(oneHandedLightSource, false);
+                else ls.obj.transform.SetParent(twoHandedLightSource, false);
             }
 
             AnimationClip attackClip = temp.attackAnimation == null ? animations.DefaultAttackClip(temp.hands + defWep) : temp.attackAnimation;

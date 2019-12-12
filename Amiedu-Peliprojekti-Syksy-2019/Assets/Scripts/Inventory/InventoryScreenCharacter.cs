@@ -20,7 +20,7 @@ public class InventoryScreenCharacter : MonoBehaviour
         var lights = GetComponentsInChildren<Light>();
         foreach (var par in particles)
         {
-            if (par.transform.parent.parent.name != "Lightsource") par.gameObject.SetActive(false);
+            if (par.transform.parent.parent.name != "Lightsource" && par.transform.parent.parent.name != "TwoHandedLightSource") par.gameObject.SetActive(false);
         }
         foreach (var light in lights)
             light.gameObject.SetActive(false);
@@ -32,6 +32,14 @@ public class InventoryScreenCharacter : MonoBehaviour
             if (weapon == null || weapon != null && weapon.hands == Hands.One_handed)
             {
                 var ls = obj.transform.GetFromAllChildren("Lightsource").GetComponentInChildren<ParticleSystem>().transform;
+                if (ls != null)
+                {
+                    ls.transform.localScale = ls.transform.localScale * 2.5f;
+                }
+            }
+            else
+            {
+                var ls = obj.transform.GetFromAllChildren("TwoHandedLightSource").GetComponentInChildren<ParticleSystem>().transform;
                 if (ls != null)
                 {
                     ls.transform.localScale = ls.transform.localScale * 2.5f;

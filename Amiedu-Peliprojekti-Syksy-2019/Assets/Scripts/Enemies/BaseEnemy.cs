@@ -172,6 +172,10 @@ public class BaseEnemy : MonoBehaviour
             CharacterStats.Essence += stats.essence;
             isDead = true;
             GetComponent<BaseEnemy>().enabled = false;
+            foreach (var col in GetComponentsInChildren<Collider2D>())
+            {
+                col.enabled = false;
+            }
             //Destroy(gameObject);
         }
     }
