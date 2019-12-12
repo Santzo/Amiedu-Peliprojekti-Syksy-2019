@@ -12,10 +12,11 @@ public struct EnemyAttack
     public float minPhysical;
     public float maxPhysical;
     public float minFire;
-    public float maxFire1;
+    public float maxFire;
     public float minSpectral;
     public float maxSpectral;
     public AnimationClip animation;
+    public AudioClip audio;
 }
 
 

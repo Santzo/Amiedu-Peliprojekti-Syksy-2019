@@ -19,6 +19,7 @@ public class EnemyStats
     public float followTime;
     public float minPathUpdateTime = 1.15f;
     public EnemyAttack[] attacks;
+    public EnemyAudio audio;
 
 }
 

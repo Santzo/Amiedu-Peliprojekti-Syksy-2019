@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
 
 public class InteractableObject : MonoBehaviour
@@ -45,6 +44,7 @@ public class InteractableObject : MonoBehaviour
 
     public void Interact()
     {
+        if (name == "Treasure Chest") Audio.PlaySound("ChestOpen", 0.95f, 1.5f);
         if (io != null) io.ToggleTextActive(false);
         anim.SetTrigger(triggerId);
         Destroy(actionTrigger.gameObject);

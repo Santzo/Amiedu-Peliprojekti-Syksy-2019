@@ -5317,67 +5317,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050641179}
   m_CullTransparentMesh: 0
---- !u!1 &1074966812
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1074966814}
-  - component: {fileID: 1074966813}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1074966813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074966812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b9c9858649faa149a2804e793d81e45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  master: {fileID: 0}
-  clip:
-  - tag: MainMenuMusic
-    clip: {fileID: 8300000, guid: 441409b76a5de514494b47dd2967a02c, type: 3}
-    source: {fileID: 0}
-    music: 1
-  - tag: Select
-    clip: {fileID: 8300000, guid: 3cfc3b6ba40ac0e4aaad78f1891f96e4, type: 3}
-    source: {fileID: 0}
-    music: 0
-  - tag: Click
-    clip: {fileID: 8300000, guid: 59a1ccfb321f8e5449d0164c6298f391, type: 3}
-    source: {fileID: 0}
-    music: 0
-  - tag: Error
-    clip: {fileID: 8300000, guid: 755abedc5fb2767478e6b6f45d352899, type: 3}
-    source: {fileID: 0}
-    music: 0
---- !u!4 &1074966814
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074966812}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.873259, y: 23.54927, z: -24.497227}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1111693077
 GameObject:
   m_ObjectHideFlags: 0
@@ -8163,6 +8102,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1742001763}
   m_CullTransparentMesh: 0
+--- !u!1 &1751649182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751649184}
+  - component: {fileID: 1751649183}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1751649183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751649182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9c9858649faa149a2804e793d81e45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  master: {fileID: 0}
+  clip:
+  - tag: MainMenuMusic
+    clip: {fileID: 8300000, guid: 441409b76a5de514494b47dd2967a02c, type: 3}
+    source: {fileID: 0}
+    music: 1
+  - tag: Select
+    clip: {fileID: 8300000, guid: 3cfc3b6ba40ac0e4aaad78f1891f96e4, type: 3}
+    source: {fileID: 0}
+    music: 0
+  - tag: Click
+    clip: {fileID: 8300000, guid: 59a1ccfb321f8e5449d0164c6298f391, type: 3}
+    source: {fileID: 0}
+    music: 0
+  - tag: Error
+    clip: {fileID: 8300000, guid: 755abedc5fb2767478e6b6f45d352899, type: 3}
+    source: {fileID: 0}
+    music: 0
+  - tag: ChestOpen
+    clip: {fileID: 8300000, guid: 8b73a1033e0c1894daa1fa555caec82e, type: 3}
+    source: {fileID: 0}
+    music: 0
+  - tag: FootStep
+    clip: {fileID: 8300000, guid: 33430f7e940195b46b3c594943b393b4, type: 3}
+    source: {fileID: 0}
+    music: 0
+  - tag: BackgroundMusic
+    clip: {fileID: 8300000, guid: 3a7deda49789ebf46a35d558ebc63d2a, type: 3}
+    source: {fileID: 0}
+    music: 0
+--- !u!4 &1751649184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751649182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.873259, y: 23.54927, z: -24.497227}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1757963219
 GameObject:
   m_ObjectHideFlags: 0

@@ -70,7 +70,6 @@ public class AggressiveState : IEnemyState
     private void RandomizeAttack()
     {
         if (enemy.currentAttack.attackRange != 0) return;
-        Debug.Log("New attack selected");
         int atk = Random.Range(0, enemy.stats.attacks.Length);
         enemy.currentAttack = enemy.stats.attacks[atk];
         enemy.currentAttack.attackInterval += Random.Range(-0.15f, 0.15f);

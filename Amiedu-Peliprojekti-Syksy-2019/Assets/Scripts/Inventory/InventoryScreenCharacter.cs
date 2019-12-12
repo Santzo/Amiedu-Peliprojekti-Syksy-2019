@@ -16,6 +16,15 @@ public class InventoryScreenCharacter : MonoBehaviour
         var obj = Instantiate(gear, transform);
         obj.name = "Chestgear";
         obj.transform.SetAsFirstSibling();
+        var particles = GetComponentsInChildren<ParticleSystem>();
+        var lights = GetComponentsInChildren<Light>();
+        foreach (var par in particles)
+        {
+            if (par.transform.parent.parent.name != "Lightsource") par.gameObject.SetActive(false);
+        }
+        foreach (var light in lights)
+            light.gameObject.SetActive(false);
+
         if (CharacterStats.characterEquipment.lightSource != null)
         {
             var weapon = CharacterStats.characterEquipment.weapon;

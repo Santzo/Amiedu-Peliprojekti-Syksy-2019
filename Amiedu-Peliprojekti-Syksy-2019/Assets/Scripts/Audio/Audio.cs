@@ -47,7 +47,7 @@ public class Audio : MonoBehaviour
         get
         {
             master.GetFloat("musicVol", out float _volume);
-          
+
             return _volume;
         }
         set
@@ -55,7 +55,7 @@ public class Audio : MonoBehaviour
             master.GetFloat("musicVol", out float _volume);
             if (value == -30) value = -80;
             if (value == _volume) return;
-           
+
             master.SetFloat("musicVol", value);
         }
     }
@@ -72,7 +72,7 @@ public class Audio : MonoBehaviour
             master.GetFloat("soundVol", out float _volume);
             if (value == -30) value = -80;
             if (value == _volume) return;
-           
+
             master.SetFloat("soundVol", value);
         }
     }
@@ -99,7 +99,7 @@ public class Audio : MonoBehaviour
             audioLib.Add(clp.tag, clp);
         }
 
-        
+
     }
     private void Start()
     {
@@ -107,6 +107,17 @@ public class Audio : MonoBehaviour
         MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0f);
         SoundVolume = PlayerPrefs.GetFloat("SoundVolume", 0f);
     }
+    public static AudioSource AddAudioSource()
+    {
+        var source = ad.gameObject.AddComponent<AudioSource>();
+        return source;
+    }
+
+    public void RemoveAudioSource(AudioSource source)
+    {
+        Destroy(source);
+    }
+
     public static void PlaySound(string clip, float volume = 1f, float pitch = 1f)
     {
         ad.audioLib[clip].source.pitch = pitch;
@@ -214,5 +225,16 @@ public class Audio : MonoBehaviour
         PlayerPrefs.SetFloat("SoundVolume", SoundVolume);
     }
 }
+public static class AudioExtensions
+{
+    public static void PlaySound(this AudioSource original, AudioClip clip, float volume = 1f, float pitch = 1f)
+    {
+        if (clip == null) return;
+        original.pitch = pitch;
+        original.PlayOneShot(clip, volume);
+    }
+
+}
+
 
 

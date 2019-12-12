@@ -27,7 +27,6 @@ public class EssenceUI : MonoBehaviour
 
     private void UpdateEssenceUI(int _essence)
     {
-        Debug.Log(_essence);
         updateEssence.gameObject.SetActive(false);
         int amountIncreased = _essence - oldAmount;
         if (updatingAmount == null) updatingAmount = StartCoroutine(UpdateAmount());
