@@ -21,13 +21,10 @@ public class AttackState : IEnemyState
     public void OnStateEnter()
     {
         hasHit = false;
-        var player = References.rf.playerEquipment.transform.position;
-        var node = PathRequestManager.instance.grid.NodeFromWorldPoint(player);
-        node = PathRequestManager.instance.grid.GetWalkableNeighbor(node);
-        target = node.worldPosition;
+        SetTarget();
         applyForce = false;
         enemy.anim.SetFloat(enemy._animAttackSpeed, enemy.currentAttack.animationMultiplier);
-        enemy.TurnEnemy(target.x);
+
         enemy.anim.SetTrigger("Attack");
     }
 
@@ -68,6 +65,14 @@ public class AttackState : IEnemyState
     public void OnStateUpdate()
     {
 
+    }
+    public void SetTarget()
+    {
+        var player = References.rf.playerEquipment.transform.position;
+        var node = PathRequestManager.instance.grid.NodeFromWorldPoint(player);
+        node = PathRequestManager.instance.grid.GetWalkableNeighbor(node);
+        target = node.worldPosition;
+        enemy.TurnEnemy(target.x);
     }
 
 }

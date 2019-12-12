@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -99,6 +100,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        Audio.PlayOnLoop("BackgroundMusic", 0f, 0.95f);
+        Audio.VolumeFade("BackgroundMusic", 0f, 0.35f, 5f);
         ObjectPooler.op.SpawnDialogueBox(head, new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
                                          new Dialogue { talker = CharacterStats.name, text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." });
     }
@@ -160,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     if (meleeWeapon != null && frame > 0.7f)
                     {
+
                         meleeWeapon.CheckForCollision();
                     }
                 }
@@ -293,6 +297,7 @@ public class PlayerMovement : MonoBehaviour
         {
             case "EnemyHitbox":
                 var be = obj.GetComponentInParent<BaseEnemy>();
+                if (be.isDead) return;
                 be.OnGetHit(Info.CalculateDamage(be.stats));
                 ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f, 0f, 205f));
                 break;
@@ -333,5 +338,13 @@ public class PlayerMovement : MonoBehaviour
         DamageText dm = obj.GetComponent<DamageText>();
         dm.text.text = $"{TextColor.Red}{damage.ToString()}";
         CharacterStats.Health -= damage;
+    }
+    public void PlayFootStep()
+    {
+        Audio.PlaySound("FootStep", Random.Range(0.15f, 0.2f), Random.Range(0.95f, 1f));
+    }
+    public void PlayWeaponSwing()
+    {
+        Audio.PlaySound("WeaponSwing");
     }
 }

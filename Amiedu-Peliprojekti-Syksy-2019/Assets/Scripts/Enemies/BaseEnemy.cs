@@ -8,9 +8,10 @@ using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour
 {
-    protected bool isDead = false;
+    public bool isDead = false;
     [HideInInspector]
     public EnemyAttack currentAttack;
+    protected AudioSource audioSource;
     public AnimationClip walk, idle;
     public AnimationClip[] death;
     public Animator anim;
@@ -59,7 +60,6 @@ public class BaseEnemy : MonoBehaviour
         sortingTransform = transform.Find("SortingTransform");
         top = transform.Find("Top");
         Events.onGameFieldCreated += RandomizePatrolPath;
-
         idleState = new IdleState(this);                        // Set enemy states
         aggressiveState = new AggressiveState(this);
         patrolState = new PatrolState(this);
@@ -95,9 +95,13 @@ public class BaseEnemy : MonoBehaviour
         layers = LayerMask.GetMask("StaticWall", "PlayerHitbox");
         stats.moveSpeed += Random.Range(-0.2f, 0.2f);
         stats.minPathUpdateTime += Random.Range(-0.2f, 0.2f);
+        
     }
-
-    private void FixedUpdate()
+    protected virtual void Start()
+    {
+        audioSource = Audio.AddAudioSource();
+    }
+    protected virtual void FixedUpdate()
     {
         if (state.currentState != null) state.currentState.OnStateFixedUpdate();
     }
@@ -148,9 +152,9 @@ public class BaseEnemy : MonoBehaviour
     {
         spritesTransform.localScale = destinationX > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
     }
-    public void OnGetHit(int damage)
+    public virtual void OnGetHit(int damage)
     {
-        if (Events.onInventory) return;
+        if (Events.onInventory || isDead) return;
         if (state.currentState != aggressiveState && state.currentState != attackState) state.ChangeState(aggressiveState);
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
         obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
@@ -162,11 +166,13 @@ public class BaseEnemy : MonoBehaviour
         }
         else
         {
+            audioSource.PlaySound(stats.audio.death);
+            overrideController["Death"] = death[0];
+            anim.SetTrigger("Death");
             CharacterStats.Essence += stats.essence;
-            Debug.Log("Dead");
             isDead = true;
-            this.enabled = false;
-            Destroy(gameObject);
+            GetComponent<BaseEnemy>().enabled = false;
+            //Destroy(gameObject);
         }
     }
 
@@ -272,9 +278,15 @@ public class BaseEnemy : MonoBehaviour
             return false;
         return true;
     }
+    public float DistanceToPlayer()
+    {
+        Vector3 player = References.rf.playerMovement.head.transform.position;
+        return (top.transform.position - player).sqrMagnitude;
+    }
     public void ApplyForwardForce()
     {
         AttackState _state = state.currentState as AttackState;
+        _state.SetTarget();
         _state.applyForce = true;
 
     }

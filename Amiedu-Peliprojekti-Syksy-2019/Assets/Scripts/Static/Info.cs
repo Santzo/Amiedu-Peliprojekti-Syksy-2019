@@ -195,8 +195,8 @@ public class Info
     public static int CalculateEnemyDamage(EnemyAttack enemyAttack)
     {
         float physDmg = Mathf.Max(Random.Range(enemyAttack.minPhysical, enemyAttack.maxPhysical) - CharacterStats.physicalDefenseFromItems, 0);
-        float specDmg = Mathf.Max(Random.Range(minSpectral, maxSpectral) - CharacterStats.spectralDefenseFromItems, 0);
-        float fireDmg = Mathf.Max(Random.Range(minFire, maxFire) - CharacterStats.fireDefenseFromItems, 0);
+        float specDmg = Mathf.Max(Random.Range(enemyAttack.minSpectral, enemyAttack.maxSpectral) - CharacterStats.spectralDefenseFromItems, 0);
+        float fireDmg = Mathf.Max(Random.Range(enemyAttack.minFire, enemyAttack.maxFire) - CharacterStats.fireDefenseFromItems, 0);
 
         float totalDmg = physDmg + specDmg + fireDmg;
         int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
