@@ -32,8 +32,8 @@ MonoBehaviour:
   fireMax: 6
   spectralMin: 20
   spectralMax: 50
-  attackRate: 1.4
-  staminaCost: 11
+  attackRate: 4.07
+  staminaCost: 2.39
   criticalHitChance: 31.6
   bulletPerShot: 0
   gearEffects:

@@ -405,7 +405,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2570331515043906841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.71, y: 0.31, z: 0}
+  m_LocalPosition: {x: -1.12, y: -0.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2570331516392746260}
@@ -515,8 +515,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2570331515263878265}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.103998184, y: -1.4829998, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalPosition: {x: 0.103998184, y: -3.14, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5266459253056673994}
   - {fileID: 2570331515204070016}
@@ -548,7 +548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2570331516102730117}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.14, y: -0.53, z: 0}
+  m_LocalPosition: {x: 0.14, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2570331516392746260}
@@ -656,7 +656,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 39b3882efde5f914eade5c044a7b5e60, type: 2}
   anim: {fileID: 0}
   stats:
-    health: 10
+    health: 150
     moveSpeed: 4
     physicalDefense: 0
     fireDefense: 0
