@@ -409,7 +409,6 @@ public class MainMenuHandler : MonoBehaviour, IMainMenuHandler
         if (index == 0) return "Low";
         if (index == 1) return "Medium";
         if (index == 2) return "High";
-        if (index == 3) return "Highest";
         if (index == 4) return "Highest";
         return "Blaa";
 

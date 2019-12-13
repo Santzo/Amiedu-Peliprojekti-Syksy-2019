@@ -51,6 +51,7 @@ public class Grid : MonoBehaviour
         var bgc = References.rf.levelGenerator.backgroundCorners;
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridWorldSize.x / 2 - Vector2.up * gridWorldSize.y / 2;
         RoomGrid[,] rooms = References.rf.levelGenerator.roomGrid;
+        RoomGrid[,] objects = References.rf.levelGenerator.objectGrid;
         Tilemap temp = References.rf.levelGenerator.backgroundCorners;
         Vector2Int roomGridSize = new Vector2Int(References.rf.levelGenerator.worldSizeX, References.rf.levelGenerator.worldSizeY);
         Vector2 multiplier = new Vector2(gridSizeX / roomGridSize.x, gridSizeY / roomGridSize.y);
@@ -195,13 +196,7 @@ public class Grid : MonoBehaviour
                         grid[lX + 1, lY].walkable = walkable;
                         grid[lX + 1, lY - 1].walkable = walkable;
                         break;
-
-
-
                 }
-
-
-
             }
         }
         // Find all floor objects (boxes, shelves etc.) and set appropriate unwalkable nodes for them
@@ -210,12 +205,12 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < roomGridSize.y; y++)
             {
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                TileType tile = rooms[x, y].tileType;
+                TileType tile = objects[x, y].tileType;
                 int lX = Mathf.RoundToInt(x * multiplier.x);
                 int lY = Mathf.RoundToInt(y * multiplier.y);
                 if (tile == TileType.Object)
                 {
-                    Vector2Int tileSize = rooms[x, y].objectSize;
+                    Vector2Int tileSize = objects[x, y].objectSize;
                     for (int oX = 0; oX < tileSize.x; oX++)
                     {
                         for (int oY = 0; oY < tileSize.y; oY++)

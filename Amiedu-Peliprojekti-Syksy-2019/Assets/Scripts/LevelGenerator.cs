@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
@@ -24,6 +25,7 @@ public class LevelGenerator : MonoBehaviour
     public int worldSizeX, worldSizeY;
     int maxRoomSizeX, maxRoomSizeY;
     int maxAttempts = 20;
+    public string[] bookShelves, barrels;
     public List<AllRooms> allRooms = new List<AllRooms>();
     public RoomGrid[,] roomGrid, objectGrid;
 
@@ -45,6 +47,12 @@ public class LevelGenerator : MonoBehaviour
         worldSizeX = worldSizeY = 100;
         backgroundTilemap.size = foregroundTilemap.size = foregroundCorners.size = backgroundCorners.size = floorTilemap.size = new Vector3Int(worldSizeX, worldSizeY, 0);
 
+        bookShelves = (from obj in floorObjects
+                       where obj.name.StartsWith("Book")
+                       select obj.name).ToArray();
+        barrels = (from obj in floorObjects
+                   where obj.name.StartsWith("Barrel")
+                   select obj.name).ToArray();
         maxRoomSizeX = maxRoomSizeY = 20;
         roomGrid = new RoomGrid[worldSizeX, worldSizeY];
         objectGrid = new RoomGrid[worldSizeX, worldSizeY];
@@ -109,9 +117,11 @@ public class LevelGenerator : MonoBehaviour
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         SpawnCarpets(10);
+        SpawnBarrels(0);
         SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
         SpawnBookshelves(10);
-        SpawnBoxes(50);
+        SpawnBoxes(25);
+
     }
 
     private void SpawnBookshelves(int v)
@@ -120,6 +130,7 @@ public class LevelGenerator : MonoBehaviour
         int count = 0;
         while (count < v)
         {
+            string shelf = bookShelves[Random.Range(0, bookShelves.Length)];
             bool canPlace = false;
             while (!canPlace)
             {
@@ -142,7 +153,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 if (canPlace)
                 {
-                    SpawnFloorObject("Bookshelf", x, y, Random.Range(0f, 0.1f), 0.35f);
+                    SpawnFloorObject(shelf, x, y, Random.Range(0f, 0.1f), 0.35f);
                     break;
                 }
             }
@@ -157,6 +168,36 @@ public class LevelGenerator : MonoBehaviour
             int x = Random.Range(0, worldSizeX - 3);
             int y = Random.Range(0, worldSizeY - 3);
             SpawnFloorObject("Box", x, y, 0.1f);
+        }
+    }
+    private void SpawnBarrels(int v)
+    {
+        for (int x = 0; x < worldSizeX; x++)
+        {
+            for (int y = 0; y < worldSizeY; y++)
+            {
+                if (Random.Range(0, 2) == 0) continue;
+                if (roomGrid[x, y].tileType == TileType.TopLeftTwo)
+                {
+                    string barrel = barrels[Random.Range(0, barrels.Length)];
+                    ForceSpawnFloorObject(barrel, x, y - 1, 0.2f, 0.6f, 0, 1);
+                }
+                else if (roomGrid[x, y].tileType == TileType.TopRightTwo)
+                {
+                    string barrel = barrels[Random.Range(0, barrels.Length)];
+                    ForceSpawnFloorObject(barrel, x, y - 1, 0f, 0.6f, 0, 1);
+                }
+                else if (roomGrid[x, y].tileType == TileType.BottomLeft)
+                {
+                    string barrel = barrels[Random.Range(0, barrels.Length)];
+                    ForceSpawnFloorObject(barrel, x, y, 0.1f, -0.1f, 0, 1);
+                }
+                else if (roomGrid[x, y].tileType == TileType.BottomRight)
+                {
+                    string barrel = barrels[Random.Range(0, barrels.Length)];
+                    ForceSpawnFloorObject(barrel, x, y, 0.15f, -0.1f, 0, 1);
+                }
+            }
         }
     }
     private void SpawnCarpets(int v)
@@ -416,7 +457,6 @@ public class LevelGenerator : MonoBehaviour
         {
             allRooms[0].roomType = RoomType.Boss;
         }
-
     }
     void CreateRooms()
     {
@@ -1616,6 +1656,31 @@ public class LevelGenerator : MonoBehaviour
         return obj;
     }
 
+    public void ForceSpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f, int xSizeExtra = 0, int ySizeExtra = 0)
+    {
+        GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
+        Vector2Int node = new Vector2Int(x, y);
+        if (obj != null)
+        {
+            var sr = obj.GetComponentInChildren<SpriteRenderer>();
+            Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
+
+            var spawnedObj = Instantiate(obj);
+            objectGrid[node.x, node.y].tileType = TileType.Object;
+            for (int aX = 1; aX < size.x + xSizeExtra; aX++)
+            {
+                for (int aY = 1; aY < size.y + ySizeExtra; aY++)
+                {
+                    objectGrid[node.x + aX, node.y + aY].tileType = TileType.ObjectPlace;
+                }
+            }
+            objectGrid[node.x, node.y].objectSize = new Vector2Int(size.x * (2 + xSizeExtra), size.y + ySizeExtra);
+
+            spawnedObj.transform.position = new Vector2(node.x + offsetX, node.y + offsetY);
+            spawnedObj.name = oname;
+            spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
+        }
+    }
     public void SpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
@@ -1626,13 +1691,14 @@ public class LevelGenerator : MonoBehaviour
             Vector2Int size = new Vector2Int(Mathf.CeilToInt(sr.bounds.size.x), Mathf.CeilToInt(sr.bounds.size.y));
 
             bool canBePlaced = false;
-            while (!canBePlaced)
+            int attempts = 0;
+            while (!canBePlaced && attempts < 10)
             {
                 canBePlaced = true;
                 for (int aX = 0; aX < size.x; aX++)
                 {
-                        if (roomGrid[node.x + aX, node.y].tileType != TileType.Middle && roomGrid[node.x + aX, node.y].tileType != TileType.Corridor || objectGrid[node.x + aX, node.y].tileType == TileType.Object || objectGrid[node.x + aX, node.y].tileType == TileType.ObjectPlace)
-                            canBePlaced = false;
+                    if (roomGrid[node.x + aX, node.y].tileType != TileType.Middle && roomGrid[node.x + aX, node.y].tileType != TileType.Corridor || objectGrid[node.x + aX, node.y].tileType == TileType.Object || objectGrid[node.x + aX, node.y].tileType == TileType.ObjectPlace)
+                        canBePlaced = false;
                 }
                 if (!canBePlaced)
                 {
@@ -1640,14 +1706,16 @@ public class LevelGenerator : MonoBehaviour
                     int newY = Mathf.Clamp(node.y + Random.Range(-15, 16), 0, worldSizeY - size.y - 1);
                     node = new Vector2Int(newX, newY);
                 }
+                attempts++;
             }
+            if (!canBePlaced) return;
             var spawnedObj = Instantiate(obj);
-            roomGrid[node.x, node.y].tileType = TileType.Object;
+            objectGrid[node.x, node.y].tileType = TileType.Object;
             for (int aX = 1; aX < size.x; aX++)
             {
                 objectGrid[node.x + aX, node.y].tileType = TileType.ObjectPlace;
             }
-            roomGrid[node.x, node.y].objectSize = new Vector2Int(size.x * 2, size.y);
+            objectGrid[node.x, node.y].objectSize = new Vector2Int(size.x * 2, size.y);
             spawnedObj.transform.position = new Vector2(node.x + offsetX, node.y + offsetY);
             spawnedObj.name = oname;
             spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
