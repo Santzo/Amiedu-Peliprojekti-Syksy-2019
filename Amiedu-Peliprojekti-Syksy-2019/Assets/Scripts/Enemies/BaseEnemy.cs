@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour
 {
+    [HideInInspector]
     public bool isDead = false;
     [HideInInspector]
     public EnemyAttack currentAttack;
@@ -91,7 +92,7 @@ public class BaseEnemy : MonoBehaviour
         anim.runtimeAnimatorController = overrideController;
         overrideController["BaseWalk"] = walk;
         overrideController["BaseIdle"] = idle;
-        overrideController["BaseDeath"] = death[0];
+        if (death.Length > 0) overrideController["BaseDeath"] = death[0];
         layers = LayerMask.GetMask("StaticWall", "PlayerHitbox");
         stats.moveSpeed += Random.Range(-0.2f, 0.2f);
         stats.minPathUpdateTime += Random.Range(-0.2f, 0.2f);

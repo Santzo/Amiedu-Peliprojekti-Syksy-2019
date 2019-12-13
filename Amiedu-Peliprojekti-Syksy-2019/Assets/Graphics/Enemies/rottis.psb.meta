@@ -88,8 +88,8 @@ ScriptedImporter:
   rigSpriteImportData:
   - name: frontleg_L
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.725568, y: 0.8993922}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -110,8 +110,8 @@ ScriptedImporter:
     uvTransform: {x: 142, y: -13}
   - name: tail
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.047889903, y: 0.74553967}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -132,8 +132,8 @@ ScriptedImporter:
     uvTransform: {x: -237, y: 127}
   - name: head
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.7146244, y: 0.5595249}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -154,8 +154,8 @@ ScriptedImporter:
     uvTransform: {x: -54, y: 92}
   - name: backfoot_L
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.8745383, y: 0.6587338}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -176,8 +176,8 @@ ScriptedImporter:
     uvTransform: {x: -77, y: 135}
   - name: backleg_upper_L
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.58105564, y: 0.875464}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -220,8 +220,8 @@ ScriptedImporter:
     uvTransform: {x: -148, y: -190}
   - name: frontleg_R
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.7422769, y: 0.8993922}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -242,8 +242,8 @@ ScriptedImporter:
     uvTransform: {x: 284, y: -37}
   - name: backleg_upper_R
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5202646, y: 0.91209465}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -264,8 +264,8 @@ ScriptedImporter:
     uvTransform: {x: 119, y: -179}
   - name: backfoot_R
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.8638374, y: 0.6587338}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

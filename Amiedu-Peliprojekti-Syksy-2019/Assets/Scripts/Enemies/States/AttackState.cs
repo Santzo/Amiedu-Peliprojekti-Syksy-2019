@@ -24,7 +24,6 @@ public class AttackState : IEnemyState
         SetTarget();
         applyForce = false;
         enemy.anim.SetFloat(enemy._animAttackSpeed, enemy.currentAttack.animationMultiplier);
-
         enemy.anim.SetTrigger("Attack");
     }
 
