@@ -437,7 +437,7 @@ Transform:
   m_GameObject: {fileID: 2570331515204070031}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.211, y: 1.782, z: 0}
-  m_LocalScale: {x: 2.39, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 2.39, y: 1.23, z: 0.9}
   m_Children: []
   m_Father: {fileID: 2570331515263878266}
   m_RootOrder: 1
@@ -661,15 +661,15 @@ MonoBehaviour:
     physicalDefense: 0
     fireDefense: 0
     spectralDefense: 0
-    sightRange: 0
+    sightRange: 8.75
     essence: 0
-    sightRadius: 30
+    sightRadius: 125
     hearingRange: 5
     followTime: 3
     minPathUpdateTime: 1.15
     attacks:
-    - attackRange: 2.37
-      forwardForce: 2.27
+    - attackRange: 7.33
+      forwardForce: 2.55
       attackInterval: 1
       animationMultiplier: 1.7
       minPhysical: 0.66

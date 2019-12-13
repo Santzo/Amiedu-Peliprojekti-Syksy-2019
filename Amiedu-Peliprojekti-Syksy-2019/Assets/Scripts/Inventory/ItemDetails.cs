@@ -50,13 +50,11 @@ public class ItemDetails : MonoBehaviour
             details[2].text = $"Fire damage {TextColor.Red}{_item.fireMin} {TextColor.White}-{TextColor.Red} {_item.fireMax}";
             details[3].text = $"Critical hit chance {TextColor.Return("yellow")}{_item.criticalHitChance}{TextColor.Return()}%";
             details[4].text = $"Attack speed {TextColor.Return("yellow")}{_item.attackRate}{TextColor.Return()} times per second";
-
-      
-
         }
         else if (item is Lightsource)
         {
-
+            Lightsource _item = item as Lightsource;
+            details[0].text = $"Increases sight radius by {TextColor.Yellow}{_item.lightRadius}{TextColor.White} points.";
         }
         else if (item is Consumable) // CONSUMABLES HERE
         {

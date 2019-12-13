@@ -50,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Vector2 movement;
     Vector3 oriScale;
+    [HideInInspector]
     public GameObject head;
+    [HideInInspector]
     public ParticleSystem weaponTrailRenderer;
     [HideInInspector]
     public MeleeWeaponHit meleeWeapon;
@@ -269,7 +271,7 @@ public class PlayerMovement : MonoBehaviour
     void RegenerateStamina()
     {
         if (CharacterStats.Stamina >= CharacterStats.MaxStamina) return;
-        CharacterStats.Stamina += CharacterStats.staminaRegenerationRate;
+        CharacterStats.Stamina += CharacterStats.staminaRegenerationRate * Time.deltaTime;
         if (CharacterStats.Stamina > CharacterStats.MaxStamina)
             CharacterStats.Stamina = CharacterStats.MaxStamina;
 

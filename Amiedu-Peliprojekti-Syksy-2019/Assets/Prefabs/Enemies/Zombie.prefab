@@ -1712,7 +1712,7 @@ MonoBehaviour:
       minSpectral: 0
       maxSpectral: 0
       animation: {fileID: 7400000, guid: ff9ce134484cf2a4a868bf2df7d526eb, type: 2}
-      audio: {fileID: 0}
+      audio: {fileID: 8300000, guid: 2bb6a6d0765a7cd459736f04d4255907, type: 3}
     audio:
       growl: {fileID: 8300000, guid: 422cadb99105e544994aee6fb79d0b95, type: 3}
       death: {fileID: 8300000, guid: 5ae014a222515cf45a4763cae9626245, type: 3}

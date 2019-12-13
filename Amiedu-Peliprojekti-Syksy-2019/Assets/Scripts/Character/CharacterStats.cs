@@ -44,14 +44,13 @@ public static class CharacterStats
         Info.CalculateHealthAndStamina();
         Health = MaxHealth;
         Stamina = MaxStamina;
-        staminaRegenerationRate = 0.1f;
+        staminaRegenerationRate = 3f;
         movementSpeedMultiplier = 1.7f;
         attackSpeed = 1f;
         moveSpeed = 5f;
         Info.CalculateAnimationSpeeds();
         sightBonusFromItems = sightBonusPercentage = criticalBonusFromItems = criticalBonusPercentage = 0f;
         healthBonusFromItems = healthBonusPercentage = staminaBonusFromItems = staminaBonusPercentage = 0f;
-        staminaRegenerationRate = 0.1f;
         gasAmmo = 1000;
     }
 }

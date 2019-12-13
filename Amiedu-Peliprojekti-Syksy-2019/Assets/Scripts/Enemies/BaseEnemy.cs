@@ -293,6 +293,7 @@ public class BaseEnemy : MonoBehaviour
         AttackState _state = state.currentState as AttackState;
         _state.SetTarget();
         _state.applyForce = true;
+        audioSource.PlaySound(currentAttack.audio);
 
     }
     //private void OnDrawGizmos()
