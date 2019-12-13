@@ -25,10 +25,5 @@ public class Zombie : BaseEnemy
             }
         }
     }
-    public override void OnGetHit(int damage)
-    {
-        if (isDead) return;
-        base.OnGetHit(damage);
-        audioSource.PlaySound(stats.audio.getHit);
-    }
+  
 }

@@ -156,6 +156,7 @@ public class BaseEnemy : MonoBehaviour
     public virtual void OnGetHit(int damage)
     {
         if (Events.onInventory || isDead) return;
+        audioSource.PlaySound(stats.audio.getHit);
         if (state.currentState != aggressiveState && state.currentState != attackState) state.ChangeState(aggressiveState);
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
         obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
@@ -295,6 +296,14 @@ public class BaseEnemy : MonoBehaviour
         _state.applyForce = true;
         audioSource.PlaySound(currentAttack.audio);
 
+    }
+    public void PlayFootStep(float volume = 1f)
+    {
+        float distance = DistanceToPlayer();
+        if (distance > 40f) return;
+        volume = Mathf.Clamp((40f - distance) * 0.03f, 0.15f, 1f);
+        Debug.Log(volume);
+        audioSource.PlaySound(stats.audio.walk, volume, Random.Range(0.9f, 1f));
     }
     //private void OnDrawGizmos()
     //{
