@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c0531cdb07f064f8e215aa260a1ef8, type: 3}
   m_Name: Hockey Mask
   m_EditorClassIdentifier: 
-  itemLevel: 0
+  itemLevel: 1
   weight: 0
   obj: {fileID: 2002459119338164281, guid: ac215fb7adba5934ea852e291dceca02, type: 3}
   icon: {fileID: 0}
+  material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
   description: A hockey mask

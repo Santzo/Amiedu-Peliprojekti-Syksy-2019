@@ -301,7 +301,8 @@ public class PlayerMovement : MonoBehaviour
             case "EnemyHitbox":
                 var be = obj.GetComponentInParent<BaseEnemy>();
                 if (be.isDead) return;
-                be.OnGetHit(Info.CalculateDamage(be.stats));
+                int dmg = Info.CalculateDamage(be.stats, out bool crit);
+                be.OnGetHit(dmg, crit);
                 ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f, 0f, 205f));
                 break;
             default:

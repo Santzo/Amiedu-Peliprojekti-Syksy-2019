@@ -118,7 +118,11 @@ public class LevelGenerator : MonoBehaviour
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         SpawnCarpets(10);
         SpawnBarrels(0);
-        SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        var chest = SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        chest.GetComponent<TreasureChest>().CreateChestContent(
+            new ChestContent { type = typeof(Weapon), random = true, level = 1 },
+            new ChestContent { type = typeof(Lightsource), random = true, level = 1 },
+            new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 });
         SpawnBookshelves(10);
         SpawnBoxes(25);
 
@@ -202,11 +206,16 @@ public class LevelGenerator : MonoBehaviour
     }
     private void SpawnCarpets(int v)
     {
-        for (int i = 0; i < v; i++)
+        GameObject obj = Array.Find(floorObjects, _obj => _obj.name == "Carpet");
+        foreach (var room in allRooms)
         {
-            int x = Random.Range(0, worldSizeX - 6);
-            int y = Random.Range(0, worldSizeY - 6);
-            SpawnBackgroundObject("Carpet", x, y, 0.1f);
+            if (Random.Range(0, 2) == 0) continue;
+            int sizeX = (room.endX - 1) - (room.startX + 2);
+            int sizeY = (room.endY - 3) - (room.startY + 2);
+            GameObject carpet = Instantiate(obj);
+            carpet.transform.position = new Vector2(room.startX + 2, room.startY + 2);
+            SpriteRenderer sr = carpet.GetComponent<SpriteRenderer>();
+            sr.size = new Vector2(sizeX, sizeY);
         }
     }
     private void DrawWallShades()
@@ -1681,7 +1690,7 @@ public class LevelGenerator : MonoBehaviour
             spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }
-    public void SpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f)
+    public GameObject SpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
         Vector2Int node = new Vector2Int(x, y);
@@ -1708,7 +1717,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 attempts++;
             }
-            if (!canBePlaced) return;
+            if (!canBePlaced) return null;
             var spawnedObj = Instantiate(obj);
             objectGrid[node.x, node.y].tileType = TileType.Object;
             for (int aX = 1; aX < size.x; aX++)
@@ -1719,7 +1728,9 @@ public class LevelGenerator : MonoBehaviour
             spawnedObj.transform.position = new Vector2(node.x + offsetX, node.y + offsetY);
             spawnedObj.name = oname;
             spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
+            return spawnedObj;
         }
+        return null;
     }
     public void SpawnBackgroundObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f)
     {

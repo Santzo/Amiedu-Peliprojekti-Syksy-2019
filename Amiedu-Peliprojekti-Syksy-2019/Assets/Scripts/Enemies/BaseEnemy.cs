@@ -153,13 +153,15 @@ public class BaseEnemy : MonoBehaviour
     {
         spritesTransform.localScale = destinationX > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
     }
-    public virtual void OnGetHit(int damage)
+    public virtual void OnGetHit(int damage, bool crit = false)
     {
         if (Events.onInventory || isDead) return;
         audioSource.PlaySound(stats.audio.getHit);
         if (state.currentState != aggressiveState && state.currentState != attackState) state.ChangeState(aggressiveState);
         GameObject obj = ObjectPooler.op.Spawn("DamageText", top.position);
-        obj.GetComponent<DamageText>().text.text = $"{TextColor.Return("green")}{damage.ToString()}";
+        DamageText dmg = obj.GetComponent<DamageText>();
+        if (!crit) dmg.text.text = $"{TextColor.Green}{damage.ToString()}";
+        else dmg.text.text = $"{TextColor.Yellow}{damage.ToString()}!";
         stats.health -= damage;
         if (stats.health > 0)
         {
@@ -302,7 +304,6 @@ public class BaseEnemy : MonoBehaviour
         float distance = DistanceToPlayer();
         if (distance > 40f) return;
         volume = Mathf.Clamp((40f - distance) * 0.03f, 0.15f, 1f);
-        Debug.Log(volume);
         audioSource.PlaySound(stats.audio.walk, volume, Random.Range(0.9f, 1f));
     }
     //private void OnDrawGizmos()

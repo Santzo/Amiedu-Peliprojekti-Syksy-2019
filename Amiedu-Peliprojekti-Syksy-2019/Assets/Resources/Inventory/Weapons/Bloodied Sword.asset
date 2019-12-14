@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
   m_Name: Bloodied Sword
   m_EditorClassIdentifier: 
-  itemLevel: 3
+  itemLevel: 1
   weight: 1.3
   obj: {fileID: 5447659618020291305, guid: c0546d9b2d3c6254b91d70b73d969c5a, type: 3}
   icon: {fileID: 0}

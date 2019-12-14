@@ -43,7 +43,8 @@ public class FlameThrowerHit : MonoBehaviour
                 BaseEnemy enemy = collision.GetComponentInParent<BaseEnemy>();
                 if (enemy != null && !enemy.hasBeenHit)
                 {
-                    enemy.OnGetHit(Info.CalculateDamage(enemy.stats));
+                    int dmg = Info.CalculateDamage(enemy.stats, out bool crit);
+                    enemy.OnGetHit(dmg, crit);
                     StartCoroutine(enemy.HasBeenHit(Info.attackInterval));
                     break;
                 }

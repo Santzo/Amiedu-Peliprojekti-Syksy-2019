@@ -67,7 +67,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 400957895
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 467dea49687c1b547a78c0002fd8711f, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.43529412}
@@ -92,9 +92,9 @@ GameObject:
   - component: {fileID: 3996069530581404625}
   - component: {fileID: 3996069530581404624}
   - component: {fileID: 3996069530581404639}
-  - component: {fileID: 3996069530581404636}
   - component: {fileID: 3996069530581404637}
   - component: {fileID: 8774431079247993107}
+  - component: {fileID: 7595362890422344097}
   m_Layer: 14
   m_Name: Treasure Chest
   m_TagString: Untagged
@@ -135,7 +135,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 72ff87e1ea41c5149bbe1eec913d18ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -154,7 +154,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 400957895
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 3
   m_Sprite: {fileID: -1717658070356587407, guid: 00e93ad2720f2f94cb8cadba6a037ab8,
     type: 3}
@@ -205,18 +205,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.2848632, y: 0.9529803}
   m_EdgeRadius: 0
---- !u!114 &3996069530581404636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996069530581404627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d09dd06dfd417b44187a180a612c36ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &3996069530581404637
 Rigidbody2D:
   serializedVersion: 4
@@ -257,6 +245,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7595362890422344097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996069530581404627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fbecfe802ae5e47b2dd4c87cbb207c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3996069530716041761
 GameObject:
   m_ObjectHideFlags: 0

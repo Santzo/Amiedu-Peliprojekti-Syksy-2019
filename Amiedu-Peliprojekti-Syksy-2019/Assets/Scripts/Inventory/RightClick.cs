@@ -45,7 +45,7 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
                     }
                     break;
                 case "Unequip":
-                    InventoryManager.im.AddItem(unEquip);
+                    InventoryManager.im.AddSingleItem(unEquip);
                     Events.onUnEquip(unEquip, itemIndex);
                     unEquip = null;
                     break;

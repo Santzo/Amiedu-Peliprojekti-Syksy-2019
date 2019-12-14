@@ -36,8 +36,7 @@ public class InteractableObjectText : MonoBehaviour
         text.color = new Color(text.color.r, text.color.g, text.color.b, 1f);
     }
 
-
-    IEnumerator _DeactivateText()
+    IEnumerator _DeactivateText(bool deSpawn = false)
     {
         while (text.color.a > 0f)
         {

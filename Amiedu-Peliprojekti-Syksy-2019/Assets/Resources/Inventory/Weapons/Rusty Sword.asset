@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
   m_Name: Rusty Sword
   m_EditorClassIdentifier: 
-  itemLevel: 2
+  itemLevel: 1
   weight: 1.2
   obj: {fileID: 5447659618020291305, guid: 49d5a02c3423158409315207bacaf3ad, type: 3}
   icon: {fileID: 0}

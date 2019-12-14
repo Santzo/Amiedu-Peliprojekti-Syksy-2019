@@ -183,12 +183,13 @@ public class Info
         }
     }
 
-    public static int CalculateDamage(EnemyStats enemyStats)
+    public static int CalculateDamage(EnemyStats enemyStats, out bool crit)
     {
+        crit = Random.Range(0f, 100f) < totalCriticalHitChance;
         float physDmg = Mathf.Max(Random.Range(minPhys, maxPhys) - enemyStats.physicalDefense,0);
         float specDmg = Mathf.Max(Random.Range(minSpectral, maxSpectral) - enemyStats.spectralDefense,0);
         float fireDmg = Mathf.Max(Random.Range(minFire, maxFire) - enemyStats.fireDefense,0);
-        float totalDmg = physDmg + specDmg + fireDmg;
+        float totalDmg = (physDmg + specDmg + fireDmg) * (crit ? 1.5f : 1f);
         int returnDmg = totalDmg > 1 ? Mathf.RoundToInt(totalDmg) : Random.Range(0, 2);
         return returnDmg;
     }

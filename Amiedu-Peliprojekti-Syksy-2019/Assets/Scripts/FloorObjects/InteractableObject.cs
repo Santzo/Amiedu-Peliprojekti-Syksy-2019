@@ -3,8 +3,8 @@ using UnityEngine.Rendering;
 
 public class InteractableObject : MonoBehaviour
 {
-    InteractableObjectText io;
-    GameObject obj;
+    protected InteractableObjectText io;
+    protected GameObject obj;
     float spriteX, spriteY;
     Animator anim;
     int triggerId;
@@ -25,12 +25,8 @@ public class InteractableObject : MonoBehaviour
         {
             if (obj == null || !obj.activeSelf)
             {
-                obj = ObjectPooler.op.Spawn("InteractableObjectText", new Vector2(transform.position.x + spriteX, transform.position.y + spriteY));
+                InRange();
             }
-            References.rf.currentInteractableObject = this;
-            io = obj.GetComponent<InteractableObjectText>();
-            io.text.text = $"Press {TextColor.Return("green")}{KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString())} {TextColor.Return()} to open the {name}.";
-            io.ToggleTextActive(true);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -41,12 +37,18 @@ public class InteractableObject : MonoBehaviour
             References.rf.currentInteractableObject = null;
         }
     }
-
-    public void Interact()
+    protected virtual void InRange()
     {
-        if (name == "Treasure Chest") Audio.PlaySound("ChestOpen", 0.95f, 1.5f);
+        obj = ObjectPooler.op.Spawn("InteractableObjectText", new Vector2(transform.position.x + spriteX, transform.position.y + spriteY));
+        References.rf.currentInteractableObject = this;
+      
+    }
+    public virtual void Interact()
+    {
         if (io != null) io.ToggleTextActive(false);
+        obj = null;
+        io = null;
         anim.SetTrigger(triggerId);
-        Destroy(actionTrigger.gameObject);
+        //Destroy(actionTrigger.gameObject);
     }
 }
