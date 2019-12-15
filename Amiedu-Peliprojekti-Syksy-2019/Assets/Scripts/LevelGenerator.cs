@@ -120,18 +120,23 @@ public class LevelGenerator : MonoBehaviour
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         //SpawnCarpets(10);
         SpawnBarrels(0);
-        var chest = SpawnFloorObject("Treasure Chest", x + 3, y + 3, 0.2f);
+        var chest = SpawnFloorObject("Treasure Chest", x + 3, y + 3, 0.2f, 0f, true);
         chest.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = true, level = 1 },
             new ChestContent { type = typeof(Headgear), random = true, level = 1},
             new ChestContent { type = typeof(Lightsource), random = true, level = 1 },
-            new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 },
-            new ChestContent { type = typeof(Ammo), random = true, level = 10, amount = 50 });
-        var chestTwo = SpawnFloorObject("Treasure Chest", x + 3, y + 5, 0.2f);
+            new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 });
+        var chestTwo = SpawnFloorObject("Treasure Chest", x + 3, worldSizeY - 5, 0.2f, 0f, true);
         chestTwo.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = false, name = "Flamethrower" },
+            new ChestContent { type = typeof(Chestgear), random = false, name = "Rusty Hockey Chest" },
             new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 },
              new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 });
+        var chestThree = SpawnFloorObject("Treasure Chest", worldSizeX - 3, worldSizeY / 2, 0.2f, 0f, true);
+        chestTwo.GetComponent<TreasureChest>().CreateChestContent(
+            new ChestContent { type = typeof(Weapon), random = false, name = "Bone Crusher" },
+            new ChestContent { type = typeof(Weapon), random = false, name = "Bloodied Sword" },
+             new ChestContent { type = typeof(Lightsource), random = false, name = "Blue Flamed Torch" });
 
         SpawnBookshelves(10);
         SpawnBoxes(25);
@@ -1700,7 +1705,7 @@ public class LevelGenerator : MonoBehaviour
             spawnedObj.GetComponentInChildren<SortingGroup>().sortingOrder = Info.SortingOrder(spawnedObj.transform.position.y);
         }
     }
-    public GameObject SpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f)
+    public GameObject SpawnFloorObject(string oname, int x, int y, float offsetX = 0f, float offsetY = 0f, bool infiniteAttempts = false)
     {
         GameObject obj = Array.Find(floorObjects, fo => fo.name == oname);
         Vector2Int node = new Vector2Int(x, y);
@@ -1711,9 +1716,10 @@ public class LevelGenerator : MonoBehaviour
 
             bool canBePlaced = false;
             int attempts = 0;
-            while (!canBePlaced && attempts < 10)
+            while (infiniteAttempts || !canBePlaced && attempts < 10)
             {
                 canBePlaced = true;
+                
                 for (int aX = 0; aX < size.x; aX++)
                 {
                     if (roomGrid[node.x + aX, node.y].tileType != TileType.Middle && roomGrid[node.x + aX, node.y].tileType != TileType.Corridor || objectGrid[node.x + aX, node.y].tileType == TileType.Object || objectGrid[node.x + aX, node.y].tileType == TileType.ObjectPlace)
@@ -1725,6 +1731,7 @@ public class LevelGenerator : MonoBehaviour
                     int newY = Mathf.Clamp(node.y + Random.Range(-15, 16), 0, worldSizeY - size.y - 1);
                     node = new Vector2Int(newX, newY);
                 }
+                if (canBePlaced) infiniteAttempts = false;
                 attempts++;
             }
             if (!canBePlaced) return null;

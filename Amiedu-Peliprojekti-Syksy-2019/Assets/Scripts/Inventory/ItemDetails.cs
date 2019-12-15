@@ -120,16 +120,16 @@ public class ItemDetails : MonoBehaviour
               : $"{TextColor.Return("red")}Decreases {TextColor.Return()}critical hit chance by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}%.";
             case _GearEffect.Increases_PhysicalDamagePoints:
                 return effect.amount > 0
-               ? $"{TextColor.Return("green")}Increases {TextColor.Yellow}physical{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}points."
-               : $"{TextColor.Return("red")}Decreases {TextColor.Yellow}physical{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}points.";
+               ? $"{TextColor.Return("green")}Increases {TextColor.Yellow}physical{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()} points."
+               : $"{TextColor.Return("red")}Decreases {TextColor.Yellow}physical{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()} points.";
             case _GearEffect.Increases_FireDamagePoints:
                 return effect.amount > 0
-               ? $"{TextColor.Return("green")}Increases {TextColor.Red}fire{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}points."
-               : $"{TextColor.Return("red")}Decreases {TextColor.Red}fire{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}points.";
+               ? $"{TextColor.Return("green")}Increases {TextColor.Red}fire{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()} points."
+               : $"{TextColor.Return("red")}Decreases {TextColor.Red}fire{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()} points.";
             case _GearEffect.Increases_SpectralDamagePoints:
                 return effect.amount > 0
-               ? $"{TextColor.Return("green")}Increases {TextColor.Purple}spectral{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}points."
-               : $"{TextColor.Return("red")}Decreases {TextColor.Purple}spectral{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()}points.";
+               ? $"{TextColor.Return("green")}Increases {TextColor.Purple}spectral{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()} points."
+               : $"{TextColor.Return("red")}Decreases {TextColor.Purple}spectral{TextColor.White} damage by {TextColor.Return("yellow")}{Mathf.Abs(effect.amount)}{TextColor.Return()} points.";
             case _GearEffect.Increases_PhysicalDamagePercent:
                 return effect.amount > 0
                ? $"{TextColor.Return("green")}Increases {TextColor.Yellow}physical{TextColor.White} damage by {TextColor.Return("yellow")}{effect.amount}{TextColor.Return()}%."

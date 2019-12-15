@@ -1673,7 +1673,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 8635805964186948984}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 1
+  m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -1715,6 +1715,7 @@ MonoBehaviour:
   death:
   - {fileID: 7400000, guid: 4f53d7354a3f35f4da8bf77f12c6e287, type: 2}
   anim: {fileID: 0}
+  path: []
   stats:
     health: 32
     moveSpeed: 1.5

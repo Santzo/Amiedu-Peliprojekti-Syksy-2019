@@ -64,10 +64,8 @@ public class Pathfinding {
             waypoints = RetracePath(startNode, targetNode);
         }
         return waypoints;
-        
 	}
 		
-	
 	Vector2[] RetracePath(Node startNode, Node endNode) {
 		List<Vector2> path = new List<Vector2>();
 		Node currentNode = endNode;
@@ -76,7 +74,7 @@ public class Pathfinding {
         path.Add(checkPath);
         while (currentNode != startNode) {
             curPath = checkPath - currentNode.worldPosition;
-            if (curPath != updatedPath && checkPath != endNode.worldPosition || currentNode.parent == startNode)
+            if (curPath != updatedPath  || currentNode.parent == startNode)
             {
                 Vector2 pathOffset = new Vector2(RandomNumber(-0.2f, 0.2f), RandomNumber(-0.2f, 0.2f));
                 path.Add(checkPath + pathOffset);

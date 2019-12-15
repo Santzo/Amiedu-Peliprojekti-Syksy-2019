@@ -119,10 +119,11 @@ public class BaseEnemy : MonoBehaviour
                 {
                     RandomizePatrolPath();
                 }
-                else if (state.currentState == aggressiveState)
+                else if (state.currentState == aggressiveState || state.currentState == attackState)
                 {
                     state.ChangeState(aggressiveState);
                 }
+
             }
             if (newPath?.Length > 0)
             {
@@ -235,7 +236,6 @@ public class BaseEnemy : MonoBehaviour
             patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
             patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
 
-        Debug.Log(patrolPoints[0] + ", " + patrolPoints[1] + ", " + patrolPoints[2]);
         state.ChangeState(patrolState);
     }
 

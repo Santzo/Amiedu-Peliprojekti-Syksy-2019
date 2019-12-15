@@ -38,14 +38,14 @@ public class EnemyManager : MonoBehaviour
             {
                 int enemy = Random.Range(0, loadEnemies.Length);
                 bool legitSpawn = false;
-                Vector2 spawnPoint = Vector2.zero;
+                Vector2Int spawnPoint = Vector2Int.zero;
                 while (!legitSpawn)
                 {
-                    spawnPoint = new Vector2(Random.Range(2, References.rf.levelGenerator.worldSizeX - 2), Random.Range(2, References.rf.levelGenerator.worldSizeY - 2));
+                    spawnPoint = new Vector2Int(Random.Range(2, References.rf.levelGenerator.worldSizeX - 2), Random.Range(2, References.rf.levelGenerator.worldSizeY - 2));
                     legitSpawn = PathRequestManager.instance.grid.NodeFromWorldPoint(spawnPoint).walkable == 2;
                 }
-                Debug.Log(PathRequestManager.instance.grid.NodeFromWorldPoint(spawnPoint).walkable);
-                var obj = Instantiate(loadEnemies[enemy], spawnPoint, Quaternion.identity);
+                Vector2 spawn = spawnPoint; 
+                var obj = Instantiate(loadEnemies[enemy], spawn, Quaternion.identity);
                 enemies.Add(obj.GetComponent<BaseEnemy>());
             }
         }

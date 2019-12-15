@@ -160,9 +160,9 @@ public class Info
             float fireBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.fireMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.fireMin * 0.1f);
             float specBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.spectralMin * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.spectralMin * 0.1f);
             float luckmulti = 1f + (CharacterStats.luck / 1500f);
-            minPhys = (wep.physicalMin + physBonus) * luckmulti;
-            minFire = (wep.fireMin + fireBonus) * luckmulti;
-            minSpectral = (wep.spectralMin + specBonus) * luckmulti;
+            minPhys = (wep.physicalMin + physBonus + extraPhys) * luckmulti;
+            minFire = (wep.fireMin + fireBonus + extraFire) * luckmulti;
+            minSpectral = (wep.spectralMin + specBonus + extraSpec) * luckmulti;
             return Mathf.RoundToInt(minPhys + minFire + minSpectral);
         }
     }
@@ -177,9 +177,9 @@ public class Info
             float fireBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.fireMax * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.fireMax * 0.1f);
             float specBonus = CharacterStats.characterEquipment.weapon.weaponType == WeaponType.Melee ? CharacterStats.strength * 0.05f * (wep.spectralMax * 0.1f) : CharacterStats.dexterity * 0.05f * (wep.spectralMax * 0.1f);
             float luckmulti = 1f + (CharacterStats.luck / 1500f);
-            maxPhys = (wep.physicalMax + physBonus) * luckmulti;
-            maxFire = (wep.fireMax + fireBonus) * luckmulti;
-            maxSpectral = (wep.spectralMax + specBonus) * luckmulti;
+            maxPhys = (wep.physicalMax + physBonus + extraPhys) * luckmulti;
+            maxFire = (wep.fireMax + fireBonus + extraFire) * luckmulti;
+            maxSpectral = (wep.spectralMax + specBonus + extraSpec) * luckmulti;
             return Mathf.RoundToInt(maxPhys + maxFire + maxSpectral);
         }
     }
