@@ -36,7 +36,6 @@ public class PathRequestManager : MonoBehaviour
         {
             if (pathRequests.Count > 0)
             {
-                
                 for (int i = 0; i < pathRequests.Count; i++)
                 {
                     if (pathRequests[i] != null)

@@ -40,8 +40,8 @@ public class BaseEnemy : MonoBehaviour
     internal SortingGroup sGroup;
     [HideInInspector]
     internal Vector2 destination;
-    [HideInInspector]
-    internal Vector2[] path;
+
+    public  Vector2[] path;
     public EnemyStats stats = new EnemyStats();
     [HideInInspector]
     internal int targetIndex = 0;
@@ -60,12 +60,11 @@ public class BaseEnemy : MonoBehaviour
         anim = GetComponent<Animator>();
         sortingTransform = transform.Find("SortingTransform");
         top = transform.Find("Top");
-        Events.onGameFieldCreated += RandomizePatrolPath;
         idleState = new IdleState(this);                        // Set enemy states
         aggressiveState = new AggressiveState(this);
         patrolState = new PatrolState(this);
         gotHitState = new GotHitState(this);
-      
+
 
         spritesTransform = transform.Find("Sprites");
         oriScale = spritesTransform.localScale;
@@ -82,7 +81,6 @@ public class BaseEnemy : MonoBehaviour
             var _color = spriteChilds[i].color;
             sprites[i] = new EnemySprite(_transform, _sprite, _color);
         }
-        AddToEnemyHitBoxList();
 
         _animMoveSpeed = Animator.StringToHash("MoveSpeed");
         _animAttackSpeed = Animator.StringToHash("AttackSpeed");
@@ -97,13 +95,15 @@ public class BaseEnemy : MonoBehaviour
         layers = LayerMask.GetMask("StaticWall", "PlayerHitbox");
         stats.moveSpeed += Random.Range(-0.2f, 0.2f);
         stats.minPathUpdateTime += Random.Range(-0.2f, 0.2f);
-        
+
     }
     protected virtual void Start()
     {
+        AddToEnemyHitBoxList();
         audioSource = Audio.AddAudioSource();
+        RandomizePatrolPath();
     }
-    protected virtual void FixedUpdate()
+    public virtual void OnFixedUpdate()
     {
         if (state.currentState != null) state.currentState.OnStateFixedUpdate();
     }
@@ -113,7 +113,7 @@ public class BaseEnemy : MonoBehaviour
         if (isDead) return;
         if (pathSuccessful)
         {
-            if (newPath.Length == 0)
+            if (newPath?.Length == 0)
             {
                 if (state.currentState == patrolState)
                 {
@@ -124,7 +124,7 @@ public class BaseEnemy : MonoBehaviour
                     state.ChangeState(aggressiveState);
                 }
             }
-            if (newPath.Length > 0)
+            if (newPath?.Length > 0)
             {
                 Debug.DrawLine(rb.position, newPath[0], Color.red, 1.5f);
                 for (int i = 0; i < newPath.Length - 1; i++)
@@ -136,6 +136,7 @@ public class BaseEnemy : MonoBehaviour
                 destination = path[0];
                 spritesTransform.localScale = destination.x > rb.position.x ? oriScale : new Vector3(-oriScale.x, oriScale.y, oriScale.z);
             }
+        
         }
     }
 
@@ -220,19 +221,21 @@ public class BaseEnemy : MonoBehaviour
         Node spawnPoint = PathRequestManager.instance.grid.NodeFromWorldPoint(rb.position);
         spawnPoint = PathRequestManager.instance.grid.GetWalkableNeighbor(spawnPoint);
         rb.position = PathRequestManager.instance.grid.WorldPointFromNode(spawnPoint);
+        AllRooms startRoom = References.rf.enemyManager.startRoom;
 
-        Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(1f, 15f), transform.position.y));
-        Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(1f, 15f)));
-        Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-1f, -15f), transform.position.y));
+            Node pointOne = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(5f, 20f), transform.position.y));
+            Node pointTwo = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x, transform.position.y + UnityEngine.Random.Range(5f, 20f)));
+            Node pointThree = PathRequestManager.instance.grid.NodeFromWorldPoint(new Vector2(transform.position.x + UnityEngine.Random.Range(-5f, -20f), transform.position.y));
 
-        pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
-        pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
-        pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
+            pointOne = PathRequestManager.instance.grid.GetWalkableNeighbor(pointOne);
+            pointTwo = PathRequestManager.instance.grid.GetWalkableNeighbor(pointTwo);
+            pointThree = PathRequestManager.instance.grid.GetWalkableNeighbor(pointThree);
 
-        patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
-        patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
-        patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
+            patrolPoints[0] = PathRequestManager.instance.grid.WorldPointFromNode(pointOne);
+            patrolPoints[1] = PathRequestManager.instance.grid.WorldPointFromNode(pointTwo);
+            patrolPoints[2] = PathRequestManager.instance.grid.WorldPointFromNode(pointThree);
 
+        Debug.Log(patrolPoints[0] + ", " + patrolPoints[1] + ", " + patrolPoints[2]);
         state.ChangeState(patrolState);
     }
 

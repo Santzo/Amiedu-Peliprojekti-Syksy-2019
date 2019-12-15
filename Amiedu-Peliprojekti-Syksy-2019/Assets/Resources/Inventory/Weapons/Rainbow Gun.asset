@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
   m_Name: Rainbow Gun
   m_EditorClassIdentifier: 
-  itemLevel: 3
+  itemLevel: 10
   weight: 2
   obj: {fileID: 929551757412929093, guid: 8106ead600630f140b0a041f3eedf2f4, type: 3}
   icon: {fileID: 0}
+  modifiedMat: {fileID: 0}
   material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1

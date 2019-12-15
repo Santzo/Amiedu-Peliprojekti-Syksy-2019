@@ -24,11 +24,10 @@ public class LevelGenerator : MonoBehaviour
     [HideInInspector]
     public int worldSizeX, worldSizeY;
     int maxRoomSizeX, maxRoomSizeY;
-    int maxAttempts = 20;
+    int maxAttempts = 30;
     public string[] bookShelves, barrels;
     public List<AllRooms> allRooms = new List<AllRooms>();
     public RoomGrid[,] roomGrid, objectGrid;
-
     private void Awake()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -66,7 +65,7 @@ public class LevelGenerator : MonoBehaviour
                 objectGrid[x, y].tileType = TileType.Nothing;
             }
         }
-        CreateBossRoom();
+        //CreateBossRoom();
         CreateRooms();
         CreateCorridors();
         DrawRooms();
@@ -99,6 +98,7 @@ public class LevelGenerator : MonoBehaviour
     {
         Events.onFieldInitialized(new Vector2(0, 0), new Vector2(worldSizeX, worldSizeY));
         MaterialModifier.InitializeValues();
+        References.rf.enemyManager.GenerateEnemies(allRooms);
     }
 
     private void RandomizePlayerPosition()
@@ -115,16 +115,24 @@ public class LevelGenerator : MonoBehaviour
                 y = room.startY;
             }
         }
+        startRoom.roomType = RoomType.Start;
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
-        SpawnCarpets(10);
+        //SpawnCarpets(10);
         SpawnBarrels(0);
-        var chest = SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
+        var chest = SpawnFloorObject("Treasure Chest", x + 3, y + 3, 0.2f);
         chest.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = true, level = 1 },
             new ChestContent { type = typeof(Headgear), random = true, level = 1},
             new ChestContent { type = typeof(Lightsource), random = true, level = 1 },
-            new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 });
+            new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 },
+            new ChestContent { type = typeof(Ammo), random = true, level = 10, amount = 50 });
+        var chestTwo = SpawnFloorObject("Treasure Chest", x + 3, y + 5, 0.2f);
+        chestTwo.GetComponent<TreasureChest>().CreateChestContent(
+            new ChestContent { type = typeof(Weapon), random = false, name = "Flamethrower" },
+            new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 },
+             new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 });
+
         SpawnBookshelves(10);
         SpawnBoxes(25);
 
@@ -480,8 +488,8 @@ public class LevelGenerator : MonoBehaviour
             {
                 int startX = Random.Range(0 + 2, worldSizeX - maxRoomSizeX - 3);
                 int startY = Random.Range(0 + 2, worldSizeY - maxRoomSizeY - 3);
-                int roomSizeX = Random.Range(7, maxRoomSizeX + 1);
-                int roomSizeY = Random.Range(7, maxRoomSizeY + 1);
+                int roomSizeX = Random.Range(5, maxRoomSizeX + 1);
+                int roomSizeY = Random.Range(5, maxRoomSizeY + 1);
                 if (CheckIfRoomFits(startX, startY, startX + roomSizeX, startY + roomSizeY))
                 {
                     i++;

@@ -16,6 +16,7 @@ MonoBehaviour:
   weight: 6.5
   obj: {fileID: 5863568968154505762, guid: ea2810a4725ec6f40b938459204c59df, type: 3}
   icon: {fileID: 0}
+  modifiedMat: {fileID: 0}
   material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
@@ -25,11 +26,11 @@ MonoBehaviour:
   hands: 1
   physicalMin: 0
   physicalMax: 0
-  fireMin: 4
-  fireMax: 6
+  fireMin: 2
+  fireMax: 4
   spectralMin: 0
   spectralMax: 0
-  attackRate: 6.67
+  attackRate: 5.55
   staminaCost: 0
   criticalHitChance: 5
   bulletPerShot: 1

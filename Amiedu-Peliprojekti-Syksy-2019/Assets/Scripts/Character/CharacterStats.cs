@@ -50,7 +50,7 @@ public static class CharacterStats
         Info.CalculateAnimationSpeeds();
         sightBonusFromItems = sightBonusPercentage = criticalBonusFromItems = criticalBonusPercentage = 0f;
         healthBonusFromItems = healthBonusPercentage = staminaBonusFromItems = staminaBonusPercentage = 0f;
-        gasAmmo = 1000;
+        gasAmmo = pistolAmmo = rifleAmmo = 0;
     }
 }
 

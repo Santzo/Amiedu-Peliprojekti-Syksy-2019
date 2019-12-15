@@ -210,6 +210,24 @@ public class PlayerEquipment : MonoBehaviour
                 case _GearEffect.Increases_Critical_Hit_Chance:
                     CharacterStats.criticalBonusPercentage += !unequip ? effect.amount : -effect.amount;
                     break;
+                case _GearEffect.Increases_PhysicalDamagePoints:
+                    Info.extraPhys += !unequip ? effect.amount : -effect.amount;
+                    break;
+                case _GearEffect.Increases_FireDamagePoints:
+                    Info.extraFire += !unequip ? effect.amount : -effect.amount;
+                    break;
+                case _GearEffect.Increases_SpectralDamagePoints:
+                    Info.extraSpec += !unequip ? effect.amount : -effect.amount;
+                    break;
+                case _GearEffect.Increases_PhysicalDamagePercent:
+                    Info.extraPhysPercent += !unequip ? effect.amount : -effect.amount;
+                    break;
+                case _GearEffect.Increases_FireDamagePercent:
+                    Info.extraFirePercent += !unequip ? effect.amount : -effect.amount;
+                    break;
+                case _GearEffect.Increases_SpectralDamagePercent:
+                    Info.extraSpecPercent += !unequip ? effect.amount : -effect.amount;
+                    break;
 
             }
         }

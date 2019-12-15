@@ -30,6 +30,7 @@ public class References : MonoBehaviour
     public InteractableObject currentInteractableObject;
     public LevelGenerator levelGenerator;
     public Transform uiOverlay;
+    public EnemyManager enemyManager;
 
 
     public static References rf;
@@ -52,6 +53,7 @@ public class References : MonoBehaviour
         statsDetails = FindObjectOfType<StatsDetails>();
         mainInventory = FindObjectOfType<MainInventory>();
         weaponSlot = FindObjectOfType<WeaponSlot>();
+        enemyManager = FindObjectOfType<EnemyManager>();
         inventoryScreenCharacter = FindObjectOfType<InventoryScreenCharacter>();
         mainInventory.gameObject.SetActive(false);
         mainCamera = Camera.main;

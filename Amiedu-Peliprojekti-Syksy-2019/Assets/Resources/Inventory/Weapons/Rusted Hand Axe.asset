@@ -36,4 +36,4 @@ MonoBehaviour:
   bulletPerShot: 0
   gearEffects:
   - effect: 2
-    amount: 15
+    amount: 5

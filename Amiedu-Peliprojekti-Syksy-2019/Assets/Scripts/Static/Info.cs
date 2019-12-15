@@ -19,6 +19,7 @@ public class Info
     public static float totalCriticalHitChance { get; private set; }
     public static float totalAttackSpeed { get; private set; }
     public static float attackInterval { get; private set; }
+    public static float extraPhys, extraFire, extraSpec, extraPhysPercent, extraFirePercent, extraSpecPercent;
     public static List<Collider2D> enemyHitboxes = new List<Collider2D>();
 
 

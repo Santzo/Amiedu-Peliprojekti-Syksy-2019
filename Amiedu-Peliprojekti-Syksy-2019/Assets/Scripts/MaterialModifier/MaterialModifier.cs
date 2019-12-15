@@ -15,7 +15,6 @@ public static class MaterialModifier
         }
         else if (_value is Color)
         {
-            Debug.Log("Color set");
             propertyBlock.SetColor(prop, (Color)_value);
         }
         rend.SetPropertyBlock(propertyBlock);
@@ -63,7 +62,6 @@ public static class MaterialModifier
             if (val.type == "Float")
             {
                 var _float = block.GetFloat(val.value);
-                Debug.Log(val.value +  " " + _float);
                 mat.SetFloat(val.value, _float);
             }
             else if (val.type == "Color")

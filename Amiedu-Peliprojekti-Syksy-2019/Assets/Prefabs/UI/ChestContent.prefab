@@ -155,8 +155,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -368,7 +369,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3076536523103455990
 CanvasRenderer:
@@ -441,7 +442,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &770494720815230626
 CanvasRenderer:
@@ -514,7 +515,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9013109487670919780
 CanvasRenderer:
@@ -619,8 +620,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -651,7 +653,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -744,7 +746,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1922141061716228953
 CanvasRenderer:
@@ -849,8 +851,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -881,7 +884,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1182,8 +1185,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1214,7 +1218,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1337,8 +1341,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Treasure chest
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1565,8 +1570,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: The chest contains the following items
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1871,8 +1877,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1903,7 +1910,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2228,8 +2235,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Take all
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2580,8 +2588,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Current weight
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2791,7 +2800,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3036393277460696060
 CanvasRenderer:
@@ -2896,8 +2905,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a87ecc0c4fd75c34bb9aaf934607f85b, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7e1685d42ce05aa47b9e0c4ccdb6bbdf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 042ff0e4aee665441a2490f076e1537e, type: 2}
+  m_sharedMaterial: {fileID: -882422513852731753, guid: 042ff0e4aee665441a2490f076e1537e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2928,7 +2938,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3021,7 +3031,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -154.62, y: 0.69}
-  m_SizeDelta: {x: 41, y: 41}
+  m_SizeDelta: {x: 35, y: 42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7562550761025735771
 CanvasRenderer:

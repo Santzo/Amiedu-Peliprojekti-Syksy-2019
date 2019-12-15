@@ -10,37 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: Bloodied Sword
+  m_Name: Corroded Meat Cleaver
   m_EditorClassIdentifier: 
-  itemLevel: 2
-  weight: 3.8
-  obj: {fileID: 5447659618020291305, guid: c0546d9b2d3c6254b91d70b73d969c5a, type: 3}
+  itemLevel: 1
+  weight: 1.6
+  obj: {fileID: 4999152298579067960, guid: 6c4c5d1cf1635b04f812735d7bb175c4, type: 3}
   icon: {fileID: 0}
   modifiedMat: {fileID: 0}
-  material: {fileID: 0}
+  material: {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
-  iconScale: 1.5
-  description: 'A massive two-handed sword. Covered in blood, making it an excellent
-    close quarters weapon.
-
-'
+  iconScale: 1
+  description: Meat cleaver.
   weaponType: 0
   attackAnimation: {fileID: 0}
-  hands: 1
-  physicalMin: 15
-  physicalMax: 25
+  hands: 0
+  physicalMin: 1
+  physicalMax: 10
   fireMin: 0
   fireMax: 0
   spectralMin: 0
   spectralMax: 0
-  attackRate: 0.79
-  staminaCost: 25
-  criticalHitChance: 19.5
+  attackRate: 1.4
+  staminaCost: 9
+  criticalHitChance: 0
   bulletPerShot: 0
   gearEffects:
-  - effect: 6
-    amount: 3
   - effect: 5
-    amount: 3
-  - effect: 0
-    amount: -15
+    amount: 2

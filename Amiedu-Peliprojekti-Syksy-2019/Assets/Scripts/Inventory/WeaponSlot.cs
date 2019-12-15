@@ -30,7 +30,7 @@ public class WeaponSlot : MonoBehaviour
             icon.sprite = wep.icon != null
                 ? wep.icon
                 : wep.obj.GetComponent<SpriteRenderer>().sprite;
-            icon.material = wep.modifiedMat != null ? wep.modifiedMat : wep.material != null ? wep.material : wep.obj.GetComponent<SpriteRenderer>().material;
+            icon.material = wep.modifiedMat != null ? wep.modifiedMat : wep.material != null ? wep.material : wep.obj.GetComponent<SpriteRenderer>().sharedMaterial;
         }
     }
     public void UpdateAmmoText()

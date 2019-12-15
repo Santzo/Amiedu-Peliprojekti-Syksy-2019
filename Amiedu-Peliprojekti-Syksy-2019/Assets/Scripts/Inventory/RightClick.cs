@@ -70,6 +70,7 @@ public class RightClick : MonoBehaviour, IPointerExitHandler, IUIHandler
 
     private void SpawnDialogue(string objName)
     {
+        Debug.Log(objName);
         GameObject obj = ObjectPooler.op.SpawnUI(objName, transform.localPosition.x > 270 ? new Vector2(transform.position.x - 0.75f, transform.position.y) : (Vector2)transform.position, transform.parent);
         if (objName == "DiscardItem")
         {

@@ -12,9 +12,9 @@ public class Zombie : BaseEnemy
         base.Start();
         growlFrequency = Random.Range(3f, 5f);
     }
-    protected override void FixedUpdate()
+    public override void OnFixedUpdate()
     {
-        base.FixedUpdate();
+        base.OnFixedUpdate();
         if (state.currentState == patrolState || state.currentState == aggressiveState)
         {
             if (EnemyManager.instance.deltaFixedTimer - timer > growlFrequency)

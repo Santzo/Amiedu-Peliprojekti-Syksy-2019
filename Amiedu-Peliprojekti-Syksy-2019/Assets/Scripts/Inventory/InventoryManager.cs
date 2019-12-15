@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
     public Armgear[] armgear;
     public Consumable[] consumables;
     public Leggear[] leggear;
+    public Ammo[] ammo;
     private string[] itemTypes = new string[] { "InventoryItems", "Weapon", "Headgear", "Chestgear", "Armgear", "Leggear", "Lightsource", "Consumable" };
     public static string[] itemsToShow = new string[] { "All items", "Weapons", "Head Gear", "Chest Guard", "Arm Guards", "Leg Guards", "Light sources", "Consumables" };
     public static string[] weaponSortBy = new string[] { "Weapon Level", "Damage", "Weapon Type" };
@@ -34,6 +35,7 @@ public class InventoryManager : MonoBehaviour
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
         leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
         lightsources = Resources.LoadAll<Lightsource>("Inventory/Lightsources");
+        ammo = Resources.LoadAll<Ammo>("Inventory/Ammo");
         foreach (var a in weapons)
         {
             SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
@@ -105,14 +107,24 @@ public class InventoryManager : MonoBehaviour
     }
     public void AddToInventory(Inventory inv)
     {
-        var tempItem = CharacterStats.inventoryItems.Find(_item => _item.item == inv.item);
-        if (tempItem != null) tempItem.amount += inv.amount;
+        if (inv.item.GetType() != typeof(Ammo))
+        {
+            var tempItem = CharacterStats.inventoryItems.Find(_item => _item.item == inv.item);
+            if (tempItem != null) tempItem.amount += inv.amount;
+            else
+            {
+                CharacterStats.inventoryItems.Add(new Inventory { amount = inv.amount, item = inv.item });
+            }
+            Events.updateFilteredItems(filteredItems);
+            Events.onInventoryChange();
+        }
         else
         {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = inv.amount, item = inv.item });
+            Ammo ammo = inv.item as Ammo;
+            if (ammo.ammoType == Ammo.AmmoType.Gasoline) CharacterStats.gasAmmo += inv.amount;
+            else if (ammo.ammoType == Ammo.AmmoType.Pistol) CharacterStats.pistolAmmo += inv.amount;
+            else if (ammo.ammoType == Ammo.AmmoType.Rifle) CharacterStats.rifleAmmo += inv.amount;
         }
-        Events.updateFilteredItems(filteredItems);
-        Events.onInventoryChange();
     }
     public void AddSingleItem(InventoryItems itemToAdd)
     {

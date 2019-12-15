@@ -37,6 +37,10 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
         UpdateWeightText();
 
     }
+    private void OnDisable()
+    {
+        currentDetail?.SetActive(false);
+    }
     void UpdateWeightText()
     {
         Info.UpdateWeightInfo();
@@ -115,20 +119,18 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
     {
         if (button != PointerEventData.InputButton.Left) return;
         Audio.PlaySound("Click");
-        if (!clicked) StartCoroutine(DoubleClickCheck());
-        else if (clicked)
+
+        InventoryManager.im.AddToInventory(currentContent[index]);
+        currentContent.Remove(currentContent[index]);
+        if (currentContent.Count == 0)
         {
-            InventoryManager.im.AddToInventory(currentContent[index]);
-            currentContent.Remove(currentContent[index]);
-            if (currentContent.Count == 0)
-            {
-                ObjectPooler.op.DeSpawn(gameObject);
-                bindedChest.AllItemsRetrieved();
-            }
-            if (currentDetail != null) ObjectPooler.op.DeSpawn(currentDetail);
-            UpdateWeightText();
-            UpdateContents(currentContent, bindedChest);
+            ObjectPooler.op.DeSpawn(gameObject);
+            bindedChest.AllItemsRetrieved();
         }
+        if (currentDetail != null) ObjectPooler.op.DeSpawn(currentDetail);
+        UpdateWeightText();
+        UpdateContents(currentContent, bindedChest);
+
     }
 
     public void SimpleLeave(int index)

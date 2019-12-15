@@ -5187,6 +5187,7 @@ GameObject:
   - component: {fileID: 600256762}
   - component: {fileID: 600256766}
   - component: {fileID: 600256765}
+  - component: {fileID: 600256763}
   m_Layer: 5
   m_Name: UpdateEssenceAmount
   m_TagString: Untagged
@@ -5213,6 +5214,25 @@ RectTransform:
   m_AnchoredPosition: {x: -0.1998291, y: -37.8}
   m_SizeDelta: {x: 200, y: 26.99}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &600256763
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600256761}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 417ffafbfd30b324d9d69a82c1a2b0bf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &600256765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7834,6 +7854,11 @@ MonoBehaviour:
       type: 3}
     _parent: {fileID: 0}
     size: 5
+  - tag: DiscardItem
+    prefab: {fileID: 3963911099211902366, guid: 7f97e592c1b03ce4d8d6ba04a414ab88,
+      type: 3}
+    _parent: {fileID: 0}
+    size: 3
   - tag: ChestContent
     prefab: {fileID: 6706084897043753541, guid: e02122b4f9372ee44b3b28170fa44bd6,
       type: 3}
@@ -11164,6 +11189,7 @@ MonoBehaviour:
   currentInteractableObject: {fileID: 0}
   levelGenerator: {fileID: 748168823}
   uiOverlay: {fileID: 161647204}
+  enemyManager: {fileID: 0}
 --- !u!4 &1371687730
 Transform:
   m_ObjectHideFlags: 0
@@ -14573,6 +14599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deltaFixedTimer: 0
+  enemies: []
 --- !u!4 &1867002552
 Transform:
   m_ObjectHideFlags: 0

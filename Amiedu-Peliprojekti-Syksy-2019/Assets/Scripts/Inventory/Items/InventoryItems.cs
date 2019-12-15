@@ -74,5 +74,12 @@ public enum _GearEffect
     Increases_Constitution,
     Increases_Dexterity,
     Increases_Perception,
-    Increases_Luck
+    Increases_Luck,
+    Increases_PhysicalDamagePoints,
+    Increases_FireDamagePoints,
+    Increases_SpectralDamagePoints,
+    Increases_PhysicalDamagePercent,
+    Increases_FireDamagePercent,
+    Increases_SpectralDamagePercent
+
 }

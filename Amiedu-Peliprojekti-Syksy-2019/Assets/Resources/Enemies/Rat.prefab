@@ -78,7 +78,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &504786225506210749
 GameObject:
@@ -159,7 +159,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &657983170899356769
 GameObject:
@@ -186,7 +186,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657983170899356769}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.15, y: -1.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5266459253056673994}
@@ -205,7 +205,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.26412582, y: -0.1694355}
+  m_Offset: {x: -1.4585342, y: 0.90695953}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -216,7 +216,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.4008408, y: 2.0050163}
+  m_Size: {x: 2.9024658, y: 1.881813}
   m_EdgeRadius: 0
 --- !u!1 &1691375844558325770
 GameObject:
@@ -298,7 +298,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &2247079097664052442
 GameObject:
@@ -379,7 +379,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &2570331515043906841
 GameObject:
@@ -489,7 +489,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &2570331515263878265
 GameObject:
@@ -655,25 +655,26 @@ MonoBehaviour:
   death:
   - {fileID: 7400000, guid: 39b3882efde5f914eade5c044a7b5e60, type: 2}
   anim: {fileID: 0}
+  path: []
   stats:
-    health: 150
-    moveSpeed: 4
+    health: 10
+    moveSpeed: 5
     physicalDefense: 0
     fireDefense: 0
     spectralDefense: 0
     sightRange: 8.75
-    essence: 0
+    essence: 65
     sightRadius: 125
     hearingRange: 5
     followTime: 3
     minPathUpdateTime: 1.15
     attacks:
     - attackRange: 7.33
-      forwardForce: 2.55
+      forwardForce: 3.18
       attackInterval: 1
-      animationMultiplier: 1.7
-      minPhysical: 0.66
-      maxPhysical: 1.31
+      animationMultiplier: 1.5
+      minPhysical: 2
+      maxPhysical: 4
       minFire: 0
       maxFire: 0
       minSpectral: 0
@@ -803,7 +804,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &4106665093101269905
 GameObject:
@@ -884,7 +885,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &6182215565309489121
 GameObject:
@@ -965,7 +966,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &6198043013479388349
 GameObject:
@@ -1053,7 +1054,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!1 &6242555278114478012
 GameObject:
@@ -1135,7 +1136,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!61 &7834746900433089406
 BoxCollider2D:
@@ -1242,5 +1243,5 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0

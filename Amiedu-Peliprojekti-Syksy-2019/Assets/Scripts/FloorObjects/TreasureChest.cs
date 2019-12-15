@@ -77,15 +77,70 @@ public class TreasureChest : InteractableObject
             if (cont.random)
             {
                 var temp = GetItem(cont.type, cont.level);
-                if (temp is Weapon) chestContent.Add(new Inventory {amount = Mathf.Max(cont.amount, 1), item =  temp as Weapon });
-                else if (temp is Lightsource) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Lightsource });
-                else if (temp is Chestgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Chestgear });
-                else if (temp is Headgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Headgear});
-                else if (temp is Armgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Armgear});
-                else if (temp is Leggear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Leggear});
-                else if (temp is Consumable) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Consumable });
+                AddItem(temp, cont);
+            }
+            else
+            {
+                var temp = GetItem(cont.type, cont.name);
+                AddItem(temp, cont);
             }
         }
+    }
+    void AddItem(object temp, ChestContent cont)
+    {
+        if (temp is Weapon) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Weapon });
+        else if (temp is Lightsource) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Lightsource });
+        else if (temp is Chestgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Chestgear });
+        else if (temp is Headgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Headgear });
+        else if (temp is Armgear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Armgear });
+        else if (temp is Leggear) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Leggear });
+        else if (temp is Consumable) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Consumable });
+        else if (temp is Ammo) chestContent.Add(new Inventory { amount = cont.amount, item = temp as Ammo });
+    }
+    object GetItem(Type type, string name)
+    {
+        if (type == typeof(Weapon))
+        {
+            var temp = InventoryManager.im.weapons.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Chestgear))
+        {
+            var temp = InventoryManager.im.chestgear.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Headgear))
+        {
+            var temp = InventoryManager.im.headgear.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Leggear))
+        {
+            var temp = InventoryManager.im.leggear.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Lightsource))
+        {
+            var temp = InventoryManager.im.lightsources.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Armgear))
+        {
+            var temp = InventoryManager.im.armgear.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Consumable))
+        {
+            var temp = InventoryManager.im.consumables.First(a => a.name == name);
+            return temp;
+        }
+        else if (type == typeof(Ammo))
+        {
+            var temp = InventoryManager.im.ammo.First(a => a.name == name);
+            return temp;
+        }
+
+        return null;
     }
     object GetItem(Type type, int level)
     {
@@ -152,6 +207,15 @@ public class TreasureChest : InteractableObject
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
+        else if (type == typeof(Ammo))
+        {
+            var temp = (from a in InventoryManager.im.ammo
+                        select a).ToArray();
+            if (temp.Length == 0) return null;
+            var obj = temp[Random.Range(0, temp.Length)];
+            return obj;
+        }
+
         return null;
     }
 
@@ -170,6 +234,7 @@ public class ChestContent
 {
     public bool random;
     public int level;
+    public string name;
     public Type type;
     public int amount;
 
