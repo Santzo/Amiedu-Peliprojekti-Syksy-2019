@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51a0ffb4d2e0b646a53c3d2df983b4a, type: 3}
   m_Name: Blue Flamed Torch
   m_EditorClassIdentifier: 
-  itemLevel: 1
+  itemLevel: 3
   weight: 0
   obj: {fileID: 785398644401923562, guid: 1ad8a4dce5d44da4da46faf624976fc6, type: 3}
   icon: {fileID: 21300000, guid: 5ffd2bb194a62d345ba7a49ef7effe79, type: 3}

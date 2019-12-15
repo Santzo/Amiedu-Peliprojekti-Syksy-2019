@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIEvents : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
+public class UIEvents : MonoBehaviour,  IUIObject
 {
     [HideInInspector]
     public IUIHandler mouseController;

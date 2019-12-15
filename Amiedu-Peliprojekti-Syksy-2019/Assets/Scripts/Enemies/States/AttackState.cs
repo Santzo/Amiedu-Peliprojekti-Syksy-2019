@@ -9,8 +9,9 @@ public class AttackState : IEnemyState
     private ContactFilter2D filter, attackFilter;
     public bool applyForce = false;
     bool hasHit;
-    Collider2D collider, attackCol;
-    public AttackState(BaseEnemy enemy, Collider2D collider, Collider2D attackCol)
+    Collider2D collider;
+    Collider2D[] attackCol;
+    public AttackState(BaseEnemy enemy, Collider2D collider, Collider2D[] attackCol)
     {   this.enemy = enemy; 
         this.collider = collider;
         this.attackCol = attackCol;
@@ -45,12 +46,17 @@ public class AttackState : IEnemyState
             }
             if (!hasHit)
             {
-                RaycastHit2D[] hitResults = new RaycastHit2D[1];
-                attackCol.Cast(Vector2.zero, attackFilter, hitResults);
-                if (hitResults[0].collider != null)
+                foreach (var col in attackCol)
                 {
-                    hasHit = true;
-                    References.rf.playerMovement.OnGetHit(Info.CalculateEnemyDamage(enemy.currentAttack));
+                    RaycastHit2D[] hitResults = new RaycastHit2D[1];
+                    col.Cast(Vector2.zero, attackFilter, hitResults);
+                    if (hitResults[0].collider != null)
+                    {
+                        Debug.Log(col.name);
+                        hasHit = true;
+                        References.rf.playerMovement.OnGetHit(Info.CalculateEnemyDamage(enemy.currentAttack));
+                        break;
+                    }
                 }
             }
             RaycastHit2D[] results = new RaycastHit2D[1];

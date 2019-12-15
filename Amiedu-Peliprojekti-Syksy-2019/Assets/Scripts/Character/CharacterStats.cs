@@ -12,7 +12,7 @@ public static class CharacterStats
     public static int dexterity;
     public static int perception;
     public static int luck;
-    public static float weightLimit;
+    public static float weightLimit, totalWeight;
     public static List<Inventory> inventoryItems = new List<Inventory>();
     public static CharacterEquipment characterEquipment = new CharacterEquipment();
     public static Inventory[] hotbar = new Inventory[4];
@@ -34,13 +34,12 @@ public static class CharacterStats
     public static void ResetStats()
     {
         hotbar.Populate();
-        hotbar[0] = new Inventory{ amount = 1, item = InventoryManager.im.consumables[0] };
         strength = 10;
         constitution = 10;
         dexterity = 10;
         perception = 10;
         luck = 10;
-        weightLimit = Mathf.Round(((strength * 10f) + (constitution * 1.43f)) * 10f) / 10f;
+        Info.UpdateWeightInfo();
         Info.CalculateHealthAndStamina();
         Health = MaxHealth;
         Stamina = MaxStamina;

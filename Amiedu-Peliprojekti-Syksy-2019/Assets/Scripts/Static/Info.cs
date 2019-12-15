@@ -245,5 +245,12 @@ public class Info
         CharacterStats.animationBaseMoveSpeed = CharacterStats.moveSpeed / 5f;
         CharacterStats.animationSprintMoveSpeed = CharacterStats.animationBaseMoveSpeed * CharacterStats.movementSpeedMultiplier;
     }
+    public static void UpdateWeightInfo()
+    {
+        float totalWeight = 0f;
+        CharacterStats.inventoryItems.ForEach(item => totalWeight += item.amount * item.item.weight);
+        CharacterStats.totalWeight = totalWeight;
+        CharacterStats.weightLimit = Mathf.Round(((CharacterStats.strength * 10f) + (CharacterStats.constitution * 1.43f)) * 10f) / 10f;
+    }
   
 }

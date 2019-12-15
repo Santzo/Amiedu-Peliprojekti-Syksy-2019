@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
+  m_Name: OutlineSword
+  m_EditorClassIdentifier: 
+  itemLevel: 1
+  weight: 1.2
+  obj: {fileID: 5447659618020291305, guid: 49d5a02c3423158409315207bacaf3ad, type: 3}
+  icon: {fileID: 0}
+  material: {fileID: 2100000, guid: f0ee8bee1b6cf7247b463e7391b4af0e, type: 2}
+  colorTint: {r: 1, g: 1, b: 1, a: 1}
+  iconScale: 1
+  description: 'A sword looking like it could have been made in the 16th century.
+    Being quick and light, it suits very well for melee combat.
+
+'
+  weaponType: 0
+  attackAnimation: {fileID: 0}
+  hands: 0
+  physicalMin: 0
+  physicalMax: 0
+  fireMin: 0
+  fireMax: 0
+  spectralMin: 0
+  spectralMax: 0
+  attackRate: 1.5
+  staminaCost: 12
+  criticalHitChance: 14.4
+  bulletPerShot: 0
+  gearEffects:
+  - effect: 3
+    amount: 1

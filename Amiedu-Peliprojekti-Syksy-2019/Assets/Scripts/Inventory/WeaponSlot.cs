@@ -26,9 +26,11 @@ public class WeaponSlot : MonoBehaviour
         icon.enabled = temp != null;
         if (temp != null)
         {
-            icon.sprite = CharacterStats.characterEquipment.weapon.icon != null
-                ? CharacterStats.characterEquipment.weapon.icon
-                : CharacterStats.characterEquipment.weapon.obj.GetComponent<SpriteRenderer>().sprite;
+            Weapon wep = CharacterStats.characterEquipment.weapon;
+            icon.sprite = wep.icon != null
+                ? wep.icon
+                : wep.obj.GetComponent<SpriteRenderer>().sprite;
+            icon.material = wep.modifiedMat != null ? wep.modifiedMat : wep.material != null ? wep.material : wep.obj.GetComponent<SpriteRenderer>().material;
         }
     }
     public void UpdateAmmoText()

@@ -35,32 +35,32 @@ public class InventoryManager : MonoBehaviour
         leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
         lightsources = Resources.LoadAll<Lightsource>("Inventory/Lightsources");
 
-        foreach (var weapon in weapons)
-        {
-            AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
-            AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
-        }
-        foreach (var head in headgear)
-        {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = head });
-        }
-        foreach (var chest in chestgear)
-        {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = chest });
-        }
-        foreach (var cons in consumables)
-        {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(2, 500), item = cons });
-        }
+        //foreach (var weapon in weapons)
+        //{
+        //    AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
+        //    AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
+        //}
+        //foreach (var head in headgear)
+        //{
+        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = head });
+        //}
+        //foreach (var chest in chestgear)
+        //{
+        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = chest });
+        //}
+        //foreach (var cons in consumables)
+        //{
+        //    CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(2, 500), item = cons });
+        //}
 
-        foreach (var lg in leggear)
-        {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = lg });
-        }
-        foreach (var ls in lightsources)
-        {
-            CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = ls });
-        }
+        //foreach (var lg in leggear)
+        //{
+        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = lg });
+        //}
+        //foreach (var ls in lightsources)
+        //{
+        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = ls });
+        //}
     }
 
 
@@ -104,6 +104,7 @@ public class InventoryManager : MonoBehaviour
             CharacterStats.inventoryItems.Add(new Inventory { amount = inv.amount, item = inv.item });
         }
         Events.updateFilteredItems(filteredItems);
+        Events.onInventoryChange();
     }
     public void AddSingleItem(InventoryItems itemToAdd)
     {
@@ -114,6 +115,7 @@ public class InventoryManager : MonoBehaviour
             CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = itemToAdd });
         }
         Events.updateFilteredItems(filteredItems);
+        Events.onInventoryChange();
     }
 }
 

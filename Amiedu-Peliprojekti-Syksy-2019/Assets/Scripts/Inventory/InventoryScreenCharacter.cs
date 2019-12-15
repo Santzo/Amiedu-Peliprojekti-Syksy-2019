@@ -28,7 +28,7 @@ public class InventoryScreenCharacter : MonoBehaviour
         if (CharacterStats.characterEquipment.lightSource != null)
         {
             var weapon = CharacterStats.characterEquipment.weapon;
-
+            
             if (weapon == null || weapon != null && weapon.hands == Hands.One_handed)
             {
                 var ls = obj.transform.GetFromAllChildren("Lightsource").GetComponentInChildren<ParticleSystem>().transform;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40cc9f9e6274dcd428056a24055533de, type: 3}
   m_Name: Large Healing Potion
   m_EditorClassIdentifier: 
-  itemLevel: 1
+  itemLevel: 5
   weight: 0.3
   obj: {fileID: 5510500478359403533, guid: d8c2c5dd319156943a2f9cebd6ac1a3a, type: 3}
   icon: {fileID: 21300000, guid: b77e0d44858824b4380998423742c515, type: 3}

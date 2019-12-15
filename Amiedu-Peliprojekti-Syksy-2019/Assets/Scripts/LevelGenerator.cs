@@ -98,6 +98,7 @@ public class LevelGenerator : MonoBehaviour
     private void Start()
     {
         Events.onFieldInitialized(new Vector2(0, 0), new Vector2(worldSizeX, worldSizeY));
+        MaterialModifier.InitializeValues();
     }
 
     private void RandomizePlayerPosition()
@@ -121,6 +122,7 @@ public class LevelGenerator : MonoBehaviour
         var chest = SpawnFloorObject("Treasure Chest", x + 4, y + 4, 0.2f);
         chest.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = true, level = 1 },
+            new ChestContent { type = typeof(Headgear), random = true, level = 1},
             new ChestContent { type = typeof(Lightsource), random = true, level = 1 },
             new ChestContent { type = typeof(Consumable), random = true, level = 1, amount = 2 });
         SpawnBookshelves(10);

@@ -8,32 +8,67 @@ using Random = UnityEngine.Random;
 public class TreasureChest : InteractableObject
 {
     bool chestOpened = false;
+    GameObject chest;
     private List<Inventory> chestContent;
-
-    protected override void InRange()
+    
+    private void OnEnable()
     {
-        base.InRange();
+        Events.inventoryKey += DisableThis;
+    }
+
+    private void OnDisable()
+    {
+        Events.inventoryKey -= DisableThis;
+    }
+
+    private void DisableThis()
+    {
+        if (!interacting) return;
+        if (Events.onInventory)
+            chest.SetActive(false);
+        else
+            chest.SetActive(true);
+    }
+
+    protected override void EnterRange()
+    {
+        base.EnterRange();
         io = obj.GetComponent<InteractableObjectText>();
         if (!chestOpened)
         {
             io.text.text = $"Press {TextColor.Green}{KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString())} {TextColor.White} to open the Treasure Chest.";
-
         }
-        else io.text.text = $"Press {TextColor.Green}{KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString())} {TextColor.White} to search the content of the Chest.";
+        else io.text.text = $"Press {TextColor.Green}{KeyboardConfig.ReturnKeyName(KeyboardConfig.action[0].ToString())} {TextColor.White} to search the contents of the Chest.";
         io.ToggleTextActive(true);
     }
 
+    protected override void LeaveRange()
+    {
+        base.LeaveRange();
+        chest?.SetActive(false);
+    }
     public override void Interact()
     {
+        if (interacting) return;
+        base.Interact();
         if (!chestOpened)
         {
             Audio.PlaySound("ChestOpen", 0.95f, 1.5f);
-          
+            StartCoroutine(OpenChestWithDelay());
             chestOpened = true;
         }
-        base.Interact();
+        else if (chestOpened)
+        {
+            SpawnChest();
+        }
+        ps?.Play();
     }
-
+    void SpawnChest()
+    {
+        chest = ObjectPooler.op.SpawnUI("ChestContent", transform.position, References.rf.uiOverlay);
+        ChestContentUI contentUI = chest.GetComponent<ChestContentUI>();
+        contentUI.UpdateContents(chestContent, this);
+    }
     public void CreateChestContent(params ChestContent[] content)
     {
         chestContent = new List<Inventory>();
@@ -51,71 +86,87 @@ public class TreasureChest : InteractableObject
                 else if (temp is Consumable) chestContent.Add(new Inventory { amount = Mathf.Max(cont.amount, 1), item = temp as Consumable });
             }
         }
-        foreach (var a in chestContent)
-            Debug.Log(a.item.name);
     }
     object GetItem(Type type, int level)
     {
         if (type == typeof(Weapon))
         {
             var temp = (from a in InventoryManager.im.weapons
-                      where a.itemLevel == level
+                      where a.itemLevel <= level
                       select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Chestgear))
         {
             var temp = (from a in InventoryManager.im.chestgear
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Headgear))
         {
             var temp = (from a in InventoryManager.im.headgear
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Leggear))
         {
             var temp = (from a in InventoryManager.im.leggear
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Lightsource))
         {
             var temp = (from a in InventoryManager.im.lightsources
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Armgear))
         {
             var temp = (from a in InventoryManager.im.armgear
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         else if (type == typeof(Consumable))
         {
             var temp = (from a in InventoryManager.im.consumables
-                        where a.itemLevel == level
+                        where a.itemLevel <= level
                         select a).ToArray();
+            if (temp.Length == 0) return null;
             object obj = temp[Random.Range(0, temp.Length)];
             return obj;
         }
         return null;
     }
+
+    IEnumerator OpenChestWithDelay()
+    {
+        yield return new WaitForSeconds(0.35f);
+        if (inRange) SpawnChest();
+    }
+    public void AllItemsRetrieved()
+    {
+        actionTrigger.gameObject.SetActive(false);
+        ps.Stop();
+    }
 }
-public struct ChestContent 
+public class ChestContent 
 {
     public bool random;
     public int level;

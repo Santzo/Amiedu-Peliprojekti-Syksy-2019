@@ -79,6 +79,7 @@ public class PlayerEquipment : MonoBehaviour
         }
         References.rf.weaponSlot.UpdateWeaponSlot();
         Info.CalculateAnimationSpeeds();
+        Info.UpdateWeightInfo();
     }
 
     private void OnDisable()

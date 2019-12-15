@@ -26,8 +26,7 @@ public class InventoryWeight : MonoBehaviour
 
     void UpdateWeight()
     {
-        float totalWeight = 0f;
-        CharacterStats.inventoryItems.ForEach(item => totalWeight += item.amount * item.item.weight);
-        text.text = totalWeight + " / " + CharacterStats.weightLimit;
+        Info.UpdateWeightInfo();
+        text.text = CharacterStats.totalWeight + " / " + CharacterStats.weightLimit;
     }
 }

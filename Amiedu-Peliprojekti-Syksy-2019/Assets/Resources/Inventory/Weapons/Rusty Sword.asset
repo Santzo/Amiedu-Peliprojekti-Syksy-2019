@@ -16,6 +16,7 @@ MonoBehaviour:
   weight: 1.2
   obj: {fileID: 5447659618020291305, guid: 49d5a02c3423158409315207bacaf3ad, type: 3}
   icon: {fileID: 0}
+  modifiedMat: {fileID: 0}
   material: {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1

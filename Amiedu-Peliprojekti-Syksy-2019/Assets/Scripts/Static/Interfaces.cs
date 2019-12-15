@@ -17,7 +17,12 @@ public interface IUIHandler
     void EntryEnter(int index);
     void EntryClick(int index, PointerEventData.InputButton button);
     void EntryLeave(int index);
-
+}
+public interface ISimpleUIHandler
+{
+    void SimpleEnter(int index);
+    void SimpleClick(int index, PointerEventData.InputButton button);
+    void SimpleLeave(int index);
 }
 public class UIItem
 {

@@ -32,8 +32,6 @@ public class ItemDetails : MonoBehaviour
         }
     }
 
-
-
     public void DisplayDetails(InventoryItems item, bool _equipped = false)
     {
         itemName.text = item.name;

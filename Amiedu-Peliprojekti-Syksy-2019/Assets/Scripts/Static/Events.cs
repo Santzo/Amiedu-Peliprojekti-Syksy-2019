@@ -28,4 +28,5 @@ public static class Events
     public static bool onDiscard = false;
     public static bool onDialogueBox = false;
     public static bool onInventory = false;
+    
 }

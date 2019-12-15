@@ -199,7 +199,7 @@ public class Equipment : MonoBehaviour
                 typeInfo.SetValue(CharacterStats.characterEquipment, temp);
                 GameObject obj = equipment[index].item.obj;
                 equipment[index].itemIcon.sprite = temp.icon == null ? temp.obj.GetComponent<SpriteRenderer>().sprite : temp.icon;
-                equipment[index].itemIcon.material = temp.material == null ? new Material(Shader.Find("Sprites/Default")) : temp.material;
+                equipment[index].itemIcon.material = temp.modifiedMat != null ? temp.modifiedMat : temp.material == null ? new Material(Shader.Find("Sprites/Default")) : temp.material;
                 equipment[index].itemIcon.color = new Color(1f, 1f, 1f, 1f);
                 equipment[index].itemIcon.preserveAspect = true;
                 

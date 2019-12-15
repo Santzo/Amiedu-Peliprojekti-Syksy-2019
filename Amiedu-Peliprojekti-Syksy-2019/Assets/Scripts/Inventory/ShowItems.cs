@@ -26,6 +26,7 @@ public class ShowItems : MonoBehaviour, IResetUI
     private void OnEnable()
     {
         Events.onUIClick += Reset;
+        InventoryManager.im?.FilterItems(oldText);
     }
     private void OnDisable()
     {
@@ -35,10 +36,8 @@ public class ShowItems : MonoBehaviour, IResetUI
     private void Awake()
     {
         itemsEntry = new GameObject[InventoryManager.itemsToShow.Length];
-
         border = transform.Find("Border").GetComponent<RectTransform>();
         borderHeight = border.sizeDelta.y;
-
         itemHeight = showItemsEntry.GetComponent<RectTransform>().sizeDelta.y;
 
     }
@@ -48,8 +47,6 @@ public class ShowItems : MonoBehaviour, IResetUI
         oldText = InventoryManager.itemsToShow[0];
         InventoryManager.im.FilterItems(oldText);
     }
-
-   
 
     public void onClick(string text = "")
     {
@@ -78,10 +75,7 @@ public class ShowItems : MonoBehaviour, IResetUI
             border.sizeDelta = new Vector2(border.sizeDelta.x, borderHeight);
         }
         oldText = text;
-
     }
-
-
 
     private void CreateItemEntry(int index, string text, Vector2 position)
     {

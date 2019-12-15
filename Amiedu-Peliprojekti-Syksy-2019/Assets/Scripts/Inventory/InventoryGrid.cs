@@ -23,7 +23,6 @@ public class InventoryGrid : MonoBehaviour
         slider.gameObject.SetActive(false);
         content = transform.Find("Mask").GetChild(0);
         Info.content = content;
-    
     }
 
     private void Update()
@@ -43,8 +42,6 @@ public class InventoryGrid : MonoBehaviour
         if (hoverItem != null) ObjectPooler.op.DeSpawn(hoverItem);
     }
 
-
-
     private void OnDisable()
     {
         Events.updateFilteredItems -= UpdateList;
@@ -57,6 +54,7 @@ public class InventoryGrid : MonoBehaviour
 
     private void sliderChange(float sliderValue)
     {
+        if (!slider.gameObject.activeSelf) return;
         content.localPosition = new Vector2(0f, slider.value);
     }
     private void UpdateList(List<Inventory> items)
@@ -68,6 +66,7 @@ public class InventoryGrid : MonoBehaviour
         }
         itemsIcons = new GameObject[items.Count];
         slider.gameObject.SetActive(items.Count > 30 ? true : false);
+
         if (slider)
         {
             int itemsOver = items.Count - 30;
@@ -75,7 +74,6 @@ public class InventoryGrid : MonoBehaviour
             slider.value = 0;
             slider.maxValue = scrollableRows * iconWidth + 5;
         }
-
 
         int row = 0;
         for (int i = 0; i < items.Count; i++)
@@ -90,7 +88,7 @@ public class InventoryGrid : MonoBehaviour
 
             Image itemImage = itemsIcons[i].transform.GetChild(0).GetComponent<Image>();
             itemImage.sprite = items[i].item.icon == null ? items[i].item.obj.GetComponent<SpriteRenderer>().sprite : items[i].item.icon;
-            itemImage.material = items[i].item.material == null ? null : items[i].item.material;
+            itemImage.material = items[i].item.modifiedMat != null ? items[i].item.modifiedMat : items[i].item.material == null ? null : items[i].item.material;
             itemImage.transform.localScale = Vector3.one * InventoryManager.im.filteredItems[i].item.iconScale;
         }
         content.localPosition = new Vector2(0f, 0f);

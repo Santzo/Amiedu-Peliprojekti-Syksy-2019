@@ -70,8 +70,9 @@ public class BaseEnemy : MonoBehaviour
         spritesTransform = transform.Find("Sprites");
         oriScale = spritesTransform.localScale;
         colliders = spritesTransform.GetComponentsInChildren<Collider2D>();
-        var attackCol = colliders.First(col => col.tag == "EnemyAttackBox");
+        Collider2D[] attackCol = colliders.Where(col => col.tag == "EnemyAttackBox").ToArray();
         attackState = new AttackState(this, GetComponent<Collider2D>(), attackCol);
+
         var spriteChilds = spritesTransform.GetComponentsInChildren<SpriteRenderer>();
         sprites = new EnemySprite[spriteChilds.Length];
         for (int i = 0; i < spriteChilds.Length; i++)

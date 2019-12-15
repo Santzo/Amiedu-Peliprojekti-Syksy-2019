@@ -16,15 +16,16 @@ MonoBehaviour:
   weight: 0
   obj: {fileID: 2002459119338164281, guid: ac215fb7adba5934ea852e291dceca02, type: 3}
   icon: {fileID: 0}
+  modifiedMat: {fileID: 0}
   material: {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
-  description: A hockey mask
-  defense: 8
+  description: A hockey mask, thoroughly rusted.
+  defense: 1
   spectralDefense: 0
-  fireDefense: 3
+  fireDefense: 1
   gearEffects:
-  - effect: 6
-    amount: 15
-  - effect: 2
-    amount: -20
+  - effect: 8
+    amount: -1
+  - effect: 0
+    amount: 1.5
