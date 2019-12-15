@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     SortingGroup sortingGroup;
     private bool movementPossible = true;
     PlayerAnimations pa;
-    public bool attacking, activeAttackFrames;
+    public bool attacking, activeAttackFrames, activeObjectAttackFrames;
     public Transform mask;
 
     int _attack, _stopMeleeAttack, _movement, _movementMultiplier, _stopAttack;
@@ -166,7 +166,6 @@ public class PlayerMovement : MonoBehaviour
                     }
                     if (meleeWeapon != null && frame > 0.7f)
                     {
-
                         meleeWeapon.CheckForCollision();
                     }
                 }
@@ -304,12 +303,15 @@ public class PlayerMovement : MonoBehaviour
                 int dmg = Info.CalculateDamage(be.stats, out bool crit);
                 be.OnGetHit(dmg, crit);
                 ObjectPooler.op.Spawn("BloodSplatter", hitPosition, Quaternion.Euler(0f, 0f, 205f));
+                activeAttackFrames = false;
                 break;
             default:
+                if (activeObjectAttackFrames) return;
                 ObjectPooler.op.Spawn("ObjectMeleeHit", hitPosition);
+                activeObjectAttackFrames = false;
                 break;
         }
-        activeAttackFrames = false;
+        
     }
 
     private void ResetAnimations()
