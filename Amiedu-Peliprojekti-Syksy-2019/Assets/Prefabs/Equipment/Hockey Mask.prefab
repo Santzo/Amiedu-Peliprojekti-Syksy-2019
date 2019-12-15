@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2874452923784856201}
   - component: {fileID: 3389110751480001221}
+  - component: {fileID: -6360017985827877850}
   m_Layer: 0
   m_Name: Hockey Mask
   m_TagString: Untagged
@@ -81,3 +82,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6360017985827877850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002459119338164281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498111721a766da4abcc6d2b20cb5043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Strength: 0.88
+  _StartX: 0
+  _EndX: 1
+  _StartY: 0
+  _EndY: 1

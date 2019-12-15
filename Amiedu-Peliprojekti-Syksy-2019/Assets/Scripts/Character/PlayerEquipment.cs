@@ -103,6 +103,7 @@ public class PlayerEquipment : MonoBehaviour
             }
             if (equip.obj != null) Destroy(equip.obj);
             equip.obj = Instantiate(obj);
+            if (equip.item.modifiedMat != null) equip.obj.GetComponent<SpriteRenderer>().material = equip.item.modifiedMat;
             equip.obj.transform.SetParent(equip.trans, false);
         }
 

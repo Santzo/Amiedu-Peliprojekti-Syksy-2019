@@ -10,32 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ce2cadee0bf7b498d716b46748f316, type: 3}
-  m_Name: OutlineSword
+  m_Name: Rusted Hand Axe
   m_EditorClassIdentifier: 
   itemLevel: 1
-  weight: 1.2
-  obj: {fileID: 5447659618020291305, guid: 49d5a02c3423158409315207bacaf3ad, type: 3}
+  weight: 1.4
+  obj: {fileID: 4659233301652964338, guid: 5c5b21365bf0f71499f04bb6ffc75788, type: 3}
   icon: {fileID: 0}
-  material: {fileID: 2100000, guid: f0ee8bee1b6cf7247b463e7391b4af0e, type: 2}
+  modifiedMat: {fileID: 0}
+  material: {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
-  description: 'A sword looking like it could have been made in the 16th century.
-    Being quick and light, it suits very well for melee combat.
-
-'
+  description: Moderately rusted axe, but it should suffice for now.
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 0
-  physicalMin: 0
-  physicalMax: 0
+  physicalMin: 4
+  physicalMax: 7
   fireMin: 0
   fireMax: 0
   spectralMin: 0
   spectralMax: 0
-  attackRate: 1.5
-  staminaCost: 12
-  criticalHitChance: 14.4
+  attackRate: 1.35
+  staminaCost: 9
+  criticalHitChance: 10
   bulletPerShot: 0
   gearEffects:
-  - effect: 3
-    amount: 1
+  - effect: 2
+    amount: 15

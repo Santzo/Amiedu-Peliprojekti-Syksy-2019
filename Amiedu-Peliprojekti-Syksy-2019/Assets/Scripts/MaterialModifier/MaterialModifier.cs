@@ -15,6 +15,7 @@ public static class MaterialModifier
         }
         else if (_value is Color)
         {
+            Debug.Log("Color set");
             propertyBlock.SetColor(prop, (Color)_value);
         }
         rend.SetPropertyBlock(propertyBlock);
@@ -23,6 +24,7 @@ public static class MaterialModifier
     {
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         change.GetPropertyBlock(block);
+        Debug.Log(mat.name);
         switch (mat.name)
         {
             case "Rust":
@@ -30,6 +32,7 @@ public static class MaterialModifier
                 break;
             case "Outline":
                 SetValues(mat, block, outlineValues);
+                Debug.Log("Outline values set");
                 break;
             default:
                 return;
@@ -39,8 +42,8 @@ public static class MaterialModifier
     {
         rustValues = InitializeMaterialProps(typeof(RustValues));
         outlineValues = InitializeMaterialProps(typeof(OutlineValues));
-
     }
+
     private static ShaderValues[] InitializeMaterialProps(Type type)
     {
         var fields = type.GetFields();
@@ -48,9 +51,8 @@ public static class MaterialModifier
         for (int i = 0; i < fields.Length; i++)
         {
             values[i].value = Shader.PropertyToID(fields[i].Name);
-            values[i].type = fields[i].FieldType.ToString();
-            Debug.Log(values[i].type);
-
+            var fieldType = fields[i].FieldType.ToString();
+            values[i].type = fields[i].FieldType == typeof(float) ? "Float" : "Color";
         }
         return values;
     }
@@ -58,12 +60,13 @@ public static class MaterialModifier
     {
         foreach (var val in values)
         {
-            if (val.type == "System.Single")
+            if (val.type == "Float")
             {
                 var _float = block.GetFloat(val.value);
+                Debug.Log(val.value +  " " + _float);
                 mat.SetFloat(val.value, _float);
             }
-            else if (val.type == "UnityEngine.Color")
+            else if (val.type == "Color")
             {
                 var _color = block.GetColor(val.value);
                 mat.SetColor(val.value, _color);

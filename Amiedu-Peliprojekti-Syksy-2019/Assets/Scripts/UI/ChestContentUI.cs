@@ -34,6 +34,12 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
 
     void OnEnable()
     {
+        UpdateWeightText();
+
+    }
+    void UpdateWeightText()
+    {
+        Info.UpdateWeightInfo();
         currentWeight.text = $"Current weight {CharacterStats.totalWeight}/{CharacterStats.weightLimit}";
     }
 
@@ -66,13 +72,23 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
             {
                 items[i].text.text = content[i].item.name;
                 items[i].icon.sprite = content[i].item.icon == null ? content[i].item.obj.GetComponent<SpriteRenderer>().sprite : content[i].item.icon;
-                if (content[i].item.material != null)
+                if (content[i].item.modifiedMat != null) items[i].icon.material = content[i].item.modifiedMat;
+                else if (content[i].item.material != null && content[i].item.modifiedMat == null)
                 {
-                    Material mat = new Material(content[i].item.material);
-                    items[i].icon.material = mat;
-                    content[i].item.modifiedMat = mat;
                     SetMaterialProperties custom = content[i].item.obj.GetComponent<SetMaterialProperties>();
-                    if (custom != null) items[i].icon.material.SetUIPropertyBlock(content[i].item.obj.GetComponent<Renderer>());
+                    if (custom != null)
+                    {
+                        Material mat = new Material(content[i].item.material);
+                        custom.SetProps();
+                        mat.SetUIPropertyBlock(content[i].item.obj.GetComponent<Renderer>());
+                        content[i].item.modifiedMat = mat;
+                        items[i].icon.material = mat;
+                    }
+                    else
+                    {
+                        content[i].item.modifiedMat = content[i].item.material;
+                        items[i].icon.material = content[i].item.material;
+                    }
                 }
                 else items[i].icon.material = null;
                 if (content[i].amount > 1)
@@ -90,6 +106,7 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
     public void SimpleEnter(int index)
     {
         if (index >= currentContent.Count) return;
+        Audio.PlaySound("Select");
         items[index].img.enabled = true;
         currentDetail = InventoryGrid.ShowItemDetails(currentContent[index].item, detailPos.position, transform.parent);
     }
@@ -97,6 +114,7 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
     public void SimpleClick(int index, PointerEventData.InputButton button)
     {
         if (button != PointerEventData.InputButton.Left) return;
+        Audio.PlaySound("Click");
         if (!clicked) StartCoroutine(DoubleClickCheck());
         else if (clicked)
         {
@@ -108,6 +126,7 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
                 bindedChest.AllItemsRetrieved();
             }
             if (currentDetail != null) ObjectPooler.op.DeSpawn(currentDetail);
+            UpdateWeightText();
             UpdateContents(currentContent, bindedChest);
         }
     }

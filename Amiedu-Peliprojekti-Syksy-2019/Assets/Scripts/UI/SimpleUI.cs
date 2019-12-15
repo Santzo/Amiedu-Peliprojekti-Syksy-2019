@@ -12,11 +12,13 @@ public class SimpleUI : MonoBehaviour, IUIObject
     }
     public void OnPointerClick(PointerEventData eventData)
     {
+       
         handler.SimpleClick(transform.GetSiblingIndex(), eventData.button);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+     
         handler.SimpleEnter(transform.GetSiblingIndex());
     }
 

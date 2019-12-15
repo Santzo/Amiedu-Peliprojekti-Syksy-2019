@@ -12,11 +12,13 @@ public class UIEvents : MonoBehaviour,  IUIObject
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Audio.PlaySound("Click");
         mouseController.EntryClick(index, eventData.button);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Audio.PlaySound("Select");
         mouseController.EntryEnter(index);
     }
 

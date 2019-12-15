@@ -20,21 +20,18 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
-  description: 'A sword looking like it could have been made in the 16th century.
-    Being quick and light, it suits very well for melee combat.
-
-'
+  description: A sword for rapid slashing. Shame about the rust.
   weaponType: 0
   attackAnimation: {fileID: 0}
   hands: 0
-  physicalMin: 0
-  physicalMax: 0
+  physicalMin: 3
+  physicalMax: 5
   fireMin: 0
   fireMax: 0
   spectralMin: 0
   spectralMax: 0
   attackRate: 1.5
-  staminaCost: 12
+  staminaCost: 8
   criticalHitChance: 14.4
   bulletPerShot: 0
   gearEffects:

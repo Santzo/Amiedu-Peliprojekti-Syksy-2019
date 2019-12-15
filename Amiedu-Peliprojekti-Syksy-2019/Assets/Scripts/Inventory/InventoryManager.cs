@@ -34,33 +34,41 @@ public class InventoryManager : MonoBehaviour
         consumables = Resources.LoadAll<Consumable>("Inventory/Consumables");
         leggear = Resources.LoadAll<Leggear>("Inventory/Leggear");
         lightsources = Resources.LoadAll<Lightsource>("Inventory/Lightsources");
-
-        //foreach (var weapon in weapons)
-        //{
-        //    AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
-        //    AddToInventory(new Inventory { amount = UnityEngine.Random.Range(1, 3), item = weapon });
-        //}
-        //foreach (var head in headgear)
-        //{
-        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = head });
-        //}
-        //foreach (var chest in chestgear)
-        //{
-        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = chest });
-        //}
-        //foreach (var cons in consumables)
-        //{
-        //    CharacterStats.inventoryItems.Add(new Inventory { amount = UnityEngine.Random.Range(2, 500), item = cons });
-        //}
-
-        //foreach (var lg in leggear)
-        //{
-        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = lg });
-        //}
-        //foreach (var ls in lightsources)
-        //{
-        //    CharacterStats.inventoryItems.Add(new Inventory { amount = 1, item = ls });
-        //}
+        foreach (var a in weapons)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in headgear)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in chestgear)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in armgear)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in consumables)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in leggear)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
+        foreach (var a in lightsources)
+        {
+            SetMaterialProperties smp = a.obj.GetComponent<SetMaterialProperties>();
+            smp?.SetProps();
+        }
     }
 
 

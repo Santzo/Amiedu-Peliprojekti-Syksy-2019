@@ -4,11 +4,11 @@
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_SecondTex("Second Texture", 2D) = "white" {}
-		 _Strength("_Strength", Range(0,1)) = 0
-		 _StartX("_StartX", Range(0,1)) = 0
-		 _EndX("_EndX", Range(0,1)) = 1
-		_StartY("_StartY", Range(0,1)) = 0
-		 _EndY("_EndY", Range(0,1)) = 1
+		[PerRendererData] _Strength("_Strength", Range(0,1)) = 0
+		[PerRendererData] _StartX("_StartX", Range(0,1)) = 0
+		[PerRendererData] _EndX("_EndX", Range(0,1)) = 1
+		[PerRendererData]_StartY("_StartY", Range(0,1)) = 0
+		[PerRendererData] _EndY("_EndY", Range(0,1)) = 1
 		_StencilComp("Stencil Comparison", Float) = 8
 		 _Stencil("Stencil ID", Float) = 0
 		 _StencilOp("Stencil Operation", Float) = 0
@@ -33,6 +33,7 @@
 				CGPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
+			
 
 				#include "UnityCG.cginc"
 

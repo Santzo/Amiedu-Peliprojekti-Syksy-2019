@@ -4766,6 +4766,7 @@ GameObject:
   - component: {fileID: 7248917680798952795}
   - component: {fileID: 6663153419858339143}
   - component: {fileID: 3207497177200659022}
+  - component: {fileID: 3013298840310405441}
   m_Layer: 13
   m_Name: Hand Axe
   m_TagString: MeleeWeapon
@@ -4805,7 +4806,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4896,3 +4897,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb5d0a27d0061149a0c1f155f1a89c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3013298840310405441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4659233301652964338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498111721a766da4abcc6d2b20cb5043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Strength: 0.87
+  _StartX: 0
+  _EndX: 1
+  _StartY: 0.46
+  _EndY: 1

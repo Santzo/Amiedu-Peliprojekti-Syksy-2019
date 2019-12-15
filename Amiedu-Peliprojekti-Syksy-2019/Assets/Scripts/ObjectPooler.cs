@@ -76,6 +76,7 @@ public class ObjectPooler : MonoBehaviour
         var newHead = Instantiate(head, db.head.transform.parent);
         newHead.transform.position = db.head.transform.position;
         newHead.transform.localScale = db.head.transform.localScale;
+        newHead.layer = 5;
         var sr = newHead.GetComponentsInChildren<SpriteRenderer>();
         foreach (var s in sr)
             s.sortingLayerName = "UI";

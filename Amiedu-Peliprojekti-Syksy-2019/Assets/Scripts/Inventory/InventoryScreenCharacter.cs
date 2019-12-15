@@ -14,6 +14,10 @@ public class InventoryScreenCharacter : MonoBehaviour
     {
         Destroy(transform.GetChild(0).gameObject);
         var obj = Instantiate(gear, transform);
+        foreach (var layer in obj.GetComponentsInChildren<Transform>())
+        {
+            layer.gameObject.layer = 5;
+        }
         obj.name = "Chestgear";
         obj.transform.SetAsFirstSibling();
         var particles = GetComponentsInChildren<ParticleSystem>();

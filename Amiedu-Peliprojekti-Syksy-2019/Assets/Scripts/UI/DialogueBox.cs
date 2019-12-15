@@ -49,7 +49,7 @@ public class DialogueBox : MonoBehaviour, IUIHandler
         dialogueIndex = 0;
         items[0].text.text = "Skip";
         text.text = "";
-
+        
         talkerName.text = currentDialogue[0].talker;
         currentText = "";
         textToShow = currentDialogue[0].text;

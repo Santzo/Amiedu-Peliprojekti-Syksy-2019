@@ -4766,8 +4766,7 @@ GameObject:
   - component: {fileID: 6041651189349944656}
   - component: {fileID: 1999857986172421206}
   - component: {fileID: 7970124276337548308}
-  - component: {fileID: 2009907837}
-  - component: {fileID: 1556928501}
+  - component: {fileID: 3916040728030154465}
   m_Layer: 13
   m_Name: One-handed sword
   m_TagString: MeleeWeapon
@@ -4807,7 +4806,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f0ee8bee1b6cf7247b463e7391b4af0e, type: 2}
+  - {fileID: 2100000, guid: 2d03e399ba4ee6e46a07b4caf7451f9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4898,7 +4897,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &2009907837
+--- !u!114 &3916040728030154465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4911,21 +4910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Strength: 1
-  _StartX: 0.6
+  _StartX: 0
   _EndX: 1
-  _StartY: 0.3
+  _StartY: 0.34
   _EndY: 1
---- !u!114 &1556928501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5447659618020291305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d210be6fdf91947bdaee0eb1db0626, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Thickness: 10.74
-  _Color: {r: 0.3578205, g: 1, b: 0, a: 1}

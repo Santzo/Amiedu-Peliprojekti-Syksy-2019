@@ -8,16 +8,14 @@ public abstract class SetMaterialProperties : MonoBehaviour
     private Renderer rend;
     private MaterialPropertyBlock propertyBlock;
     private FieldInfo[] values;
-    private void Awake()
+
+    public void OnValidate()
     {
+#if UNITY_EDITOR
         SetProps();
-        //Destroy(this);
+#endif
     }
-    private void OnValidate()
-    {
-        SetProps();
-    }
-    private void SetProps()
+    public void SetProps()
     {
         if (rend == null || propertyBlock == null)
         {
@@ -29,7 +27,6 @@ public abstract class SetMaterialProperties : MonoBehaviour
         {
             values = GetType().GetFields();
         }
-        int i = 0;
         foreach (var val in values)
         {
             rend.SetValue(propertyBlock, val.Name, val.GetValue(this));

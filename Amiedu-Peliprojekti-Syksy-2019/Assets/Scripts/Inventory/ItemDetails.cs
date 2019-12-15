@@ -36,13 +36,13 @@ public class ItemDetails : MonoBehaviour
     {
         itemName.text = item.name;
         itemDescription.text = item.description;
-        itemType.text = item.GetType().ToString() + " - Level " + item.itemLevel;
+        itemType.text = item.GetType().ToString() + " - Level " + item.itemLevel + " - Weight " + item.weight;
         equipped.enabled = _equipped;
 
         if (item is Weapon)  // WEAPONS HERE
         {
             Weapon _item = item as Weapon;
-            itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel;
+            itemType.text = _item.hands.ToString().Replace("_", " ") + " " + _item.weaponType + " - Level " + item.itemLevel + " - Weight " + item.weight;
             details[0].text = $"Physical damage {TextColor.Yellow}{_item.physicalMin} {TextColor.White}-{TextColor.Yellow} {_item.physicalMax}";
             details[1].text = $"Spectral damage {TextColor.Purple}{_item.spectralMin} {TextColor.White}-{TextColor.Purple} {_item.spectralMax}";
             details[2].text = $"Fire damage {TextColor.Red}{_item.fireMin} {TextColor.White}-{TextColor.Red} {_item.fireMax}";
