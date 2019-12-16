@@ -138,6 +138,7 @@ public class LevelGenerator : MonoBehaviour
         var chestThree = SpawnFloorObject("Treasure Chest", worldSizeX - 3, worldSizeY / 2, 0.2f, 0f, true);
         chestThree.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = false, name = "Bone Crusher" },
+            new ChestContent { type = typeof(Headgear), random = false, name = "Sunglasses"},
             new ChestContent { type = typeof(Weapon), random = false, name = "Bloodied Sword" },
              new ChestContent { type = typeof(Lightsource), random = false, name = "Blue Flamed Torch" });
 

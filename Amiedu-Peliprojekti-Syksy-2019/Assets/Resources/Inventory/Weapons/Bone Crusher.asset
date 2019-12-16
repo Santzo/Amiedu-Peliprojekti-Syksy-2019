@@ -16,6 +16,7 @@ MonoBehaviour:
   weight: 9.5
   obj: {fileID: 6440022379830505789, guid: 18416db7b0df96247968272887f9b1a6, type: 3}
   icon: {fileID: 0}
+  modifiedMat: {fileID: 0}
   material: {fileID: 0}
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   iconScale: 1
@@ -23,8 +24,8 @@ MonoBehaviour:
   weaponType: 0
   attackAnimation: {fileID: 7400000, guid: 86e9a9d61550c864db2569ec719c04cf, type: 2}
   hands: 1
-  physicalMin: 0
-  physicalMax: 0
+  physicalMin: 20
+  physicalMax: 35
   fireMin: 0
   fireMax: 0
   spectralMin: 0
@@ -37,6 +38,8 @@ MonoBehaviour:
   - effect: 2
     amount: 50
   - effect: 4
-    amount: 150
+    amount: 30
+  - effect: 3
+    amount: 30
   - effect: 0
     amount: -45
