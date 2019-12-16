@@ -19,7 +19,6 @@ public class EnemyManager : MonoBehaviour
     {
         instance = this;
         loadEnemies = Resources.LoadAll<GameObject>("Enemies");
-        Debug.Log(loadEnemies.Length);
     }
 
     public void GenerateEnemies(List<AllRooms> rooms)
@@ -39,14 +38,19 @@ public class EnemyManager : MonoBehaviour
                 int enemy = Random.Range(0, loadEnemies.Length);
                 bool legitSpawn = false;
                 Vector2Int spawnPoint = Vector2Int.zero;
+                Vector2 playerPos = References.rf.playerEquipment.transform.position;
                 while (!legitSpawn)
                 {
                     spawnPoint = new Vector2Int(Random.Range(2, References.rf.levelGenerator.worldSizeX - 2), Random.Range(2, References.rf.levelGenerator.worldSizeY - 2));
                     legitSpawn = PathRequestManager.instance.grid.NodeFromWorldPoint(spawnPoint).walkable == 2;
+                    Vector2 tooClose = new Vector2(Mathf.Abs(spawnPoint.x - playerPos.x), Mathf.Abs(spawnPoint.y - playerPos.y));
+                    if (tooClose.x < 10 || tooClose.y < 10) legitSpawn = false;
                 }
                 Vector2 spawn = spawnPoint; 
                 var obj = Instantiate(loadEnemies[enemy], spawn, Quaternion.identity);
-                enemies.Add(obj.GetComponent<BaseEnemy>());
+                BaseEnemy _enemy = obj.GetComponent<BaseEnemy>();
+                enemies.Add(_enemy);
+                _enemy.gameObject.SetActive(false);
             }
         }
         enemyCount = enemies.Count;
@@ -65,6 +69,12 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
- 
+    public void ActivateEnemies()
+    {
+        foreach (var enemy in enemies)
+        {
+            enemy.gameObject.SetActive(true);
+        }
+    }
 
 }

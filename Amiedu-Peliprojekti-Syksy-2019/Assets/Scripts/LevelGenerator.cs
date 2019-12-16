@@ -28,6 +28,7 @@ public class LevelGenerator : MonoBehaviour
     public string[] bookShelves, barrels;
     public List<AllRooms> allRooms = new List<AllRooms>();
     public RoomGrid[,] roomGrid, objectGrid;
+    public GameObject startCircle;
     private void Awake()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -117,6 +118,8 @@ public class LevelGenerator : MonoBehaviour
         }
         startRoom.roomType = RoomType.Start;
         References.rf.playerMovement.transform.position = new Vector2(x + 2, y + 2);
+        GameObject a = Instantiate(startCircle);
+        a.transform.position = new Vector2(x + 2, y + 2);
         References.rf.mainCamera.transform.position = new Vector3(References.rf.playerMovement.transform.position.x, References.rf.playerMovement.transform.position.y, -10f);
         //SpawnCarpets(10);
         SpawnBarrels(0);

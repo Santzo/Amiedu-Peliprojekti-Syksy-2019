@@ -5993,6 +5993,8 @@ MonoBehaviour:
   worldSizeY: 0
   bookShelves: []
   barrels: []
+  startCircle: {fileID: 478026903355516857, guid: c5a3523254ae1a346af93e8d224f4168,
+    type: 3}
 --- !u!4 &748168824
 Transform:
   m_ObjectHideFlags: 0
@@ -6182,6 +6184,7 @@ MonoBehaviour:
   meleeWeapon: {fileID: 0}
   attacking: 0
   activeAttackFrames: 0
+  activeObjectAttackFrames: 0
   mask: {fileID: 0}
 --- !u!50 &810531912
 Rigidbody2D:
@@ -14555,6 +14558,7 @@ MonoBehaviour:
   armgear: []
   consumables: []
   leggear: []
+  ammo: []
 --- !u!4 &1832940771
 Transform:
   m_ObjectHideFlags: 0
@@ -16511,7 +16515,7 @@ GameObject:
   - component: {fileID: 2641991163008577420}
   m_Layer: 22
   m_Name: Chestgear
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
