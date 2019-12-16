@@ -53,7 +53,7 @@ public class PathRequestManager : MonoBehaviour
                     }
                 }
             }
-            Thread.Sleep(20);
+            //Thread.Sleep(20);
         }
     }
     private IEnumerator PathFoundManager()

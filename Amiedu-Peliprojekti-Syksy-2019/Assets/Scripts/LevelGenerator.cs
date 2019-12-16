@@ -136,7 +136,7 @@ public class LevelGenerator : MonoBehaviour
             new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 },
              new ChestContent { type = typeof(Ammo), random = false, name = "Gasoline", amount = 50 });
         var chestThree = SpawnFloorObject("Treasure Chest", worldSizeX - 3, worldSizeY / 2, 0.2f, 0f, true);
-        chestTwo.GetComponent<TreasureChest>().CreateChestContent(
+        chestThree.GetComponent<TreasureChest>().CreateChestContent(
             new ChestContent { type = typeof(Weapon), random = false, name = "Bone Crusher" },
             new ChestContent { type = typeof(Weapon), random = false, name = "Bloodied Sword" },
              new ChestContent { type = typeof(Lightsource), random = false, name = "Blue Flamed Torch" });

@@ -15,7 +15,6 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
     GameObject currentDetail;
     List<Inventory> currentContent;
     TreasureChest bindedChest;
-    bool clicked;
 
     public void Awake()
     {
@@ -146,10 +145,5 @@ public class ChestContentUI : MonoBehaviour, IUIHandler, ISimpleUIHandler
         public Image icon;
         public TextMeshProUGUI text;
     }
-    private IEnumerator DoubleClickCheck()
-    {
-        clicked = true;
-        yield return new WaitForSeconds(KeyboardConfig.doubleClickInterval);
-        clicked = false;
-    }
+
 }

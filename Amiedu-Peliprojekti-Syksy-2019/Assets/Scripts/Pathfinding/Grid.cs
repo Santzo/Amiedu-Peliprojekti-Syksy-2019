@@ -292,8 +292,8 @@ public class Grid : MonoBehaviour
 
         int x = Mathf.RoundToInt(gridSizeX * percentX);
         int y = Mathf.RoundToInt(gridSizeY * percentY);
-        x = Mathf.Clamp(x, 0, (int) gridWorldSize.x);
-        y = Mathf.Clamp(y, 0, (int) gridWorldSize.y);
+        x = Mathf.Clamp(x, 0, gridSizeX - 1);
+        y = Mathf.Clamp(y, 0, gridSizeY - 1);
         return grid[x, y];
     }
 
