@@ -127,11 +127,6 @@ public class BaseEnemy : MonoBehaviour
             }
             if (newPath?.Length > 0)
             {
-                Debug.DrawLine(rb.position, newPath[0], Color.red, 1.5f);
-                for (int i = 0; i < newPath.Length - 1; i++)
-                {
-                    Debug.DrawLine(newPath[i], newPath[i + 1], Color.green, 8f);
-                }
                 path = newPath;
                 targetIndex = 0;
                 destination = path[0];
