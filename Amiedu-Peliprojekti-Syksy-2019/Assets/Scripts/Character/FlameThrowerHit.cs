@@ -25,7 +25,6 @@ public class FlameThrowerHit : MonoBehaviour
 
     private void UpdateEnemyList(List<Collider2D> obj)
     {
-        Debug.Log(obj.Count);
         for (int i = 0; i < obj.Count; i++)
         {
             particles.trigger.SetCollider(i, obj[i]);
@@ -36,7 +35,6 @@ public class FlameThrowerHit : MonoBehaviour
         var hits = new List<ParticleSystem.Particle>();
         particles.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, hits);
         if (hits.Count == 0) return;
-        Debug.Log(hits.Count);
         foreach (var hit in hits)
         {
             var collision = Physics2D.OverlapCircle(new Vector2(hit.position.x, hit.position.y), 1.5f,layer);
